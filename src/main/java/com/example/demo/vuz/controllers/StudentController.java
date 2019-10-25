@@ -3,6 +3,7 @@ package com.example.demo.vuz.controllers;
 
 import com.example.demo.vuz.DemoApplication;
 import com.example.demo.vuz.model.Student;
+import com.example.demo.vuz.services.StudentService;
 import com.example.demo.vuz.repositories.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,12 +16,14 @@ public class StudentController {
 
     private final DemoApplication.InMemoryStorage inMemoryStorage;
     private final StudentRepository studentRepository;
+    private final StudentService studentService;
 
     @Autowired
     public StudentController(DemoApplication.InMemoryStorage inMemoryStorage,
-                             StudentRepository studentRepository){
+                             StudentRepository studentRepository, StudentService studentService){
         this.inMemoryStorage = inMemoryStorage;
         this.studentRepository = studentRepository;
+        this.studentService = studentService;
     }
 
 
@@ -45,6 +48,9 @@ public class StudentController {
         studentRepository.save(newStudent);
     }
 
-
-
+    @PostMapping("/student_Change_Group")
+    public void studentChange(@RequestParam("studentId") int studentId,
+                                   @RequestParam("groupId") int groupId){
+        studentService.studentChangeGroup(studentId, groupId);
+    }
 }
