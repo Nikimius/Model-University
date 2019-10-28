@@ -8,6 +8,7 @@ import com.example.demo.vuz.repositories.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Random;
 
@@ -38,19 +39,21 @@ public class StudentController {
     }
 
     @PostMapping("/students")
+    @Transactional
     public void createStudent(@RequestParam("fn") String fn, @RequestParam("ln") String ln) {
-        Student newStudent = new Student();
-        newStudent.setFirstName(fn);
-        newStudent.setLastName(ln);
-        newStudent.setAge(Math.abs(new Random().nextInt() % 100));
-        newStudent.setStudentNumber(Math.abs(new Random().nextInt() % 100000));
-
-        studentRepository.save(newStudent);
+        studentService.createStudents(fn, ln);
     }
 
-    @PostMapping("/student_Change_Group")
-    public void studentChange(@RequestParam("studentId") int studentId,
-                                   @RequestParam("groupId") int groupId){
-        studentService.studentChangeGroup(studentId, groupId);
+    @PostMapping("/studentChangeGroup")
+    @Transactional
+    public void studentChange(@RequestParam("studentListIds") List<Integer> studentsIds,
+                              @RequestParam("groupId") int groupId){
+        studentService.studentChangeGroup(studentsIds, groupId);
+    }
+
+    @PostMapping("/removeStudent")
+    @Transactional
+    public void removeStudent(@RequestParam("studentListId") List<Integer> studentsIds){
+        studentService.removeStudent(studentsIds);
     }
 }

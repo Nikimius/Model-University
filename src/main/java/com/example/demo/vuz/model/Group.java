@@ -23,8 +23,8 @@ public class Group {
     private Department department;
 
 
-    @ManyToMany(mappedBy = "groupList")
-    private List<Teacher> teacherList = new ArrayList<>();
+/*    @ManyToMany(mappedBy = "groupList")
+    private List<Teacher> teacherList = new ArrayList<>();*/
 
     public Group() {
     }

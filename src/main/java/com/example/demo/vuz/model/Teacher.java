@@ -19,17 +19,17 @@ public class Teacher {
     @Column(name = "teacher_number")
     private int teacherNumber;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "department_id")
     private Department departmentTeacher;
 
 
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    /*@ManyToMany(cascade = CascadeType.REFRESH)
     @JoinTable(name = "Subject"
             , joinColumns = @JoinColumn(name = "teacher_id")
             , inverseJoinColumns = @JoinColumn(name = "group_id"))
-    private List<Group> groupList = new ArrayList<>();
+    private List<Group> groupList = new ArrayList<>();*/
 
 
 

@@ -19,7 +19,7 @@ import java.util.Random;
 
 @RestController
 @RequestMapping("")
-public class KafedraController {
+public class GroupController {
 
     private final DemoApplication.InMemoryStorage inMemoryStorage;
     private final GroupeRepository groupeRepository;
@@ -27,9 +27,9 @@ public class KafedraController {
     private final TeacherRepository teacherRepository;
 
     @Autowired
-    public KafedraController(DemoApplication.InMemoryStorage inMemoryStorage,
-                             GroupeRepository groupeRepository,
-                             StudentRepository studentRepository, TeacherRepository teacherRepository){
+    public GroupController(DemoApplication.InMemoryStorage inMemoryStorage,
+                           GroupeRepository groupeRepository,
+                           StudentRepository studentRepository, TeacherRepository teacherRepository){
         this.inMemoryStorage = inMemoryStorage;
         this.groupeRepository = groupeRepository;
         this.studentRepository = studentRepository;
@@ -37,7 +37,7 @@ public class KafedraController {
     }
 
 
-    @GetMapping("/teachers")
+    /*@GetMapping("/teachers")
     public List<Teacher> getListTeacher(){
         return teacherRepository.findAll();
     }
@@ -57,7 +57,7 @@ public class KafedraController {
         newTeacher.setTeacherNumber(Math.abs(new Random().nextInt() % 1000000));
 
         teacherRepository.save(newTeacher);
-    }
+    }*/
 
 
     @GetMapping("/groups")

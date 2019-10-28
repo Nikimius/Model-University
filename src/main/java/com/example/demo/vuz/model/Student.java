@@ -20,7 +20,7 @@ public class Student {
     @Column(name = "student_number")
     private int studentNumber;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "group_id")
     private Group group;
 
