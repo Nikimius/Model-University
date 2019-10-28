@@ -6,6 +6,7 @@ import com.example.demo.vuz.model.Student;
 import com.example.demo.vuz.services.StudentService;
 import com.example.demo.vuz.repositories.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -43,14 +44,21 @@ public class StudentController {
         newStudent.setFirstName(fn);
         newStudent.setLastName(ln);
         newStudent.setAge(Math.abs(new Random().nextInt() % 100));
-        newStudent.setStudentNumber(Math.abs(new Random().nextInt() % 100000));
+        newStudent.setStudentNumber(Math.abs(new Random().nextInt() % 1000000));
 
         studentRepository.save(newStudent);
     }
 
-    @PostMapping("/student_Change_Group")
+    @PostMapping("/studentChangeGroup")
+    @Transactional
     public void studentChange(@RequestParam("studentId") int studentId,
                                    @RequestParam("groupId") int groupId){
         studentService.studentChangeGroup(studentId, groupId);
+    }
+
+    @PostMapping("/removeStudent")
+    @Transactional
+    public void removeStudent(@RequestParam("studentListId") List<Integer> studentsIds){
+        studentService.removeStudent(studentsIds);
     }
 }
