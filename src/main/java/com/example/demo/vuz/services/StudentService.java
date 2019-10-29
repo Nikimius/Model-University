@@ -7,7 +7,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+<<<<<<< HEAD
 import java.util.Random;
+=======
+>>>>>>> e41799a1a952907787b1a652b266920f78ec3453
 
 @Service
 public class StudentService {
@@ -20,12 +23,16 @@ public class StudentService {
         this.studentRepository = studentRepository;
         this.groupeRepository = groupeRepository;
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> e41799a1a952907787b1a652b266920f78ec3453
 //  Для одного элемента
     /*public void removeStudent(Integer studentId){
         studentRepository.delete(studentId);
     }*/
 
+<<<<<<< HEAD
     //  Для списка элементов
     public void removeStudent(List<Integer> studentsIds) {
         List<Student> students = studentRepository.findAllById(studentsIds);
@@ -46,6 +53,18 @@ public class StudentService {
         newStudent.setStudentNumber(Math.abs(new Random().nextInt() % 1000_000));
 
         studentRepository.save(newStudent);
+=======
+//  Для списка элементов
+    public void removeStudent(List<Integer> studentsIds){
+        List<Student> students = studentRepository.findAllById(studentsIds);
+        students.forEach(student -> studentRepository.delete(student));
+    }
+
+    public void studentChangeGroup(int idStudent, int idGroup){
+        studentRepository.findById(idStudent).orElseThrow(()-> new IllegalArgumentException("Student not found"))
+                .setGroup(groupeRepository.findById(idGroup).orElseThrow(()-> new IllegalArgumentException("Group not found")));
+        studentRepository.save(studentRepository.findById(idStudent).get());
+>>>>>>> e41799a1a952907787b1a652b266920f78ec3453
     }
 
 
