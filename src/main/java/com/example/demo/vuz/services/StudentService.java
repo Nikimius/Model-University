@@ -67,5 +67,10 @@ public class StudentService {
 >>>>>>> e41799a1a952907787b1a652b266920f78ec3453
     }
 
+    public void removeStudentsFromGroup(List<Integer> stIds){
+        List<Student> students = studentRepository.findAllById(stIds);
+        students.forEach(student -> student.setGroup(null));
+        students.forEach(student -> studentRepository.save(student));
+    }
 
 }

@@ -44,4 +44,10 @@ public class TeacherService {
         teacherRepository.save(teacherRepository.findById(teacherId).get());
     }
 
+    public void removeTeacherFromGroup(List<Integer> thIds){
+        List<Teacher> teachers = teacherRepository.findAllById(thIds);
+        teachers.forEach(teacher -> teacher.setDepartment(null));
+        teachers.forEach(teacher -> teacherRepository.save(teacher));
+    }
+
 }

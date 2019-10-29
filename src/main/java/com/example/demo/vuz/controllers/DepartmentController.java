@@ -8,7 +8,9 @@ import com.example.demo.vuz.model.Teacher;
 import com.example.demo.vuz.repositories.DepartmentRepository;
 import com.example.demo.vuz.repositories.GroupeRepository;
 import com.example.demo.vuz.repositories.TeacherRepository;
+import com.example.demo.vuz.services.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,13 +23,15 @@ public class DepartmentController {
     private final DepartmentRepository departmentRepository;
     private final GroupeRepository groupeRepository;
     private final TeacherRepository teacherRepository;
+    private final DepartmentService departmentService;
 
     @Autowired
-    public DepartmentController(DemoApplication.InMemoryStorage inMemoryStorage, DepartmentRepository departmentRepository, GroupeRepository groupeRepository, TeacherRepository teacherRepository) {
+    public DepartmentController(DemoApplication.InMemoryStorage inMemoryStorage, DepartmentRepository departmentRepository, GroupeRepository groupeRepository, TeacherRepository teacherRepository, DepartmentService departmentService) {
         this.inMemoryStorage = inMemoryStorage;
         this.departmentRepository = departmentRepository;
         this.groupeRepository = groupeRepository;
         this.teacherRepository = teacherRepository;
+        this.departmentService = departmentService;
     }
 
 
@@ -48,28 +52,23 @@ public class DepartmentController {
     }
 
     @GetMapping("departments/{departmentId}/teachers")
-    public List<Teacher> getTeacher (@PathVariable(name = "departmentId") int departmentId) {
+    public List<Teacher> getTeacher(@PathVariable(name = "departmentId") int departmentId) {
         return inMemoryStorage.getDepartmentById(departmentId).getTeacherList();
     }
 
     @PostMapping("/departments")
+    @Transactional
     public void createDepartments(@RequestParam("nameDepartment") String name,
-                                  @RequestParam("groupList") List<Integer> groupsIds,
-                                  @RequestParam("teacherList") List<Integer> teachersIds){
+                                  @RequestParam(value = "groupList", required = false) List<Integer> groupsIds,
+                                  @RequestParam(value = "teacherList", required = false) List<Integer> teachersIds) {
 
-        Department newDepartment = new Department();
-        newDepartment.setName(name);
+        departmentService.createDep(name, groupsIds, teachersIds);
+    }
 
-        newDepartment.setNumberTelephone(Math.abs(new Random().nextInt()%10000000));
+    @PostMapping("/delDepartments")
+    @Transactional
+    public void createDepartments(@RequestParam("departmentListIds") List<Integer> departmentsIds) {
 
-        List<Group> groups = groupeRepository.findAllById(groupsIds);
-        groups.forEach(group -> group.setDepartment(newDepartment));
-        newDepartment.setGroupList(groups);
-
-        List<Teacher> teachers = teacherRepository.findAllById(teachersIds);
-        teachers.forEach(teacher -> teacher.setDepartment(newDepartment));
-        newDepartment.setTeacherList(teachers);
-
-        departmentRepository.save(newDepartment);
+        departmentService.removeDepartment(departmentsIds);
     }
 }
