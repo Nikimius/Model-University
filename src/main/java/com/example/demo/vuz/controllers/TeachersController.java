@@ -55,5 +55,10 @@ public class TeachersController {
         teacherService.changeDepartmentToTeacher(teacherId, departmentId);
     }
 
+    @PostMapping("/delTeachersFromDep")
+    @Transactional
+    public void delStudents(@RequestParam("teacherListIds") List<Integer> teachersIds) {
+        teacherService.removeTeacherFromGroup(teachersIds);
+    }
 
 }

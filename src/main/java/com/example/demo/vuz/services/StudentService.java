@@ -48,5 +48,10 @@ public class StudentService {
         studentRepository.save(newStudent);
     }
 
+    public void removeStudentsFromGroup(List<Integer> stIds){
+        List<Student> students = studentRepository.findAllById(stIds);
+        students.forEach(student -> student.setGroup(null));
+        students.forEach(student -> studentRepository.save(student));
+    }
 
 }

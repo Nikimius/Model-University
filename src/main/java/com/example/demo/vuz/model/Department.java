@@ -8,16 +8,20 @@ public class Department {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+
     @Column(name = "name")
     private String name;
+
     @Column(name = "number_telephone")
     private int numberTelephone;
+
     @OneToMany(mappedBy = "department")
     private List<Group> groupList = new ArrayList<>();
+
     @OneToMany(mappedBy = "departmentTeacher")
     private List<Teacher> teacherList = new ArrayList<>();
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "faculty_id")
     private Faculty faculty;
 

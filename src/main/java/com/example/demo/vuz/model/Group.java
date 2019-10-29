@@ -18,7 +18,7 @@ public class Group {
     @OneToMany(mappedBy ="group")
     private List<Student> studentList = new ArrayList<>();
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "department_id")
     private Department department;
 

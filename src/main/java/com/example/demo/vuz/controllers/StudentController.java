@@ -21,7 +21,7 @@ public class StudentController {
 
     @Autowired
     public StudentController(DemoApplication.InMemoryStorage inMemoryStorage,
-                             StudentRepository studentRepository, StudentService studentService){
+                             StudentRepository studentRepository, StudentService studentService) {
         this.inMemoryStorage = inMemoryStorage;
         this.studentRepository = studentRepository;
         this.studentService = studentService;
@@ -29,12 +29,13 @@ public class StudentController {
 
 
     @GetMapping("/students")
-    public List<Student> getListGroup(){
+    public List<Student> getListGroup() {
         return studentRepository.findAll();
         //return inMemoryStorage.studentList;
     }
+
     @GetMapping("/students/{studentId}")
-    public Student getGroup(@PathVariable (name = "studentId") int studentId){
+    public Student getGroup(@PathVariable(name = "studentId") int studentId) {
         return inMemoryStorage.getStudentById(studentId);
     }
 
@@ -47,13 +48,19 @@ public class StudentController {
     @PostMapping("/studentChangeGroup")
     @Transactional
     public void studentChange(@RequestParam("studentListIds") List<Integer> studentsIds,
-                              @RequestParam("groupId") int groupId){
+                              @RequestParam("groupId") int groupId) {
         studentService.studentChangeGroup(studentsIds, groupId);
     }
 
     @PostMapping("/removeStudent")
     @Transactional
-    public void removeStudent(@RequestParam("studentListId") List<Integer> studentsIds){
+    public void removeStudent(@RequestParam("studentListId") List<Integer> studentsIds) {
         studentService.removeStudent(studentsIds);
+    }
+
+    @PostMapping("/delStudentsFromGroup")
+    @Transactional
+    public void delStudents(@RequestParam("studentListIds") List<Integer> studentsIds) {
+        studentService.removeStudentsFromGroup(studentsIds);
     }
 }
