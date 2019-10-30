@@ -7,7 +7,7 @@ import java.util.List;
 @Entity
 public class Teacher {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(name = "first_name")

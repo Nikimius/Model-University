@@ -6,7 +6,9 @@ import com.example.demo.vuz.model.Department;
 import com.example.demo.vuz.model.Faculty;
 import com.example.demo.vuz.repositories.DepartmentRepository;
 import com.example.demo.vuz.repositories.FacultyRepository;
+import com.example.demo.vuz.services.FacultyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,12 +21,14 @@ public class FacultyController {
     private final DemoApplication.InMemoryStorage inMemoryStorage;
     private final DepartmentRepository departmentRepository;
     private final FacultyRepository facultyRepository;
+    private final FacultyService facultyService;
 
     @Autowired
-    public FacultyController(DemoApplication.InMemoryStorage inMemoryStorage, DepartmentRepository departmentRepository, FacultyRepository facultyRepository) {
+    public FacultyController(DemoApplication.InMemoryStorage inMemoryStorage, DepartmentRepository departmentRepository, FacultyRepository facultyRepository, FacultyService facultyService) {
         this.inMemoryStorage = inMemoryStorage;
         this.departmentRepository = departmentRepository;
         this.facultyRepository = facultyRepository;
+        this.facultyService = facultyService;
     }
     @GetMapping("/")
     public List<Faculty> getListFaculty() {
@@ -45,17 +49,16 @@ public class FacultyController {
     }
 
     @PostMapping("/faculties")
+    @Transactional
     public void createFaculty(@RequestParam("nameFaculty") String name,
                               @RequestParam("webSite") String webSite,
                               @RequestParam("departmentList") List<Integer> departmentsIds){
-        Faculty newFaculty = new Faculty();
-        newFaculty.setName(name);
-        newFaculty.setWebSite(webSite);
+        facultyService.createFaculty(name, webSite, departmentsIds);
+    }
 
-        List<Department> departments = departmentRepository.findAllById(departmentsIds);
-        departments.forEach(department -> department.setFaculty(newFaculty));
-        newFaculty.setDepartmentList(departments);
-
-        facultyRepository.save(newFaculty);
+    @PostMapping("/delFaculty")
+    @Transactional
+    public void delFaculty(@RequestParam("facultyListIds") List<Integer> departmentsIds){
+        facultyService.removeFaculty(departmentsIds);
     }
 }

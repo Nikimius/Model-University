@@ -51,12 +51,6 @@ public class GroupController {
                             @RequestParam(value = "studentList", required = false) List<Integer> studentsIds) {
         groupService.createNewGroup(name, studentsIds);
     }
-    @PostMapping("/groupWithoutSt")
-    @Transactional
-    public void createGroupWS(@RequestParam("nameGroup") String name,
-                            @RequestParam(value = "studentList", required = false) List<Integer> studentsIds) {
-        groupService.createNewGroup(name, studentsIds);
-    }
 
     // Данный функционал выполняет фукнция studentChangeGroup in StudentService
     /*@PostMapping("/groups/addStudent")
@@ -83,4 +77,11 @@ public class GroupController {
 //    public void delGroup(@RequestParam("groupId") int groupId){
 //        groupService.removeGroup(groupId);
 //    }
+
+    @PostMapping
+    @Transactional
+    public void changeGroup(@RequestParam("groupListIds") List<Integer> groupsIds,
+                            @RequestParam("depId") int depId){
+        groupService.changeToGroup(groupsIds, depId);
+    }
 }
