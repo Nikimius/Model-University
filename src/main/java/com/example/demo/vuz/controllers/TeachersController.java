@@ -39,7 +39,8 @@ public class TeachersController {
 
     @PostMapping("/teachers")
     @Transactional
-    public void createTeacher(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName){
+    public void createTeacher(@RequestParam("firstName") String firstName,
+                              @RequestParam("lastName") String lastName){
         teacherService.createTeachers(firstName, lastName);
     }
 
@@ -51,8 +52,9 @@ public class TeachersController {
 
     @PostMapping("/changeDepartmentToTeacher")
     @Transactional
-    public void changeTeachers(@RequestParam("teacherId") int teacherId, @RequestParam("departmentId") int departmentId){
-        teacherService.changeDepartmentToTeacher(teacherId, departmentId);
+    public void changeTeachers(@RequestParam("teacherListIds") List<Integer> teachersIds,
+                               @RequestParam("departmentId") int departmentId){
+        teacherService.changeDepartmentToTeacher(teachersIds, departmentId);
     }
 
     @PostMapping("/delTeachersFromDep")

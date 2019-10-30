@@ -38,10 +38,10 @@ public class TeacherService {
         teachers.forEach(teacher -> teacherRepository.delete(teacher));
     }
 
-    public void changeDepartmentToTeacher(int teacherId, int departmentId){
-        teacherRepository.findById(teacherId).orElseThrow(()-> new IllegalArgumentException("Teacher not found"))
-                .setDepartment(departmentRepository.findById(departmentId).orElseThrow(()-> new IllegalArgumentException("Department not found")));
-        teacherRepository.save(teacherRepository.findById(teacherId).get());
+    public void changeDepartmentToTeacher(List<Integer> teachersIds, int departmentId){
+        List<Teacher> teachers = teacherRepository.findAllById(teachersIds);
+        teachers.forEach(teacher -> teacher.setDepartment(departmentRepository.findById(departmentId).orElseThrow(()-> new IllegalArgumentException("Department not found"))));
+        teachers.forEach(teacher -> teacherRepository.save(teacher));
     }
 
     public void removeTeacherFromGroup(List<Integer> thIds){

@@ -8,7 +8,7 @@ import java.util.List;
 @Entity
 public class Faculty {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(name = "name", unique = true)
     private String name;
@@ -18,7 +18,7 @@ public class Faculty {
     @OneToMany(mappedBy = "faculty")
     private List<Department> departmentList = new ArrayList<>();
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "university_id")
     private University university;
 
