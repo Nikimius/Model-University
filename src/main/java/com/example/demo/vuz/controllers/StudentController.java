@@ -2,15 +2,13 @@ package com.example.demo.vuz.controllers;
 
 
 import com.example.demo.vuz.DemoApplication;
+import com.example.demo.vuz.dto.StudentDto;
 import com.example.demo.vuz.model.Student;
 import com.example.demo.vuz.services.StudentService;
 import com.example.demo.vuz.repositories.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Random;
 
 @RestController
 public class StudentController {
@@ -27,6 +25,39 @@ public class StudentController {
         this.studentService = studentService;
     }
 
+    /*@PostMapping("/students")
+    @Transactional
+    public void createStudent(@RequestParam("fn") String fn, @RequestParam("ln") String ln) {
+        studentService.createStudents(fn, ln);
+    }*/
+    @PostMapping("/studentChangeGroup")
+    public void studentChange(@RequestBody StudentDto studentDto) {
+        studentService.studentChangeGroup(studentDto.getStudentsIds(), studentDto.getGroupId());
+    }
+
+
+    @PostMapping("/removeStudent")
+    public void removeStudentV2(@RequestBody StudentDto studentDto) {
+        studentService.removeStudent(studentDto.getStudentsIds());
+    }
+
+    /*@PostMapping("/removeStudent")
+    @Transactional
+    public void removeStudent(@RequestParam("studentListId") List<Integer> studentsIds) {
+        studentService.removeStudent(studentsIds);
+    }*/
+    @PostMapping("/delStudentsFromGroup")
+    public void delStudentsV2(@RequestBody StudentDto studentDto) {
+        studentService.removeStudentsFromGroup(studentDto.getStudentsIds());
+    }
+
+    /*@PostMapping("/delStudentsFromGroup")
+    @Transactional
+    public void delStudents(@RequestParam("studentListIds") List<Integer> studentsIds) {
+        studentService.removeStudentsFromGroup(studentsIds);
+    }*/
+
+
 
     @GetMapping("/students")
     public List<Student> getListGroup() {
@@ -39,28 +70,10 @@ public class StudentController {
         return inMemoryStorage.getStudentById(studentId);
     }
 
+
+
     @PostMapping("/students")
-    @Transactional
-    public void createStudent(@RequestParam("fn") String fn, @RequestParam("ln") String ln) {
-        studentService.createStudents(fn, ln);
-    }
-
-    @PostMapping("/studentChangeGroup")
-    @Transactional
-    public void studentChange(@RequestParam("studentListIds") List<Integer> studentsIds,
-                              @RequestParam("groupId") int groupId) {
-        studentService.studentChangeGroup(studentsIds, groupId);
-    }
-
-    @PostMapping("/removeStudent")
-    @Transactional
-    public void removeStudent(@RequestParam("studentListId") List<Integer> studentsIds) {
-        studentService.removeStudent(studentsIds);
-    }
-
-    @PostMapping("/delStudentsFromGroup")
-    @Transactional
-    public void delStudents(@RequestParam("studentListIds") List<Integer> studentsIds) {
-        studentService.removeStudentsFromGroup(studentsIds);
+    public void createStudentV2(@RequestBody StudentDto studentDto) {
+        studentService.createStudents(studentDto.getFn(), studentDto.getLn());
     }
 }

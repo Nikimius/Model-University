@@ -1,7 +1,6 @@
 package com.example.demo.vuz;
 
 import com.example.demo.vuz.model.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -25,7 +24,7 @@ public class DemoApplication {
         public List<University> universityList = new ArrayList<>();
         public List<Faculty> facultyList = new ArrayList<>();
         public List<Department> departmentList = new ArrayList<>();
-        public List<Group> groupList = new ArrayList<>();
+        public List<Groups> groupList = new ArrayList<>();
         public List<Teacher> teacherList = new ArrayList<>();
         public List<Student> studentList = new ArrayList<>();
 
@@ -47,7 +46,7 @@ public class DemoApplication {
                     .filter(department -> department.getId() == id).findFirst().orElseThrow(() -> new IllegalArgumentException("Department not found"));
         }
 
-        public Group getGroupById(int id) {
+        public Groups getGroupById(int id) {
             return groupList
                     .stream()
                     .filter(group -> group.getId() == id).findFirst().orElseThrow(() -> new IllegalArgumentException("Group not found"));
@@ -107,7 +106,7 @@ public class DemoApplication {
 
         void initGroupStorage() {
             for (int i = 1; i <= 240; i=i+10) {
-                groupList.add(new Group(i, 13 + "-IST-" + i, studentList.subList(i-1, i+9)));
+                groupList.add(new Groups(i, 13 + "-IST-" + i, studentList.subList(i-1, i+9)));
             }
         }
 
@@ -119,7 +118,7 @@ public class DemoApplication {
 
         void initStudentStorage() {
             for (int i = 1; i <= 240; i++) {
-                studentList.add(new Student(i, "Sergey" + i, "Savinov", 23 + i, i * 24 ^ 9));
+                studentList.add(new Student( "Sergey" + i, "Savinov", 23 + i, i * 24 ^ 9));
             }
         }
 

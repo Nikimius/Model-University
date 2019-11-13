@@ -22,13 +22,12 @@ public class Student {
 
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "group_id")
-    private Group group;
+    private Groups group;
 
     public Student() {
     }
 
-    public Student(int id, String firstName, String lastName, int age, int studentNumber) {
-        this.id = id;
+    public Student(String firstName, String lastName, int age, int studentNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
@@ -75,11 +74,11 @@ public class Student {
         this.studentNumber = studentNumber;
     }
 
-    public Group getGroup() {
+    public Groups getGroup() {
         return group;
     }
 
-    public void setGroup(Group group) {
+    public void setGroup(Groups group) {
         this.group = group;
     }
 

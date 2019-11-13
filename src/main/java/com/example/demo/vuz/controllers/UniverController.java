@@ -1,12 +1,12 @@
 package com.example.demo.vuz.controllers;
 
 import com.example.demo.vuz.DemoApplication;
+import com.example.demo.vuz.dto.UniversityDto;
 import com.example.demo.vuz.model.*;
 import com.example.demo.vuz.repositories.FacultyRepository;
 import com.example.demo.vuz.repositories.UniversityRepository;
 import com.example.demo.vuz.services.UniversityService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,18 +29,14 @@ public class UniverController {
     }
 
     @PostMapping("/universities")
-    @Transactional
-    public void createUniver(@RequestParam("nameUniversity") String name,
-                             @RequestParam("webSite") String webSite,
-                             @RequestParam("city") String city,
-                             @RequestParam("facultyList") List<Integer> facultiesIds) {
-        universityService.createUniversity(name, webSite, city, facultiesIds);
+    public void createUniver(@RequestBody UniversityDto universityDto) {
+        universityService.createUniversity(universityDto.getName(), universityDto.getWebSite(),
+                universityDto.getCity(), universityDto.getFacultiesIds());
     }
 
     @PostMapping("/delUniversities")
-    @Transactional
-    public void delUniver(@RequestParam("universityListIds") List<Integer> universitiesIds) {
-        universityService.removeUniver(universitiesIds);
+    public void delUniver(@RequestBody UniversityDto universityDto) {
+        universityService.removeUniver(universityDto.getUniversitiesIds());
     }
 
 
@@ -128,7 +124,7 @@ public class UniverController {
     }
 
     @GetMapping("/universities/{universityId}/faculties/{facultyId}/departments/{departmentId}/groups")
-    public List<Group> getListGroup(@PathVariable(name = "universityId") int universityId, @PathVariable(name = "facultyId") int facultyId, @PathVariable(name = "departmentId") int departmentId) {
+    public List<Groups> getListGroup(@PathVariable(name = "universityId") int universityId, @PathVariable(name = "facultyId") int facultyId, @PathVariable(name = "departmentId") int departmentId) {
         return inMemoryStorage.getUniversityById(universityId).getFacultyList()
                 .stream()
                 .filter(faculty -> faculty.getId() == facultyId)
@@ -143,7 +139,7 @@ public class UniverController {
     }
 
     @GetMapping("/universities/{universityId}/faculties/{facultyId}/departments/{departmentId}/groups/{groupId}")
-    public Group getGroup(@PathVariable(name = "universityId") int universityId, @PathVariable(name = "facultyId") int facultyId, @PathVariable(name = "departmentId") int departmentId
+    public Groups getGroup(@PathVariable(name = "universityId") int universityId, @PathVariable(name = "facultyId") int facultyId, @PathVariable(name = "departmentId") int departmentId
             , @PathVariable(name = "groupId") int groupId) {
         return inMemoryStorage.getUniversityById(universityId).getFacultyList()
                 .stream()

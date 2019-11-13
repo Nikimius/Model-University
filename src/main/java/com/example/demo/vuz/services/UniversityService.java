@@ -5,10 +5,12 @@ import com.example.demo.vuz.model.University;
 import com.example.demo.vuz.repositories.FacultyRepository;
 import com.example.demo.vuz.repositories.UniversityRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class UniversityService {
 
     private final UniversityRepository universityRepository;

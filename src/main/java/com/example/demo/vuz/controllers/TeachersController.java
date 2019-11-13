@@ -1,13 +1,13 @@
 package com.example.demo.vuz.controllers;
 
 import com.example.demo.vuz.DemoApplication;
+import com.example.demo.vuz.dto.TeacherDto;
 import com.example.demo.vuz.model.Teacher;
 import com.example.demo.vuz.repositories.TeacherRepository;
 import com.example.demo.vuz.services.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 @RestController
@@ -37,30 +37,46 @@ public class TeachersController {
 
     }
 
+
+
+
     @PostMapping("/teachers")
-    @Transactional
+    public void createTeacherV2(@RequestBody TeacherDto teacherDto){
+        teacherService.createTeachers(teacherDto.getFirstName(), teacherDto.getLastName());
+    }
+
+    /*@PostMapping("/teachers")
     public void createTeacher(@RequestParam("firstName") String firstName,
                               @RequestParam("lastName") String lastName){
         teacherService.createTeachers(firstName, lastName);
-    }
+    }*/
+
 
     @PostMapping("/delTeachers")
-    @Transactional
-    public void delTeachers(@RequestParam("studentListIds") List<Integer> teachersIds){
-        teacherService.removeTeachers(teachersIds);
+    public void delTeachers(@RequestBody TeacherDto teacherDto){
+        teacherService.removeTeachers(teacherDto.getTeachersIds());
     }
 
+    /*@PostMapping("/delTeachers")
+    public void delTeachers(@RequestParam("studentListIds") List<Integer> teachersIds){
+        teacherService.removeTeachers(teachersIds);
+    }*/
+
+
     @PostMapping("/changeDepartmentToTeacher")
-    @Transactional
+    public void changeTeachers(@RequestBody TeacherDto teacherDto) {
+        teacherService.changeDepartmentToTeacher(teacherDto.getTeachersIds(), teacherDto.getDepartment());
+    }
+
+    /*@PostMapping("/changeDepartmentToTeacher")
     public void changeTeachers(@RequestParam("teacherListIds") List<Integer> teachersIds,
                                @RequestParam("departmentId") int departmentId){
         teacherService.changeDepartmentToTeacher(teachersIds, departmentId);
-    }
+    }*/
 
     @PostMapping("/delTeachersFromDep")
-    @Transactional
-    public void delStudents(@RequestParam("teacherListIds") List<Integer> teachersIds) {
-        teacherService.removeTeacherFromGroup(teachersIds);
+    public void delStudents(@RequestBody TeacherDto teacherDto) {
+        teacherService.removeTeacherFromGroup(teacherDto.getTeachersIds());
     }
 
 }

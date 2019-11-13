@@ -5,16 +5,19 @@ import com.example.demo.vuz.repositories.GroupeRepository;
 import com.example.demo.vuz.repositories.StudentRepository;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Random;
 
 @Service
+@Transactional
 public class StudentService {
 
     private final StudentRepository studentRepository;
     private final GroupeRepository groupeRepository;
 
+    private int age = 10;
 
     public StudentService(StudentRepository studentRepository, GroupeRepository groupeRepository) {
         this.studentRepository = studentRepository;
@@ -28,8 +31,7 @@ public class StudentService {
 
     //  Для списка элементов
     public void removeStudent(List<Integer> studentsIds) {
-        List<Student> students = studentRepository.findAllById(studentsIds);
-        students.forEach(student -> studentRepository.delete(student));
+        studentRepository.deleteAllByIdIn(studentsIds);
     }
 
     public void studentChangeGroup(List<Integer> studentsIds, int idGroup) {
@@ -38,14 +40,15 @@ public class StudentService {
         students.forEach(student -> studentRepository.save(student));
     }
 
-    public void createStudents(String fistName, String lastName){
+    public Student createStudents(String fistName, String lastName){
         Student newStudent = new Student();
         newStudent.setFirstName(fistName);
         newStudent.setLastName(lastName);
         newStudent.setAge(Math.abs(new Random().nextInt() % 100));
         newStudent.setStudentNumber(Math.abs(new Random().nextInt() % 1000_000));
 
-        studentRepository.save(newStudent);
+        return studentRepository.save(newStudent);
+
     }
 
     public void removeStudentsFromGroup(List<Integer> stIds){
