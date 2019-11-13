@@ -6,11 +6,13 @@ import com.example.demo.vuz.repositories.DepartmentRepository;
 import com.example.demo.vuz.repositories.TeacherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Random;
 
 @Service
+@Transactional
 public class TeacherService {
 
     private final TeacherRepository teacherRepository;

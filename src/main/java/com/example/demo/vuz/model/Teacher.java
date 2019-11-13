@@ -1,5 +1,7 @@
 package com.example.demo.vuz.model;
 
+import org.hibernate.procedure.spi.ParameterRegistrationImplementor;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -94,6 +96,7 @@ public class Teacher {
     public void setTeacherNumber(int teacherNumber) {
         this.teacherNumber = teacherNumber;
     }
+
 
     @Override
     public String toString() {

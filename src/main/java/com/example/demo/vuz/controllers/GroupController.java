@@ -2,14 +2,13 @@ package com.example.demo.vuz.controllers;
 
 
 import com.example.demo.vuz.DemoApplication;
-import com.example.demo.vuz.model.Group;
-import com.example.demo.vuz.model.Student;
+import com.example.demo.vuz.dto.GroupDto;
+import com.example.demo.vuz.model.Groups;
 import com.example.demo.vuz.repositories.GroupeRepository;
 import com.example.demo.vuz.repositories.StudentRepository;
 import com.example.demo.vuz.repositories.TeacherRepository;
 import com.example.demo.vuz.services.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,22 +34,19 @@ public class GroupController {
         this.groupService = groupService;
     }
 
-    @GetMapping("/groups")
-    public List<Group> getListGroup() {
-        return groupeRepository.findAll();
-    }
-
-    @GetMapping("/groups/{groupId}")
-    public Group getGroup(@PathVariable(name = "groupId") int groupId) {
-        return inMemoryStorage.getGroupById(groupId);
-    }
-
     @PostMapping("/group")
+    public void createGroupV2(@RequestBody GroupDto groupDto) {
+        groupService.createNewGroup(groupDto.getName(), groupDto.getStudentsIds());
+    }
+
+
+    /*@PostMapping("/group")
     @Transactional
     public void createGroup(@RequestParam("nameGroup") String name,
                             @RequestParam(value = "studentList", required = false) List<Integer> studentsIds) {
         groupService.createNewGroup(name, studentsIds);
-    }
+    }*/
+
 
     // Данный функционал выполняет фукнция studentChangeGroup in StudentService
     /*@PostMapping("/groups/addStudent")
@@ -63,13 +59,20 @@ public class GroupController {
        // group.setStudentList(students);
         groupeRepository.save(group);
     }*/
-
     @PostMapping("/delGroups")
+    public void delGroupsV2(@RequestBody GroupDto groupDto){
+        /*Удалит так же и всех студентов
+        groupService.delGroups(groupDto.getGroupsIds());*/
+        groupService.removeGroups(groupDto.getGroupsIds());
+        //groupeRepository.deleteAllByIdIn(groupDto.getGroupsIds());
+    }
+
+    /*@PostMapping("/delGroups")
     @Transactional
     public void delGroups(@RequestParam("groupListIds") List<Integer> groupsIds){
         groupService.removeGroups(groupsIds);
     }
-
+*/
     //To delete one group
 
 //    @PostMapping("/delGroup")
@@ -79,9 +82,28 @@ public class GroupController {
 //    }
 
     @PostMapping
+    public void changeGroupV2(@RequestBody GroupDto groupDto){
+        groupService.changeToGroup(groupDto.getGroupsIds(), groupDto.getDepartmentId());
+    }
+
+
+    /*@PostMapping
     @Transactional
     public void changeGroup(@RequestParam("groupListIds") List<Integer> groupsIds,
                             @RequestParam("depId") int depId){
         groupService.changeToGroup(groupsIds, depId);
+    }*/
+
+
+
+
+    @GetMapping("/groups")
+    public List<Groups> getListGroup() {
+        return groupeRepository.findAll();
+    }
+
+    @GetMapping("/groups/{groupId}")
+    public Groups getGroup(@PathVariable(name = "groupId") int groupId) {
+        return inMemoryStorage.getGroupById(groupId);
     }
 }

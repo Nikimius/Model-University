@@ -2,20 +2,18 @@ package com.example.demo.vuz.controllers;
 
 
 import com.example.demo.vuz.DemoApplication;
+import com.example.demo.vuz.dto.DepartmentDto;
 import com.example.demo.vuz.model.Department;
-import com.example.demo.vuz.model.Group;
+import com.example.demo.vuz.model.Groups;
 import com.example.demo.vuz.model.Teacher;
 import com.example.demo.vuz.repositories.DepartmentRepository;
 import com.example.demo.vuz.repositories.GroupeRepository;
 import com.example.demo.vuz.repositories.TeacherRepository;
 import com.example.demo.vuz.services.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Random;
-
 @RestController
 public class DepartmentController {
 
@@ -47,7 +45,7 @@ public class DepartmentController {
     }
 
     @GetMapping("departments/{departmentId}/groups")
-    public List<Group> getGroup(@PathVariable(name = "departmentId") int departmentId) {
+    public List<Groups> getGroup(@PathVariable(name = "departmentId") int departmentId) {
         return inMemoryStorage.getDepartmentById(departmentId).getGroupList();
     }
 
@@ -56,19 +54,19 @@ public class DepartmentController {
         return inMemoryStorage.getDepartmentById(departmentId).getTeacherList();
     }
 
-    @PostMapping("/departments")
-    @Transactional
-    public void createDepartments(@RequestParam("nameDepartment") String name,
-                                  @RequestParam(value = "groupList", required = false) List<Integer> groupsIds,
-                                  @RequestParam(value = "teacherList", required = false) List<Integer> teachersIds) {
 
-        departmentService.createDep(name, groupsIds, teachersIds);
+
+
+    @PostMapping("/departments")
+    public void createDepartments(@RequestBody DepartmentDto departmentDto) {
+
+        departmentService.createDep(departmentDto.getName(), departmentDto.getGroupsIds(),
+                departmentDto.getTeachersIds());
     }
 
     @PostMapping("/delDepartments")
-    @Transactional
-    public void createDepartments(@RequestParam("departmentListIds") List<Integer> departmentsIds) {
+    public void delDepartments(@RequestBody DepartmentDto departmentDto) {
 
-        departmentService.removeDepartment(departmentsIds);
+        departmentService.removeDepartment(departmentDto.getDepartmentsIds());
     }
 }

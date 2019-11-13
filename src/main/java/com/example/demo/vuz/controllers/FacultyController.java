@@ -2,6 +2,7 @@ package com.example.demo.vuz.controllers;
 
 
 import com.example.demo.vuz.DemoApplication;
+import com.example.demo.vuz.dto.FacultyDto;
 import com.example.demo.vuz.model.Department;
 import com.example.demo.vuz.model.Faculty;
 import com.example.demo.vuz.repositories.DepartmentRepository;
@@ -48,17 +49,15 @@ public class FacultyController {
 
     }
 
+
+
     @PostMapping("/faculties")
-    @Transactional
-    public void createFaculty(@RequestParam("nameFaculty") String name,
-                              @RequestParam("webSite") String webSite,
-                              @RequestParam("departmentList") List<Integer> departmentsIds){
-        facultyService.createFaculty(name, webSite, departmentsIds);
+    public void createFaculty(@RequestBody FacultyDto facultyDto){
+        facultyService.createFaculty(facultyDto.getName(), facultyDto.getWebSite(), facultyDto.getDepartmentsIds());
     }
 
     @PostMapping("/delFaculty")
-    @Transactional
-    public void delFaculty(@RequestParam("facultyListIds") List<Integer> departmentsIds){
-        facultyService.removeFaculty(departmentsIds);
+    public void delFaculty(@RequestBody FacultyDto facultyDto){
+        facultyService.removeFaculty(facultyDto.getFacultyListIds());
     }
 }

@@ -1,5 +1,7 @@
 package com.example.demo.vuz.model;
 
+import com.sun.tools.javac.code.Types;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +9,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "groups")
-public class Group {
+public class Groups {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -15,7 +17,7 @@ public class Group {
     @Column(name = "name_Group")
     private String name;
 
-    @OneToMany(mappedBy ="group")
+    @OneToMany(/*orphanRemoval = true,*/ mappedBy ="group")
     private List<Student> studentList = new ArrayList<>();
 
     @ManyToOne(cascade = CascadeType.REFRESH)
@@ -23,13 +25,10 @@ public class Group {
     private Department department;
 
 
-/*    @ManyToMany(mappedBy = "groupList")
-    private List<Teacher> teacherList = new ArrayList<>();*/
-
-    public Group() {
+    public Groups() {
     }
 
-    public Group(int id, String name, List<Student> studentList) {
+    public Groups(int id, String name, List<Student> studentList) {
         this.id = id;
         this.name = name;
         this.studentList = studentList;
@@ -67,6 +66,7 @@ public class Group {
     public void setName(String name) {
         this.name = name;
     }
+
 
 
     /*public void addStudent(Student student){

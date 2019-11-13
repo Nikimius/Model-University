@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 @Entity
+/*@NamedEntityGraph(name = "AnyName.name", attributeNodes = @NamedAttributeNode("name"))*/
 public class Department {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,9 +16,11 @@ public class Department {
     @Column(name = "number_telephone")
     private int numberTelephone;
 
+    /*@LazyCollection(LazyCollectionOption.FALSE)*/
     @OneToMany(mappedBy = "department")
-    private List<Group> groupList = new ArrayList<>();
+    private List<Groups> groupList = new ArrayList<>();
 
+    /*@LazyCollection (LazyCollectionOption.FALSE)*/
     @OneToMany(mappedBy = "departmentTeacher")
     private List<Teacher> teacherList = new ArrayList<>();
 
@@ -26,7 +29,7 @@ public class Department {
     private Faculty faculty;
 
 
-    public Department(int id, String name, int numberTelephone, List<Group> groupList, List<Teacher> teacherList) {
+    public Department(int id, String name, int numberTelephone, List<Groups> groupList, List<Teacher> teacherList) {
         this.id = id;
         this.name = name;
         this.numberTelephone = numberTelephone;
@@ -42,7 +45,7 @@ public class Department {
         this.faculty = faculty;
     }
 
-    public void setGroupList(List<Group> groupList) {
+    public void setGroupList(List<Groups> groupList) {
         this.groupList = groupList;
     }
 
@@ -54,7 +57,7 @@ public class Department {
         return teacherList;
     }
 
-    public List<Group> getGroupList() {
+    public List<Groups> getGroupList() {
         return groupList;
     }
 
