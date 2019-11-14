@@ -1,23 +1,25 @@
 package com.example.demo.vuz;
 
 
+import com.example.demo.vuz.repositories.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 
 @Configuration
-@Profile("test")
+@Component
 @EnableJpaRepositories(basePackages = "com.example.demo.vuz.repositories")
-@PropertySource("application.properties")
-@EnableTransactionManagement
+/*@PropertySource("application.properties") //maybe need to use application-test.properties??
+@EnableTransactionManagement*/
 public class UniverJpaConfig {
 
-    @Autowired
+    /*@Autowired
     private final Environment env;
 
     public UniverJpaConfig(Environment env) {
@@ -32,5 +34,5 @@ public class UniverJpaConfig {
         dataSource.setUsername(env.getProperty("spring.datasource.username")); // другие значаения в порперти мейна
         dataSource.setPassword(env.getProperty("spring.datasource.password"));
         return  dataSource;
-    }
+    }*/
 }

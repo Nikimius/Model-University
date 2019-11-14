@@ -1,28 +1,24 @@
 package com.example.demo.vuz.services;
 
-import com.example.demo.vuz.UniverJpaConfig;
 import com.example.demo.vuz.model.Student;
 import com.example.demo.vuz.repositories.StudentRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.annotation.Resource;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(
-        classes = {UniverJpaConfig.class},
-        loader = AnnotationConfigContextLoader.class)
-@Transactional
+@RunWith(SpringRunner.class)
+@DataJpaTest
 public class StudentServiceTest {
 
-    @Resource
+    @Autowired
     private StudentRepository studentRepository;
 
     @Test
@@ -30,7 +26,24 @@ public class StudentServiceTest {
         Student student = new Student("Sergei", "Savinov", 23, 123465);
         studentRepository.save(student);
 
-        Student student2 = studentRepository.findById(1).orElseThrow(()-> new IllegalArgumentException("Student not found"));
+        Student student2 = studentRepository.findById(1).orElseThrow(() -> new IllegalArgumentException("Student not found"));
         assertEquals("Savinov", student2.getLastName());
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface TeacherRepository extends JpaRepository<Teacher, Integer> {
 
-    void deleteByIdIn(List<Integer> ids);
+    //void deleteByIdIn(List<Integer> ids);
 
     void deleteById(Integer id);
 }
