@@ -8,6 +8,7 @@ import com.example.demo.vuz.services.StudentService;
 import com.example.demo.vuz.repositories.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -25,38 +26,46 @@ public class StudentController {
         this.studentService = studentService;
     }
 
-    /*@PostMapping("/students")
-    @Transactional
-    public void createStudent(@RequestParam("fn") String fn, @RequestParam("ln") String ln) {
-        studentService.createStudents(fn, ln);
-    }*/
-    @PostMapping("/studentChangeGroup")
-    public void studentChange(@RequestBody StudentDto studentDto) {
+    @PatchMapping("/studentChangeGroup")
+    public void studentChangeGroup(@RequestBody StudentDto studentDto) {
         studentService.studentChangeGroup(studentDto.getStudentsIds(), studentDto.getGroupId());
     }
 
+    /*@PostMapping("/delStudentsFromGroup")
+        @Transactional
+        public void delStudents(@RequestParam("studentListIds") List<Integer> studentsIds) {
+            studentService.removeStudentsFromGroup(studentsIds);
+     }*/
 
-    @PostMapping("/removeStudent")
-    public void removeStudentV2(@RequestBody StudentDto studentDto) {
-        studentService.removeStudent(studentDto.getStudentsIds());
+    @DeleteMapping("/StudentsFromGroup")
+    public void delStudentsV2(@RequestBody StudentDto studentDto) {
+        studentService.removeStudentsFromGroup(studentDto.getStudentsIds());
     }
+
 
     /*@PostMapping("/removeStudent")
     @Transactional
     public void removeStudent(@RequestParam("studentListId") List<Integer> studentsIds) {
         studentService.removeStudent(studentsIds);
     }*/
-    @PostMapping("/delStudentsFromGroup")
-    public void delStudentsV2(@RequestBody StudentDto studentDto) {
-        studentService.removeStudentsFromGroup(studentDto.getStudentsIds());
+
+    @DeleteMapping("/students")
+    public void removeStudentV2(@RequestBody StudentDto studentDto) {
+        studentService.removeStudent(studentDto.getStudentsIds());
     }
 
-    /*@PostMapping("/delStudentsFromGroup")
+
+
+    /*@PostMapping("/students")
     @Transactional
-    public void delStudents(@RequestParam("studentListIds") List<Integer> studentsIds) {
-        studentService.removeStudentsFromGroup(studentsIds);
+    public void createStudent(@RequestParam("fn") String fn, @RequestParam("ln") String ln) {
+        studentService.createStudents(fn, ln);
     }*/
 
+    @PostMapping("/students")
+    public void createStudentV2(@RequestBody StudentDto studentDto) {
+        studentService.createStudents(studentDto.getFn(), studentDto.getLn());
+    }
 
 
     @GetMapping("/students")
@@ -70,10 +79,4 @@ public class StudentController {
         return inMemoryStorage.getStudentById(studentId);
     }
 
-
-
-    @PostMapping("/students")
-    public void createStudentV2(@RequestBody StudentDto studentDto) {
-        studentService.createStudents(studentDto.getFn(), studentDto.getLn());
-    }
 }

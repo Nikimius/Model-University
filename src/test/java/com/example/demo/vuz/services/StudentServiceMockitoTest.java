@@ -48,11 +48,12 @@ public class StudentServiceMockitoTest {
     public void testRemoveStudentsFromGroup() {
         when(studentRepository.findAllById(list1)).thenReturn(Collections.singletonList(student));
         assertNotNull(student.getGroup());
+
         studentService.removeStudentsFromGroup(list1);
         assertNull(student.getGroup());
-        verify(studentRepository, times(1)).save(student);
-    }
 
+        verify(studentRepository).save(student);
+    }
 
     @Test
     public void testCreateStudents() {
@@ -60,21 +61,19 @@ public class StudentServiceMockitoTest {
         assertEquals("Sergey", student1.getFirstName());
         assertEquals("Savinov", student1.getLastName());
 
-       Student student3 = verify(studentRepository, times(1)).save(student1);
+        verify(studentRepository).save(student1);
     }
 
-    /*@Before
-    public void setUp() {
-        student.setGroup(new Groups());
-    }*/
     @Test
     public void testStudentChangeGroup() {
         when(studentRepository.findAllById(list1)).thenReturn(Collections.singletonList(student));
         assertNotNull(student.getGroup());
+
         when(groupeRepository.findById(idGroup)).thenReturn(Optional.of(group));
         studentService.studentChangeGroup(list1, idGroup);
         assertEquals(group, student.getGroup());
-        verify(studentRepository, times(1)).save(student);
+
+        verify(studentRepository).save(student);
     }
 
     @Test

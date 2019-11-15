@@ -59,7 +59,7 @@ public class GroupController {
        // group.setStudentList(students);
         groupeRepository.save(group);
     }*/
-    @PostMapping("/delGroups")
+    @DeleteMapping("/groups")
     public void delGroupsV2(@RequestBody GroupDto groupDto){
         /*Удалит так же и всех студентов
         groupService.delGroups(groupDto.getGroupsIds());*/
@@ -81,7 +81,7 @@ public class GroupController {
 //        groupService.removeGroup(groupId);
 //    }
 
-    @PostMapping
+    @PatchMapping
     public void changeGroupV2(@RequestBody GroupDto groupDto){
         groupService.changeToGroup(groupDto.getGroupsIds(), groupDto.getDepartmentId());
     }
