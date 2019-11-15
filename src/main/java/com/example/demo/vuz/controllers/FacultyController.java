@@ -56,7 +56,7 @@ public class FacultyController {
         facultyService.createFaculty(facultyDto.getName(), facultyDto.getWebSite(), facultyDto.getDepartmentsIds());
     }
 
-    @PostMapping("/delFaculty")
+    @DeleteMapping("/faculty")
     public void delFaculty(@RequestBody FacultyDto facultyDto){
         facultyService.removeFaculty(facultyDto.getFacultyListIds());
     }

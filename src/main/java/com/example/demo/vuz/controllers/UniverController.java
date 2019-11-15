@@ -29,13 +29,13 @@ public class UniverController {
     }
 
     @PostMapping("/universities")
-    public void createUniver(@RequestBody UniversityDto universityDto) {
+    public void createUniversities(@RequestBody UniversityDto universityDto) {
         universityService.createUniversity(universityDto.getName(), universityDto.getWebSite(),
                 universityDto.getCity(), universityDto.getFacultiesIds());
     }
 
-    @PostMapping("/delUniversities")
-    public void delUniver(@RequestBody UniversityDto universityDto) {
+    @DeleteMapping("/universities")
+    public void delUniversities(@RequestBody UniversityDto universityDto) {
         universityService.removeUniver(universityDto.getUniversitiesIds());
     }
 
@@ -124,7 +124,9 @@ public class UniverController {
     }
 
     @GetMapping("/universities/{universityId}/faculties/{facultyId}/departments/{departmentId}/groups")
-    public List<Groups> getListGroup(@PathVariable(name = "universityId") int universityId, @PathVariable(name = "facultyId") int facultyId, @PathVariable(name = "departmentId") int departmentId) {
+    public List<Groups> getListGroup(@PathVariable(name = "universityId") int universityId,
+                                     @PathVariable(name = "facultyId") int facultyId,
+                                     @PathVariable(name = "departmentId") int departmentId) {
         return inMemoryStorage.getUniversityById(universityId).getFacultyList()
                 .stream()
                 .filter(faculty -> faculty.getId() == facultyId)
@@ -139,8 +141,10 @@ public class UniverController {
     }
 
     @GetMapping("/universities/{universityId}/faculties/{facultyId}/departments/{departmentId}/groups/{groupId}")
-    public Groups getGroup(@PathVariable(name = "universityId") int universityId, @PathVariable(name = "facultyId") int facultyId, @PathVariable(name = "departmentId") int departmentId
-            , @PathVariable(name = "groupId") int groupId) {
+    public Groups getGroup(@PathVariable(name = "universityId") int universityId,
+                           @PathVariable(name = "facultyId") int facultyId,
+                           @PathVariable(name = "departmentId") int departmentId,
+                           @PathVariable(name = "groupId") int groupId) {
         return inMemoryStorage.getUniversityById(universityId).getFacultyList()
                 .stream()
                 .filter(faculty -> faculty.getId() == facultyId)

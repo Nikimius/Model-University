@@ -8,6 +8,8 @@ import com.example.demo.vuz.services.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -37,9 +39,6 @@ public class TeachersController {
 
     }
 
-
-
-
     @PostMapping("/teachers")
     public void createTeacherV2(@RequestBody TeacherDto teacherDto){
         teacherService.createTeachers(teacherDto.getFirstName(), teacherDto.getLastName());
@@ -52,9 +51,14 @@ public class TeachersController {
     }*/
 
 
-    @PostMapping("/delTeachers")
+    @DeleteMapping("/teachers/all")
     public void delTeachers(@RequestBody TeacherDto teacherDto){
         teacherService.removeTeachers(teacherDto.getTeachersIds());
+    }
+
+    @DeleteMapping("/teachers/{teacherId}")
+    public void deleteTeacher(@PathVariable(name = "teacherId") Integer teacherId) {
+        teacherService.removeTeachers(Collections.singletonList(teacherId));
     }
 
     /*@PostMapping("/delTeachers")
@@ -63,8 +67,8 @@ public class TeachersController {
     }*/
 
 
-    @PostMapping("/changeDepartmentToTeacher")
-    public void changeTeachers(@RequestBody TeacherDto teacherDto) {
+    @PatchMapping("/departmentToTeacher")
+    public void changeTeachersDepartments(@RequestBody TeacherDto teacherDto) {
         teacherService.changeDepartmentToTeacher(teacherDto.getTeachersIds(), teacherDto.getDepartment());
     }
 
@@ -74,8 +78,8 @@ public class TeachersController {
         teacherService.changeDepartmentToTeacher(teachersIds, departmentId);
     }*/
 
-    @PostMapping("/delTeachersFromDep")
-    public void delStudents(@RequestBody TeacherDto teacherDto) {
+    @DeleteMapping("/teachersFromDep")
+    public void deleteTeachersFromDepartment(@RequestBody TeacherDto teacherDto) {
         teacherService.removeTeacherFromGroup(teacherDto.getTeachersIds());
     }
 

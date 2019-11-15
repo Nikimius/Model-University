@@ -59,14 +59,12 @@ public class DepartmentController {
 
     @PostMapping("/departments")
     public void createDepartments(@RequestBody DepartmentDto departmentDto) {
-
         departmentService.createDep(departmentDto.getName(), departmentDto.getGroupsIds(),
                 departmentDto.getTeachersIds());
     }
 
-    @PostMapping("/delDepartments")
+    @DeleteMapping("/departments")
     public void delDepartments(@RequestBody DepartmentDto departmentDto) {
-
         departmentService.removeDepartment(departmentDto.getDepartmentsIds());
     }
 }
