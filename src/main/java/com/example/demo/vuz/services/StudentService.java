@@ -1,5 +1,6 @@
 package com.example.demo.vuz.services;
 
+import com.example.demo.vuz.model.Groups;
 import com.example.demo.vuz.model.Student;
 import com.example.demo.vuz.repositories.GroupeRepository;
 import com.example.demo.vuz.repositories.StudentRepository;
@@ -16,8 +17,8 @@ public class StudentService {
 
     private final StudentRepository studentRepository;
     private final GroupeRepository groupeRepository;
-
-    private int age = 10;
+    private final int MAX_SIZE = 10;
+    private int count = 0;
 
     public StudentService(StudentRepository studentRepository, GroupeRepository groupeRepository) {
         this.studentRepository = studentRepository;
@@ -36,8 +37,19 @@ public class StudentService {
 
     public void studentChangeGroup(List<Integer> studentsIds, int idGroup) {
         List<Student> students = studentRepository.findAllById(studentsIds);
-        students.forEach(student -> student.setGroup(groupeRepository.findById(idGroup).orElseThrow(() -> new IllegalArgumentException("Group not found"))));
-        students.forEach(student -> studentRepository.save(student));
+        //count = groupeRepository.findById(idGroup).orElseThrow(()-> new IllegalArgumentException("Group not found")).getStudentList().size();
+        Groups group = groupeRepository.findById(idGroup).orElseThrow(()-> new IllegalArgumentException("Group not found"));
+        count = group.getStudentList().size();
+        students.forEach(student ->
+        {
+            if(MAX_SIZE > count) {
+                student.setGroup(group);
+                studentRepository.save(student);
+                count++;
+            }
+            else
+                throw new IllegalArgumentException("Limit group is 10 students");
+        });
     }
 
     public Student createStudents(String fistName, String lastName){
