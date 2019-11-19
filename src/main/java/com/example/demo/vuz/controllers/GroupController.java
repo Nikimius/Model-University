@@ -39,6 +39,11 @@ public class GroupController {
         groupService.createNewGroup(groupDto.getName(), groupDto.getStudentsIds());
     }
 
+    @PatchMapping("/group")
+    public void addStudent(@RequestBody GroupDto groupDto){
+        groupService.addStudentsInGroups(groupDto.getGroupsId(), groupDto.getStudentsIds());
+    }
+
 
     /*@PostMapping("/group")
     @Transactional

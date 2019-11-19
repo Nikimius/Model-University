@@ -9,6 +9,7 @@ public class GroupDto {
     private String name;
     private List<Integer> studentsIds;
     private List<Integer> groupsIds;
+    private int groupsId;
     private int departmentId;
 
 
@@ -46,5 +47,14 @@ public class GroupDto {
 
     public void setDepartmentId(int departmentId) {
         this.departmentId = departmentId;
+    }
+
+    public int getGroupsId() {
+        return groupsId;
+    }
+
+    public void setGroupsId(int groupsId) {
+        this.groupsId = groupsId;
+
     }
 }
