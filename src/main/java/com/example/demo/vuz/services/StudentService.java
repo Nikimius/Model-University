@@ -4,7 +4,8 @@ import com.example.demo.vuz.model.Groups;
 import com.example.demo.vuz.model.Student;
 import com.example.demo.vuz.repositories.GroupeRepository;
 import com.example.demo.vuz.repositories.StudentRepository;
-import org.springframework.data.domain.Pageable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +15,8 @@ import java.util.Random;
 @Service
 @Transactional
 public class StudentService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(StudentService.class);
 
     private final StudentRepository studentRepository;
     private final GroupeRepository groupeRepository;
@@ -47,8 +50,10 @@ public class StudentService {
                 studentRepository.save(student);
                 count++;
             }
-            else
+            else {
+                LOGGER.debug("Limit group is 10 students");
                 throw new IllegalArgumentException("Limit group is 10 students");
+            }
         });
     }
 

@@ -30,8 +30,13 @@ public class UniverController {
 
     @PostMapping("/universities")
     public void createUniversities(@RequestBody UniversityDto universityDto) {
-        universityService.createUniversity(universityDto.getName(), universityDto.getWebSite(),
-                universityDto.getCity(), universityDto.getFacultiesIds());
+        universityService.createUniversity(
+                universityDto.getName(),
+                universityDto.getWebSite(),
+                universityDto.getCity(),
+                universityDto.getFacultiesIds());
+        universityService.createUniversity(universityDto);
+
     }
 
     @DeleteMapping("/universities")

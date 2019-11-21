@@ -5,7 +5,6 @@ import com.example.demo.vuz.model.Student;
 import com.example.demo.vuz.repositories.DepartmentRepository;
 import com.example.demo.vuz.repositories.GroupeRepository;
 import com.example.demo.vuz.repositories.StudentRepository;
-import jdk.internal.jline.internal.TestAccessible;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,8 +17,6 @@ public class GroupService {
     private final StudentRepository studentRepository;
     private final GroupeRepository groupeRepository;
     private final DepartmentRepository departmentRepository;
-    private final int MAX_SIZE = 10;
-    private int count = 0;
 
     public GroupService(StudentRepository studentRepository, GroupeRepository groupeRepository, DepartmentRepository departmentRepository) {
         this.studentRepository = studentRepository;
@@ -27,38 +24,70 @@ public class GroupService {
         this.departmentRepository = departmentRepository;
     }
 
+    class CountWrapper {
+        int count;
+    }
 
-    public void createNewGroup(String name, List<Integer> studentsIds) {
+    //Ухожу от того, чтобы проверка на ограничения были только в одном месте - в модели Group
+
+    /*public void createNewGroup(String name, List<Integer> studentsIds) {
         Groups newGroup = new Groups();
         newGroup.setName(name);
         List<Student> students = studentRepository.findAllById(studentsIds);
+        CountWrapper count = new CountWrapper();
         students.forEach(student -> {
-            if (MAX_SIZE > count) { // так как плюскется студент после добавления, то по этому равенство >, а не >=
+            if (MAX_SIZE > count.count) { // так как плюскется студент после добавления, то по этому равенство >, а не >=
                 student.setGroup(newGroup);
-                count++;
+                count.count++;
             } else {
-                count = 0;
+                count.count = 0;
+                //LOGGER.debug("Limit group is 10 students");
                 throw new IllegalArgumentException("Limit group is 10 students");
             }
         });
         newGroup.setStudentList(students);
 
         groupeRepository.save(newGroup);
+    }*/
+
+    public void createNewGroup(String name, List<Integer> studentsIds) {
+        Groups newGroup = new Groups();
+        newGroup.setName(name);
+        List<Student> students = studentRepository.findAllById(studentsIds);
+        students.forEach(student -> {
+            newGroup.addNewStudent(student);
+        });
+        newGroup.setStudentList(students);
+
+        groupeRepository.save(newGroup);
     }
+
+    ////Ухожу от того, чтобы проверка на ограничения были только в одном месте - в модели Group
+
+    /*public void addStudentsInGroups(int groupId, List<Integer> studentsIds) {
+        List<Student> students = studentRepository.findAllById(studentsIds);
+        Groups group = groupeRepository.findById(groupId).orElseThrow(() -> new IllegalArgumentException("Group not found"));
+        CountWrapper countWrapper = new CountWrapper();
+        countWrapper.count = group.getStudentList().size(); // не в теле лямбды, если будет ошибка то первоначальное значение count останется тем же
+        students.forEach(student -> {
+            if (MAX_SIZE > countWrapper.count) {
+                student.setGroup(group);
+                studentRepository.save(student);
+                countWrapper.count++;   // если бы то выражение было бы в теле лямбды, то не надо писать count++, так как count = group.getStudentList().size()
+                // уже обновляет значение счетчика
+            } else {
+                LOGGER.debug("Limit group is 10 students");
+                throw new IllegalArgumentException("Limit group is 10 students");
+            }
+        });
+    }*/
 
     public void addStudentsInGroups(int groupId, List<Integer> studentsIds) {
         List<Student> students = studentRepository.findAllById(studentsIds);
         Groups group = groupeRepository.findById(groupId).orElseThrow(() -> new IllegalArgumentException("Group not found"));
-        count = group.getStudentList().size(); // не в теле лямбды, если будет ошибка то первоначальное значение count останется тем же
         students.forEach(student -> {
-            if (MAX_SIZE > count) {
-                student.setGroup(group);
+                group.addStudentInGroup(student);
                 studentRepository.save(student);
-                count++;   // если бы то выражение было бы в теле лямбды, то не надо писать count++, так как count = group.getStudentList().size()
-                // уже обновляет значение счетчика
-            } else {
-                throw new IllegalArgumentException("Limit group is 10 students");
-            }
         });
     }
 
