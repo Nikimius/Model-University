@@ -1,13 +1,16 @@
 package Builder;
 
-import java.util.logging.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class LoggerCl {
 
-    private static final Logger logger = Logger.getLogger(LoggerCl.class.getName());
+    //private static final Logger log = LoggerFactory.getLogger(get);
+    private static final Logger log = LoggerFactory.getLogger(LoggerCl.class.getName());
 
     public static void main(String[] args) {
         System.out.println(System.getProperty("java.util.logging.config.file"));
-        logger.info("message");
+        log.info("message");
     }
 }

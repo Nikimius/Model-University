@@ -1,5 +1,6 @@
 package com.example.demo.vuz.services;
 
+import com.example.demo.vuz.dto.UniversityDto;
 import com.example.demo.vuz.model.Faculty;
 import com.example.demo.vuz.model.University;
 import com.example.demo.vuz.repositories.FacultyRepository;
@@ -46,5 +47,10 @@ public class UniversityService {
     }
 
 
-
+    public void createUniversity(UniversityDto universityDto) {
+        University newUniversity = new University();
+        newUniversity.setName(universityDto.getName());
+        newUniversity.setWebSite(universityDto.getWebSite());
+        newUniversity.setCity(universityDto.getCity());
+    }
 }
