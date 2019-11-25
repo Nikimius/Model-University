@@ -36,12 +36,12 @@ public class Schedule {
     @Column(name = "end")
     private String to;
 
+    @Column(name = "subject")
+    private Subject subject;
+
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "group_id")
     private Groups group;
-
-    @Column(name = "subject")
-    private Subject subject;
 
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "teacher_id")
@@ -51,6 +51,31 @@ public class Schedule {
     @JoinColumn(name = "classroom_id")
     private Classroom classroom;
 
+
+
+    public static DayOfWeek transformOfWeek(int asd) {
+        switch (asd) {
+            case 0 : return DayOfWeek.MONDAY;
+            case 1: return DayOfWeek.TUESDAY;
+            case 2: return DayOfWeek.WEDNESDAY;
+            case 3: return DayOfWeek.THURSDAY;
+            case 4: return DayOfWeek.FRIDAY;
+            case 5: return DayOfWeek.SATURDAY;
+
+        }
+        return null;
+    }
+
+    public static Subject transformSubject(int asd) {
+        switch (asd) {
+            case 0 : return Subject.MATHS;
+            case 1: return Subject.PHYSICS;
+            case 2: return Subject.COMPUTER_SCIENCE;
+            case 3: return Subject.HOCKEY;
+            case 4: return Subject.FOOTBALL;
+        }
+        return null;
+    }
 
     public Schedule() {
     }
