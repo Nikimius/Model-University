@@ -1,27 +1,51 @@
 package com.example.demo.vuz.model;
 
-public class
-Classroom {
-
-    private int number;
-    //private int size;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
-    public Classroom(int number) {
-        this.number = number;
+@Entity
+public class Classroom {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    int id;
+
+    @Column(name = "number_classroom")
+    private int numberClassroom;
+
+    @Column(name = "max_size")
+    private int maxSize = 10;
+
+    @OneToMany(mappedBy = "classroom")
+    private List<Schedule> scheduleList = new ArrayList<>();
+
+
+    public Classroom() {
     }
 
-    public int getNumber() {
-        return number;
+    public int getId() {
+        return id;
     }
 
-    public void setNumber(int number) {
-        this.number = number;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    @Override
-    public String toString() {
-        return "Classroom: " +
-                "number " + number;
+    public int getNumberClassroom() {
+        return numberClassroom;
+    }
+
+    public void setNumberClassroom(int numberClassroom) {
+        this.numberClassroom = numberClassroom;
+    }
+
+    public int getMaxSize() {
+        return maxSize;
+    }
+
+    public void setMaxSize(int maxSize) {
+        this.maxSize = maxSize;
     }
 }
