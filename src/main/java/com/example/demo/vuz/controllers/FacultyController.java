@@ -9,13 +9,12 @@ import com.example.demo.vuz.repositories.DepartmentRepository;
 import com.example.demo.vuz.repositories.FacultyRepository;
 import com.example.demo.vuz.services.FacultyService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-//@RequestMapping("/faculties")
+@RequestMapping("/faculties")
 public class FacultyController {
 
 

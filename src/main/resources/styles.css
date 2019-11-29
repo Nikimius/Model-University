@@ -4,7 +4,12 @@ label {
     padding: 0 20px 0 0;
 }
 
+.block {
+    width: 35px;
+}
+
 input,
 label {
     margin: .4rem 0;
 }
+

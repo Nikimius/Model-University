@@ -4,10 +4,7 @@ package com.example.demo.vuz.controllers;
 import com.example.demo.vuz.dto.ScheduleDto;
 import com.example.demo.vuz.services.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class ScheduleController {
@@ -21,7 +18,7 @@ public class ScheduleController {
     }
 
     @PostMapping("/schedule")
-    public void crateSchedule(@RequestBody ScheduleDto scheduleDto){
+    public void createSchedule(@RequestParam ScheduleDto scheduleDto) {
         scheduleService.createSchedule(scheduleDto.getDayOfWeek(), scheduleDto.getFrom(), scheduleDto.getTo(), scheduleDto.getGroupId(),
                 scheduleDto.getSubject(), scheduleDto.getTeacherId(), scheduleDto.getClassroomId());
     }
