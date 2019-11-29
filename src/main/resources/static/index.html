@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+</head>
+<body>
+
+<h1>The  Object</h1>
+
+<button type="button" onclick="loadDoc()">Request data</button>
+<!--<button type="button" onclick="postData('localhost:8080/demo', 'aksjd')">Request data</button>-->
+<script>
+    function loadDoc() {
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {};
+        xhr.open('POST', 'http://localhost:8080/demo');
+        xhr.send("NikiSS")
+    }
+</script>
+
+<script>
+    'use strict';
+    function postData(url, string) {
+        // Значения по умолчанию обозначены знаком *
+        return fetch(url, {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, cors, *same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'text/plain',
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            redirect: 'follow', // manual, *follow, error
+            referrer: 'no-referrer', // no-referrer, *client
+            body: string, // тип данных в body должен соответвовать значению заголовка "Content-Type"
+        })
+    }
+</script>
+</body>
+</html>

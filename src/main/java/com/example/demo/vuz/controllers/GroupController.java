@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("")
+@RequestMapping
 public class GroupController {
 
     private final DemoApplication.InMemoryStorage inMemoryStorage;
@@ -86,7 +86,7 @@ public class GroupController {
 //        groupService.removeGroup(groupId);
 //    }
 
-    @PatchMapping
+    @PatchMapping("/changeInGroupsOfTheDepartments")
     public void changeGroupV2(@RequestBody GroupDto groupDto){
         groupService.changeToGroup(groupDto.getGroupsIds(), groupDto.getDepartmentId());
     }
@@ -98,7 +98,6 @@ public class GroupController {
                             @RequestParam("depId") int depId){
         groupService.changeToGroup(groupsIds, depId);
     }*/
-
 
 
 
