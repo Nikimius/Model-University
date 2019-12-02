@@ -1,15 +1,18 @@
 package com.example.demo.vuz.dto;
 
+import java.util.List;
+
 public class ScheduleDto {
 
     private int dayOfWeek;
     private String from;
     private String to;
     private int subject;
+    private int classroomId;
     private int groupId;
     private int teacherId;
-    private int classroomId;
     private int scheduleId;
+    private List<Integer> scheduleIds;
 
     public ScheduleDto() {
     }
@@ -76,5 +79,13 @@ public class ScheduleDto {
 
     public void setScheduleId(int scheduleId) {
         this.scheduleId = scheduleId;
+    }
+
+    public List<Integer> getScheduleIds() {
+        return scheduleIds;
+    }
+
+    public void setScheduleIds(List<Integer> scheduleIds) {
+        this.scheduleIds = scheduleIds;
     }
 }

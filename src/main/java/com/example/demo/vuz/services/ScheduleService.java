@@ -12,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Map;
+
 @Service
 @Transactional
 public class ScheduleService {
@@ -29,63 +32,71 @@ public class ScheduleService {
         this.classroomRepository = classroomRepository;
     }
 
-    public void createSchedule(int dayOfWeek, String from, String to,int groupId, int subject, int teacherId, int classroomId) {
+    public void createSchedule(int dayOfWeek, String from, String to, int groupId, int subject, int teacherId, int classroomId) {
         Schedule newSchedule = new Schedule();
-        newSchedule.setDay(Schedule.transformOfWeek(dayOfWeek));
+        newSchedule.setDay(Schedule.transformDayOfWeek(dayOfWeek));
         newSchedule.setFrom(from);
         newSchedule.setTo(to);
         newSchedule.setSubject(Schedule.transformSubject(subject));
 
-        Groups group = groupeRepository.findById(groupId).orElseThrow(()-> new IllegalArgumentException("Not found group"));
+        Groups group = groupeRepository.findById(groupId).orElseThrow(() -> new IllegalArgumentException("Not found group"));
         newSchedule.setGroup(group);
 
-        Teacher teacher = teacherRepository.findById(teacherId).orElseThrow(()-> new IllegalArgumentException("Not found teacher"));
+        Teacher teacher = teacherRepository.findById(teacherId).orElseThrow(() -> new IllegalArgumentException("Not found teacher"));
         newSchedule.setTeacher(teacher);
 
-        Classroom classroom = classroomRepository.findById(classroomId).orElseThrow(()-> new IllegalArgumentException("Not found classroom"));
+        Classroom classroom = classroomRepository.findById(classroomId).orElseThrow(() -> new IllegalArgumentException("Not found classroom"));
         newSchedule.setClassroom(classroom);
 
         scheduleRepository.save(newSchedule);
     }
 
+    public void changeSchedule(Map<String, String> dto) {
+        if (dto.containsKey("scheduleId")) {
+            Integer scheduleId = Integer.parseInt(dto.get("scheduleId"));
+            Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(() -> new IllegalArgumentException("Not found schedule"));
 
-    public void changeDayOfWeek(int scheduleId, int dayOfWeek){
-        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(()-> new IllegalArgumentException("Not found schedule"));
-        schedule.setDay(Schedule.transformOfWeek(dayOfWeek));
+            if (dto.containsKey("dayOfWeek")) {
+                schedule.setDay(Schedule.transformDayOfWeek(Integer.parseInt(dto.get("dayOfWeek"))));
+            }
+
+            if (dto.containsKey("groupId")) {
+                int groupId = Integer.parseInt(dto.get("groupId"));
+                Groups group = groupeRepository.findById(groupId).orElseThrow(() -> new IllegalArgumentException("Not found group"));
+                schedule.setGroup(group);
+            }
+
+            if (dto.containsKey("subject")) {
+                schedule.setSubject(Schedule.transformSubject(Integer.parseInt(dto.get("subject"))));
+            }
+
+            if (dto.containsKey("teacherId")) {
+                int teacherId = Integer.parseInt(dto.get("teacherId"));
+                Teacher teacher = teacherRepository.findById(teacherId).orElseThrow(() -> new IllegalArgumentException("Not found teacher"));
+                schedule.setTeacher(teacher);
+            }
+
+            if (dto.containsKey("classroomId")) {
+                int classroomId = Integer.parseInt(dto.get("classroomId"));
+                Classroom classroom = classroomRepository.findById(classroomId).orElseThrow(() -> new IllegalArgumentException("Not found classroom"));
+                schedule.setClassroom(classroom);
+            }
+
+            if(dto.containsKey("from")){
+                schedule.setFrom(dto.get("from"));
+            }
+
+            if(dto.containsKey("to")){
+                schedule.setTo(dto.get("to"));
+            }
+
+            scheduleRepository.save(schedule);
+        } else System.out.println("Not found schedule");
     }
 
-    public void changeFrom(int scheduleId, String from){
-        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(()-> new IllegalArgumentException("Not found schedule"));
-        schedule.setFrom(from);
-    }
 
-    public void changeTo(int scheduleId, String to) {
-        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(() -> new IllegalArgumentException("Not found schedule"));
-        schedule.setFrom(to);
+    public void deleteScheduleById(List<Integer> scheduleIds) {
+        scheduleRepository.deleteAllByIdIn(scheduleIds);
     }
-
-    public void changeGroupId(int scheduleId, int groupId){
-        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(()-> new IllegalArgumentException("Not found schedule"));
-        Groups group = groupeRepository.findById(groupId).orElseThrow(()-> new IllegalArgumentException("Not found group"));
-        schedule.setGroup(group);
-    }
-
-    public void changeSubject(int scheduleId, int subject){
-        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(()-> new IllegalArgumentException("Not found schedule"));
-        schedule.setSubject(Schedule.transformSubject(subject));
-    }
-
-    public void changeTeacherId(int scheduleId, int teacherId){
-        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(()-> new IllegalArgumentException("Not found schedule"));
-        Teacher teacher = teacherRepository.findById(teacherId).orElseThrow(()-> new IllegalArgumentException("Not found teacher"));
-        schedule.setTeacher(teacher);
-    }
-
-    public void changeClassroomId(int scheduleId, int classroomId){
-        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(()-> new IllegalArgumentException("Not found schedule"));
-        Classroom classroom = classroomRepository.findById(classroomId).orElseThrow(()-> new IllegalArgumentException("Not found classroom"));
-        schedule.setClassroom(classroom);
-    }
-
 
 }

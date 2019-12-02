@@ -53,14 +53,14 @@ public class Schedule {
 
 
 
-    public static DayOfWeek transformOfWeek(int asd) {
+    public static DayOfWeek transformDayOfWeek(int asd) {
         switch (asd) {
-            case 0 : return DayOfWeek.MONDAY;
-            case 1: return DayOfWeek.TUESDAY;
-            case 2: return DayOfWeek.WEDNESDAY;
-            case 3: return DayOfWeek.THURSDAY;
-            case 4: return DayOfWeek.FRIDAY;
-            case 5: return DayOfWeek.SATURDAY;
+            case 1 : return DayOfWeek.MONDAY;
+            case 2: return DayOfWeek.TUESDAY;
+            case 3: return DayOfWeek.WEDNESDAY;
+            case 4: return DayOfWeek.THURSDAY;
+            case 5: return DayOfWeek.FRIDAY;
+            case 6: return DayOfWeek.SATURDAY;
 
         }
         return null;
@@ -68,11 +68,11 @@ public class Schedule {
 
     public static Subject transformSubject(int asd) {
         switch (asd) {
-            case 0 : return Subject.MATHS;
-            case 1: return Subject.PHYSICS;
-            case 2: return Subject.COMPUTER_SCIENCE;
-            case 3: return Subject.HOCKEY;
-            case 4: return Subject.FOOTBALL;
+            case 1 : return Subject.MATHS;
+            case 2: return Subject.PHYSICS;
+            case 3: return Subject.COMPUTER_SCIENCE;
+            case 4: return Subject.HOCKEY;
+            case 5: return Subject.FOOTBALL;
         }
         return null;
     }
