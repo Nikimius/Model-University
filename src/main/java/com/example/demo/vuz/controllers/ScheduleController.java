@@ -6,6 +6,8 @@ import com.example.demo.vuz.services.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 public class ScheduleController {
 
@@ -18,12 +20,25 @@ public class ScheduleController {
     }
 
     @PostMapping("/schedule")
-    public void createSchedule(@RequestParam ScheduleDto scheduleDto) {
+    public void createSchedule(@RequestBody ScheduleDto scheduleDto) {
         scheduleService.createSchedule(scheduleDto.getDayOfWeek(), scheduleDto.getFrom(), scheduleDto.getTo(), scheduleDto.getGroupId(),
                 scheduleDto.getSubject(), scheduleDto.getTeacherId(), scheduleDto.getClassroomId());
     }
 
-    @PatchMapping("/schedule/dayOfWeek")
+    @DeleteMapping("/schedule")
+    public void deleteSchedule(@RequestBody ScheduleDto scheduleDto){
+        scheduleService.deleteScheduleById(scheduleDto.getScheduleIds());
+    }
+
+
+    @PatchMapping("/schedule")
+    public void changeSchedule(@RequestBody Map<String, String> objDto){
+        scheduleService.changeSchedule(objDto);
+    }
+
+
+
+    /*@PatchMapping("/schedule/dayOfWeek")
     public void changeDayOfWeekSchedule(@RequestBody ScheduleDto scheduleDto){
         scheduleService.changeDayOfWeek(scheduleDto.getScheduleId(), scheduleDto.getDayOfWeek());
     }
@@ -56,8 +71,7 @@ public class ScheduleController {
     @PatchMapping("/schedule/classroom")
     public void changeClassroomSchedule(@RequestBody ScheduleDto scheduleDto){
         scheduleService.changeClassroomId(scheduleDto.getScheduleId(), scheduleDto.getClassroomId());
-    }
-
+    }*/
 
 
 }
