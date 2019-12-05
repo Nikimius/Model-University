@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -29,12 +30,33 @@ public class ClassroomService {
         classroomRepository.save(newClassroom);
     }
 
-    public void removeRoomClass(List<Integer> classroomsIds){
+    /*public void removeRoomClass(List<Integer> classroomsIds){
         List<Classroom> classrooms = classroomRepository.findAllById(classroomsIds);
         classrooms.forEach(classroom -> classroomRepository.delete(classroom));
+    }*/
+
+    public void removeRoomClass(List<Integer> classroomsIds) {
+        classroomRepository.deleteAllByIdIn(classroomsIds);
     }
 
-    public void changeMaxSize(int classroomId, int newMaxSize){
+    public void changeClassroom(Map<String, Integer> dto) {
+        if (dto.containsKey("classroomId")){
+            int classroomId = dto.get("classroomId");
+            Classroom classroom = classroomRepository.findById(classroomId).orElseThrow(() -> new IllegalArgumentException("Not found classroom"));
+
+            if (dto.containsKey("numberClassroom")) {
+                classroom.setNumberClassroom(dto.get("numberClassroom"));
+            }
+
+            if (dto.containsKey("maxSize")) {
+                classroom.setMaxSize(dto.get("maxSize"));
+            }
+
+            classroomRepository.save(classroom);
+        } else System.out.println("Not found classroom");
+    }
+
+    /*public void changeMaxSize(int classroomId, int newMaxSize){
         Classroom classroom = classroomRepository.findById(classroomId).orElseThrow(()-> new IllegalArgumentException("Not found classroom"));
         classroom.setMaxSize(newMaxSize);
 
@@ -46,5 +68,5 @@ public class ClassroomService {
         classroom.setNumberClassroom(numberClassroom);
 
         classroomRepository.save(classroom);
-    }
+    }*/
 }

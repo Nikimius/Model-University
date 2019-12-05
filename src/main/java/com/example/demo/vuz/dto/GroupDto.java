@@ -9,8 +9,9 @@ public class GroupDto {
     private String name;
     private List<Integer> studentsIds;
     private List<Integer> groupsIds;
-    private int groupsId;
+    private int groupId;
     private int departmentId;
+    private int maxSize;
 
 
 
@@ -49,12 +50,20 @@ public class GroupDto {
         this.departmentId = departmentId;
     }
 
-    public int getGroupsId() {
-        return groupsId;
+    public int getGroupId() {
+        return groupId;
     }
 
-    public void setGroupsId(int groupsId) {
-        this.groupsId = groupsId;
+    public void setGroupId(int groupId) {
+        this.groupId = groupId;
 
+    }
+
+    public int getMaxSize() {
+        return maxSize;
+    }
+
+    public void setMaxSize(int maxSize) {
+        this.maxSize = maxSize;
     }
 }

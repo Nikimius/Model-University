@@ -1,68 +1,73 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8"/>
-        <link href="styles.css" rel="stylesheet">
-    </head>
+<head>
+    <meta charset="UTF-8"/>
+    <link href="styles.css" rel="stylesheet">
+</head>
 
-    <body>
-        <h1>The  Object</h1>
-        <form action="" >
-            <div>
-                <label for="dayOfWeek">Day of weak</label>
-                <input class="block" id="dayOfWeek" type="number" name="dayOfWeek" value="1" step="1" min="1" max="6" required>
-            </div>
-            <div>
-                <label for="from">From</label>
-                <input id="from" type="time" name="from" value="08:00" min="08:00" max="18:00" required>
-            </div>
+<body>
+<h1>The Object</h1>
+<form action="">
+    <div>
+        <label for="dayOfWeek">Day of weak</label>
+        <input class="block" id="dayOfWeek" type="number" name="dayOfWeek" value="1" step="1" min="1" max="6" required>
+    </div>
+    <div>
+        <label for="from">From</label>
+        <input id="from" type="time" name="from" value="08:00" min="08:00" max="18:00" required>
+    </div>
 
-            <div>
-                <label for="to">To</label>
-                <input id="to" type="time" name="to" value="09:45" min="09:45" max="19:45" required>
-            </div>
+    <div>
+        <label for="to">To</label>
+        <input id="to" type="time" name="to" value="09:45" min="09:45" max="19:45" required>
+    </div>
 
-            <div>
-                <label class="subj" for="subject">Subject</label>
-                <input class="block" id="subject" type="number" name="subject" value="1" step="1" min="1" max="5" required>
-            </div>
+    <div>
+        <label class="subj" for="subject">Subject</label>
+        <input class="block" id="subject" type="number" name="subject" value="1" step="1" min="1" max="5" required>
+    </div>
 
-            <div>
-                <label for="classroomId">Classroom</label>
-                <input class="block" id="classroomId" type="number" name="classroomId" value="1" min="1" required>
-            </div>
+    <div>
+        <label for="classroomId">Classroom</label>
+        <input class="block" id="classroomId" type="number" name="classroomId" value="1" min="1" required>
+    </div>
 
-            <div>
-                <label for="groupId">Group_id</label>
-                <input class="block" id="groupId" type="number" name="groupId" value="1" min="1" required>
-            </div>
+    <div>
+        <label for="groupId">Group_id</label>
+        <input class="block" id="groupId" type="number" name="groupId" value="1" min="1" required>
+    </div>
 
-            <div>
-                <label for="teacherId">Teacher_id</label>
-                <input class="block" id="teacherId" type="number" name="teacherId" value="1" min="1" required>
-            </div>
+    <div>
+        <label for="teacherId">Teacher_id</label>
+        <input class="block" id="teacherId" type="number" name="teacherId" value="1" min="1" required>
+    </div>
 
-            <button type="button" onclick="loadDoc()">Request data</button>
-            <script>
-                function loadDoc() {
-                    var body = {
-                        dayOfWeek: document.getElementById("dayOfWeek").value,
-                        from: document.getElementById("from").value,
-                        to: document.getElementById("to").value,
-                        subject: document.getElementById("subject").value,
-                        classroomId: document.getElementById("classroomId").value,
-                        groupId: document.getElementById("groupId").value,
-                        teacherId: document.getElementById("teacherId").value,
-                    };
-                    var xhr = new XMLHttpRequest();
-                    xhr.onreadystatechange = function () {
-                    };
-                    xhr.open('POST', 'http://localhost:8080/schedule');
-                    xhr.setRequestHeader('Content-Type', 'application/json');
-                    let object = JSON.stringify(body);
-                    xhr.send(object)
+    <button type="button" onclick="loadDoc()">Request data</button>
+    <script>
+        function loadDoc() {
+            let body = {
+                dayOfWeek: document.getElementById("dayOfWeek").value,
+                from: document.getElementById("from").value,
+                to: document.getElementById("to").value,
+                subject: document.getElementById("subject").value,
+                classroomId: document.getElementById("classroomId").value,
+                groupId: document.getElementById("groupId").value,
+                teacherId: document.getElementById("teacherId").value,
+            };
+            let xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (this.status != 200) {
+                    // обработать ошибку
+                    alert( 'Ошибка: ' + (this.status ? this.statusText : 'запрос не удался, проверьте корректность ввода Classroom') );
+                    return;
                 }
-            </script>
-        </form>
-    </body>
+            };
+            xhr.open('POST', 'http://localhost:8080/schedule');
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            let object = JSON.stringify(body);
+            xhr.send(object)
+        }
+    </script>
+</form>
+</body>
 </html>

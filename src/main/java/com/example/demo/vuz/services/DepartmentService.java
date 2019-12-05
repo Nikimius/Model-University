@@ -60,6 +60,13 @@ public class DepartmentService {
         departmentRepository.delete(department);
     }
 
-
+    public void addGroupInDepartment(List<Integer> groupsIds, int departmentId) {
+        List<Groups> groups = groupeRepository.findAllById(groupsIds);
+        Department department = departmentRepository.findById(departmentId).orElseThrow(()-> new IllegalArgumentException("Not found department"));
+        groups.forEach(group-> {
+            group.setDepartment(department);
+            groupeRepository.save(group);
+        });
+    }
 
 }

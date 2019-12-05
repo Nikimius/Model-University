@@ -2,9 +2,52 @@ package Builder;
 
 public class Main {
     public static void main(String[] args) {
-        SportCar sportCar = new SportCar.Builder("Audi").setColor("green").build();
-        System.out.println(sportCar.getName());
-        System.out.println(sportCar.getColor());
-        System.out.println(sportCar.getMaxSpeed());
+        Person person = new PersonBuilderImpl().setName("Sergei").setAge(23).build();
+        person.print();
+    }
+}
+
+class Person {
+    String name;
+    int age;
+    double salary;
+    public void print(){
+        System.out.println(name + " " + age + " " + salary);
+    }
+}
+
+interface PersonBuilder {
+    PersonBuilder setName(String name);
+
+    PersonBuilder setAge(int age);
+
+    PersonBuilder setSalary(double salary);
+
+    Person build();
+}
+
+class PersonBuilderImpl implements PersonBuilder {
+    Person person = new Person();
+
+    @Override
+    public PersonBuilder setName(String name) {
+        person.name = name;
+        return this;
+    }
+
+    @Override
+    public PersonBuilder setAge(int age) {
+        person.age = age;
+        return this;
+    }
+
+    @Override
+    public PersonBuilder setSalary(double salary) {
+        person.salary = salary;
+        return this;
+    }
+
+    public Person build() {
+        return person;
     }
 }

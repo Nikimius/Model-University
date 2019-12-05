@@ -41,7 +41,12 @@ public class GroupController {
 
     @PatchMapping("/group")
     public void addStudent(@RequestBody GroupDto groupDto){
-        groupService.addStudentsInGroups(groupDto.getGroupsId(), groupDto.getStudentsIds());
+        groupService.addStudentsInGroups(groupDto.getGroupId(), groupDto.getStudentsIds());
+    }
+
+    @PatchMapping("/groups/maxSize")
+    public void changeMaxSizeByGroup(@RequestBody GroupDto groupDto){
+        groupService.changeMaxSizeByGroup(groupDto.getGroupId(), groupDto.getMaxSize());
     }
 
 

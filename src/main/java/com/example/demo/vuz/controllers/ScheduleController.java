@@ -36,6 +36,11 @@ public class ScheduleController {
         scheduleService.changeSchedule(objDto);
     }
 
+    @PostMapping("/schedule/generate")
+    public void generateSchedule(@RequestBody ScheduleDto scheduleDto){
+        scheduleService.generateSchedule(scheduleDto.isStart());
+    }
+
 
 
     /*@PatchMapping("/schedule/dayOfWeek")
