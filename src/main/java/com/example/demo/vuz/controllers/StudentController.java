@@ -55,17 +55,17 @@ public class StudentController {
     }
 
 
+    @PostMapping("/students")
+    public void createStudentV2(@RequestBody StudentDto studentDto) {
+        studentService.createStudents(studentDto.getFn(), studentDto.getLn());
+    }
+
 
     /*@PostMapping("/students")
     @Transactional
     public void createStudent(@RequestParam("fn") String fn, @RequestParam("ln") String ln) {
         studentService.createStudents(fn, ln);
     }*/
-
-    @PostMapping("/students")
-    public void createStudentV2(@RequestBody StudentDto studentDto) {
-        studentService.createStudents(studentDto.getFn(), studentDto.getLn());
-    }
 
 
     @GetMapping("/students")

@@ -27,7 +27,7 @@ public class Groups {
     @JoinColumn(name = "department_id")
     private Department department;
 
-    private int MAX_SIZE = 10;
+    private int maxSize = 10;
 
     @OneToMany(mappedBy = "group")
     private List<Schedule> schedules = new ArrayList<>();
@@ -41,7 +41,7 @@ public class Groups {
     public void addStudentInGroup(Student student) {
         int count = getStudentList().size();
         //getStudentList().add(new Student());
-        if (MAX_SIZE > count) {
+        if (maxSize > count) {
             student.setGroup(this);
             count++;
         } else {
@@ -51,7 +51,7 @@ public class Groups {
 
     public void addNewStudent(Student student){
         int count = 0;
-        if (MAX_SIZE > count) {
+        if (maxSize > count) {
             student.setGroup(this);
             count++;
         } else {
@@ -113,9 +113,15 @@ public class Groups {
         this.name = name;
     }
 
+    public int getMaxSize() {
+        return maxSize;
+    }
 
+    public void setMaxSize(int maxSize) {
+        this.maxSize = maxSize;
+    }
 
-    /*public void addStudent(Student student){
+/*public void addStudent(Student student){
         students.add(student);
     }*/
 

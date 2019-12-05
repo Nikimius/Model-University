@@ -13,6 +13,7 @@ public class ScheduleDto {
     private int teacherId;
     private int scheduleId;
     private List<Integer> scheduleIds;
+    boolean start;
 
     public ScheduleDto() {
     }
@@ -87,5 +88,13 @@ public class ScheduleDto {
 
     public void setScheduleIds(List<Integer> scheduleIds) {
         this.scheduleIds = scheduleIds;
+    }
+
+    public boolean isStart() {
+        return start;
+    }
+
+    public void setStart(boolean start) {
+        this.start = start;
     }
 }

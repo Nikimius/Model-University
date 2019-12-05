@@ -5,6 +5,8 @@ import com.example.demo.vuz.dto.ClassroomDto;
 import com.example.demo.vuz.services.ClassroomService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 public class ClassroomController {
 
@@ -24,7 +26,12 @@ public class ClassroomController {
         classroomService.removeRoomClass(classroomDto.getClassroomsIds());
     }
 
-    @PatchMapping("/classroom/maxSize")
+    @PatchMapping("/classrooms")
+    public void changeClassroom(@RequestBody Map<String, Integer> objDto){
+        classroomService.changeClassroom(objDto);
+    }
+
+    /*@PatchMapping("/classroom/maxSize")
     public void changeMaxSizeClassroom(@RequestBody ClassroomDto classroomDto){
         classroomService.changeMaxSize(classroomDto.getClassroomId(), classroomDto.getMaxSize());
     }
@@ -33,6 +40,5 @@ public class ClassroomController {
     public void changeNumberClassroom(@RequestBody ClassroomDto classroomDto){
         classroomService.changeNumberClassroom(classroomDto.getClassroomId(), classroomDto.getNumberClassroom());
     }
-
-
+    }*/
 }

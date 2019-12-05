@@ -67,4 +67,9 @@ public class DepartmentController {
     public void delDepartments(@RequestBody DepartmentDto departmentDto) {
         departmentService.removeDepartment(departmentDto.getDepartmentsIds());
     }
+
+    @PatchMapping("/departments")
+    public void addGroupInDepartment(@RequestBody DepartmentDto departmentDto){
+        departmentService.addGroupInDepartment(departmentDto.getGroupsIds(), departmentDto.getDepartmentId());
+    }
 }

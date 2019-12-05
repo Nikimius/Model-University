@@ -8,6 +8,7 @@ public class DepartmentDto {
     private List<Integer> groupsIds;
     private List<Integer> teachersIds;
     private List<Integer> departmentsIds;
+    private int departmentId;
 
 
     public DepartmentDto() {
@@ -44,4 +45,13 @@ public class DepartmentDto {
     public void setDepartmentsIds(List<Integer> departmentsIds) {
         this.departmentsIds = departmentsIds;
     }
+
+    public int getDepartmentId() {
+        return departmentId;
+    }
+
+    public void setDepartmentId(int departmentId) {
+        this.departmentId = departmentId;
+    }
 }
+

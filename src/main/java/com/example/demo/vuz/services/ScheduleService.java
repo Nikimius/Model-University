@@ -12,8 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 @Service
 @Transactional
@@ -82,11 +84,11 @@ public class ScheduleService {
                 schedule.setClassroom(classroom);
             }
 
-            if(dto.containsKey("from")){
+            if (dto.containsKey("from")) {
                 schedule.setFrom(dto.get("from"));
             }
 
-            if(dto.containsKey("to")){
+            if (dto.containsKey("to")) {
                 schedule.setTo(dto.get("to"));
             }
 
@@ -97,6 +99,56 @@ public class ScheduleService {
 
     public void deleteScheduleById(List<Integer> scheduleIds) {
         scheduleRepository.deleteAllByIdIn(scheduleIds);
+    }
+
+    //only correct IDs of parameters schedule!!!
+
+    public void generateSchedule(boolean param) {
+        if (param) {
+            List<Integer> listSubjects = new ArrayList<>();
+            List<Integer> listGroup = new ArrayList<>();
+            List<Integer> listTeacher = new ArrayList<>();
+            List<Integer> listClassroom = new ArrayList<>();
+            for (int i = 1; i <= 5; i++) {
+
+                Schedule schedule = new Schedule();
+                schedule.setDay(Schedule.transformDayOfWeek(1));
+                schedule.setFrom("8:00");
+                schedule.setTo("9:45");
+
+                int randomSubject = new Random().nextInt(5) + 1;
+                schedule.setSubject(Schedule.transformSubject(validRandomNum(randomSubject, listSubjects, 5)));
+                listSubjects.add(randomSubject);
+
+                int randomGroup = new Random().nextInt(6) + 1;
+                Groups group = groupeRepository.findById(validRandomNum(randomGroup, listGroup, 6)).orElseThrow(() -> new IllegalArgumentException("Not found group"));
+                schedule.setGroup(group);
+                listGroup.add(randomGroup);
+
+                int randomTeacher = new Random().nextInt(11) + 1;
+                Teacher teacher = teacherRepository.findById(validRandomNum(randomTeacher, listTeacher, 11)).orElseThrow(() -> new IllegalArgumentException("Not found teacher"));
+                schedule.setTeacher(teacher);
+                listTeacher.add(randomTeacher);
+
+                int randomClassroom = new Random().nextInt(7) + 1;
+                Classroom classroom = classroomRepository.findById(validRandomNum(randomClassroom, listClassroom, 7)).orElseThrow(() -> new IllegalArgumentException("Not found classroom"));
+                schedule.setClassroom(classroom);
+                listClassroom.add(randomClassroom);
+
+                scheduleRepository.save(schedule);
+
+            }
+        }
+    }
+
+    public int validRandomNum(int randomNum, List<Integer> listSubjects, int max) {
+        if (!listSubjects.contains(randomNum)) {
+            return randomNum;
+        } else {
+            randomNum = new Random().nextInt(max) + 1;
+            validRandomNum(randomNum, listSubjects, max);
+            return randomNum;
+        }
     }
 
 }

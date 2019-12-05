@@ -86,8 +86,8 @@ public class GroupService {
         List<Student> students = studentRepository.findAllById(studentsIds);
         Groups group = groupeRepository.findById(groupId).orElseThrow(() -> new IllegalArgumentException("Group not found"));
         students.forEach(student -> {
-                group.addStudentInGroup(student);
-                studentRepository.save(student);
+            group.addStudentInGroup(student);
+            studentRepository.save(student);
         });
     }
 
@@ -127,5 +127,12 @@ public class GroupService {
                 .orElseThrow(() -> new IllegalArgumentException("Department not found"))));
         groups.forEach(group -> groupeRepository.save(group));
     }
+
+    public void changeMaxSizeByGroup(int groupId, int maxSize) {
+        Groups group = groupeRepository.findById(groupId).orElseThrow(() -> new IllegalArgumentException("Not found group"));
+        group.setMaxSize(maxSize);
+        groupeRepository.save(group);
+    }
+
 
 }
