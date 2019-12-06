@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/faculties")
@@ -30,7 +31,23 @@ public class FacultyController {
         this.facultyService = facultyService;
     }
 
-    @GetMapping("/")
+    @PostMapping()
+    public Faculty createFaculty(@RequestBody FacultyDto facultyDto) {
+        return facultyService.createFaculty(facultyDto.getName(), facultyDto.getWebSite(), facultyDto.getDepartmentsIds());
+    }
+
+    @PatchMapping("/{id}")
+    public Faculty updateFaculty(@PathVariable int id, @RequestBody Map<String, Object> objFaculty) {
+        return facultyService.updateFaculty(id, objFaculty);
+    }
+
+    @DeleteMapping("/{Ids}")
+    public void delFaculty(@PathVariable List<Integer> Ids) {
+        facultyService.deleteFacultiesByIdIn(Ids);
+    }
+
+
+    @GetMapping()
     public List<Faculty> getListFaculty() {
         return facultyRepository.findAll();
     }
@@ -40,20 +57,8 @@ public class FacultyController {
         return inMemoryStorage.getFacultyById(facultyId);
     }
 
-
     @GetMapping("/{facultyId}/departments")
     public List<Department> getListDepartment(@PathVariable(name = "facultyId") int facultyId) {
         return inMemoryStorage.getFacultyById(facultyId).getDepartmentList();
-
-    }
-
-    @PostMapping("/faculties")
-    public void createFaculty(@RequestBody FacultyDto facultyDto) {
-        facultyService.createFaculty(facultyDto.getName(), facultyDto.getWebSite(), facultyDto.getDepartmentsIds());
-    }
-
-    @DeleteMapping("/faculty")
-    public void delFaculty(@RequestBody FacultyDto facultyDto) {
-        facultyService.removeFaculty(facultyDto.getFacultyListIds());
     }
 }

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/departments")
 public class DepartmentController {
 
     private final DemoApplication.InMemoryStorage inMemoryStorage;
@@ -33,40 +34,40 @@ public class DepartmentController {
         this.departmentService = departmentService;
     }
 
-    @GetMapping("departments")
+    @PostMapping()
+    public Department createDepartments(@RequestBody DepartmentDto departmentDto) {
+        return departmentService.createDepartment(departmentDto.getName(), departmentDto.getGroupsIds(),
+                departmentDto.getTeachersIds());
+    }
+
+    @DeleteMapping()
+    public void delDepartments(@RequestBody DepartmentDto departmentDto) {
+        departmentService.deleteDepartmentsByIdIn(departmentDto.getDepartmentsIds());
+    }
+
+    @PatchMapping("/{id}")
+    public Department addGroupInDepartment(@PathVariable int id, @RequestBody DepartmentDto departmentDto) {
+        return departmentService.addGroupInDepartment(departmentDto.getGroupsIds(), id);
+    }
+
+    @GetMapping()
     public List<Department> getListDepartment() {
         return departmentRepository.findAll();
     }
 
     //    Смысла нет, так как просто выделяет из всего множества
-    @GetMapping("departments/{departmentId}")
+    @GetMapping("/{departmentId}")
     public Department getDepartment(@PathVariable(name = "departmentId") int departmentId) {
         return inMemoryStorage.getDepartmentById(departmentId);
     }
 
-    @GetMapping("departments/{departmentId}/groups")
+    @GetMapping("/{departmentId}/groups")
     public List<Groups> getGroup(@PathVariable(name = "departmentId") int departmentId) {
         return inMemoryStorage.getDepartmentById(departmentId).getGroupList();
     }
 
-    @GetMapping("departments/{departmentId}/teachers")
+    @GetMapping("/{departmentId}/teachers")
     public List<Teacher> getTeacher(@PathVariable(name = "departmentId") int departmentId) {
         return inMemoryStorage.getDepartmentById(departmentId).getTeacherList();
-    }
-
-    @PostMapping("/departments")
-    public void createDepartments(@RequestBody DepartmentDto departmentDto) {
-        departmentService.createDep(departmentDto.getName(), departmentDto.getGroupsIds(),
-                departmentDto.getTeachersIds());
-    }
-
-    @DeleteMapping("/departments")
-    public void delDepartments(@RequestBody DepartmentDto departmentDto) {
-        departmentService.removeDepartment(departmentDto.getDepartmentsIds());
-    }
-
-    @PatchMapping("/departments")
-    public void addGroupInDepartment(@RequestBody DepartmentDto departmentDto) {
-        departmentService.addGroupInDepartment(departmentDto.getGroupsIds(), departmentDto.getDepartmentId());
     }
 }

@@ -1,5 +1,7 @@
 package com.example.demo.vuz.dto;
 
+import java.util.Objects;
+
 // TODO - a value class like this one, should ALWAYS have hashCode() and equals(), and a toString()
 public class DemoDto {
 
@@ -68,5 +70,37 @@ public class DemoDto {
 
     public void setTeacherId(int teacherId) {
         this.teacherId = teacherId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof DemoDto)) return false;
+        DemoDto demoDto = (DemoDto) o;
+        return dayOfWeek == demoDto.dayOfWeek &&
+                subject == demoDto.subject &&
+                classroomId == demoDto.classroomId &&
+                groupId == demoDto.groupId &&
+                teacherId == demoDto.teacherId &&
+                Objects.equals(from, demoDto.from) &&
+                Objects.equals(to, demoDto.to);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(dayOfWeek, from, to, subject, classroomId, groupId, teacherId);
+    }
+
+    @Override
+    public String toString() {
+        return "DemoDto{" +
+                "dayOfWeek=" + dayOfWeek +
+                ", from='" + from + '\'' +
+                ", to='" + to + '\'' +
+                ", subject=" + subject +
+                ", classroomId=" + classroomId +
+                ", groupId=" + groupId +
+                ", teacherId=" + teacherId +
+                '}';
     }
 }

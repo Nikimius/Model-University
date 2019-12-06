@@ -1,6 +1,7 @@
 package com.example.demo.vuz.model;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 enum DayOfWeek {
     MONDAY,
@@ -11,13 +12,13 @@ enum DayOfWeek {
     SATURDAY
 }
 
-enum Subject {
+/*enum Subject {
     MATHS,
     PHYSICS,
     COMPUTER_SCIENCE,
     HOCKEY,
     FOOTBALL
-}
+}*/
 
 @Entity
 @Table
@@ -36,7 +37,8 @@ public class Schedule {
     @Column(name = "end")
     private String to;
 
-    @Column(name = "subject")
+    @ManyToOne(cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "subject")
     private Subject subject;
 
     @ManyToOne(cascade = CascadeType.REFRESH)
@@ -73,7 +75,7 @@ public class Schedule {
         return null;
     }
 
-    public static Subject transformSubject(int asd) {
+    /*public static Subject transformSubject(int asd) {
         switch (asd) {
             case 1:
                 return Subject.MATHS;
@@ -87,7 +89,7 @@ public class Schedule {
                 return Subject.FOOTBALL;
         }
         return null;
-    }
+    }*/
 
     public int getId() {
         return id;
@@ -121,14 +123,6 @@ public class Schedule {
         this.classroom = classroom;
     }
 
-    public Subject getSubject() {
-        return subject;
-    }
-
-    public void setSubject(Subject subject) {
-        this.subject = subject;
-    }
-
     public DayOfWeek getDay() {
         return day;
     }
@@ -151,5 +145,47 @@ public class Schedule {
 
     public void setTo(String to) {
         this.to = to;
+    }
+
+    public Subject getSubject() {
+        return subject;
+    }
+
+    public void setSubject(Subject subject) {
+        this.subject = subject;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Schedule)) return false;
+        Schedule schedule = (Schedule) o;
+        return id == schedule.id &&
+                day == schedule.day &&
+                Objects.equals(from, schedule.from) &&
+                Objects.equals(to, schedule.to) &&
+                Objects.equals(subject, schedule.subject) &&
+                Objects.equals(group, schedule.group) &&
+                Objects.equals(teacher, schedule.teacher) &&
+                Objects.equals(classroom, schedule.classroom);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, day, from, to, subject, group, teacher, classroom);
+    }
+
+    @Override
+    public String toString() {
+        return "Schedule{" +
+                "id=" + id +
+                ", day=" + day +
+                ", from='" + from + '\'' +
+                ", to='" + to + '\'' +
+                ", subject=" + subject +
+                ", group=" + group +
+                ", teacher=" + teacher +
+                ", classroom=" + classroom +
+                '}';
     }
 }

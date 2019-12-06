@@ -2,12 +2,14 @@ package com.example.demo.vuz.controllers;
 
 
 import com.example.demo.vuz.dto.ClassroomDto;
+import com.example.demo.vuz.model.Classroom;
 import com.example.demo.vuz.services.ClassroomService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
 @RestController
+@RequestMapping("/classrooms")
 public class ClassroomController {
 
     private final ClassroomService classroomService;
@@ -16,29 +18,18 @@ public class ClassroomController {
         this.classroomService = classroomService;
     }
 
-    @PostMapping("/classrooms")
-    public void creatClassroom(@RequestBody ClassroomDto classroomDto) {
-        classroomService.createRoomClass(classroomDto.getNumberClassroom(), classroomDto.getMaxSize());
+    @PostMapping()
+    public Classroom creatClassroom(@RequestBody ClassroomDto classroomDto) {
+        return classroomService.createRoomClass(classroomDto.getNumberClassroom(), classroomDto.getMaxSize());
     }
 
-    @DeleteMapping("/classrooms")
-    public void removeClassroom(@RequestBody ClassroomDto classroomDto) {
-        classroomService.removeRoomClass(classroomDto.getClassroomsIds());
+    @DeleteMapping()
+    public void deleteClassroom(@RequestBody ClassroomDto classroomDto) {
+        classroomService.deleteClassroomsByIdIn(classroomDto.getClassroomsIds());
     }
 
-    @PatchMapping("/classrooms")
-    public void changeClassroom(@RequestBody Map<String, Integer> objDto) {
-        classroomService.changeClassroom(objDto);
+    @PatchMapping("/{id}")
+    public Classroom updateClassroom(@PathVariable int id, @RequestBody Map<String, Integer> objDto) {
+        return classroomService.updateClassroom(id, objDto);
     }
-
-    /*@PatchMapping("/classroom/maxSize")
-    public void changeMaxSizeClassroom(@RequestBody ClassroomDto classroomDto){
-        classroomService.changeMaxSize(classroomDto.getClassroomId(), classroomDto.getMaxSize());
-    }
-
-    @PatchMapping("/classroom/numberClassroom")
-    public void changeNumberClassroom(@RequestBody ClassroomDto classroomDto){
-        classroomService.changeNumberClassroom(classroomDto.getClassroomId(), classroomDto.getNumberClassroom());
-    }
-    }*/
 }

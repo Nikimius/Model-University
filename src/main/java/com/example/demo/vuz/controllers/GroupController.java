@@ -10,10 +10,10 @@ import com.example.demo.vuz.services.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Map;
 
 @RestController
-@RequestMapping
+@RequestMapping("/groups")
 public class GroupController {
 
     private final DemoApplication.InMemoryStorage inMemoryStorage;
@@ -33,79 +33,34 @@ public class GroupController {
         this.groupService = groupService;
     }
 
-    @PostMapping("/group")
-    public void createGroupV2(@RequestBody GroupDto groupDto) {
-        groupService.createNewGroup(groupDto.getName(), groupDto.getStudentsIds());
+    @PostMapping()
+    public Groups createGroupV2(@RequestBody GroupDto groupDto) {
+        return  groupService.createGroup(groupDto.getName(), groupDto.getStudentsIds(), groupDto.getSubjectsIds());
     }
 
-    @PatchMapping("/group")
-    public void addStudent(@RequestBody GroupDto groupDto) {
-        groupService.addStudentsInGroups(groupDto.getGroupId(), groupDto.getStudentsIds());
+    @PatchMapping("/{id}")
+    public Groups updateGroup(@PathVariable int id, @RequestBody Map<String, Object> groupDto) {
+        return groupService.updateGroup(id, groupDto);
     }
 
-    @PatchMapping("/groups/maxSize")
-    public void changeMaxSizeByGroup(@RequestBody GroupDto groupDto) {
-        groupService.changeMaxSizeByGroup(groupDto.getGroupId(), groupDto.getMaxSize());
+    @DeleteMapping()
+    public void deleteGroup(@RequestBody GroupDto groupDto) {
+        groupService.deleteGroupsByIdIn(groupDto.getGroupsIds());
     }
 
-    /*@PostMapping("/group")
-    @Transactional
-    public void createGroup(@RequestParam("nameGroup") String name,
-                            @RequestParam(value = "studentList", required = false) List<Integer> studentsIds) {
-        groupService.createNewGroup(name, studentsIds);
+    // /groups
+    // /groups?s=12143891729
+    /*@GetMapping("/groups")
+    public List<Groups> getListGroup(@RequestParam(required = false) Long since) {
+
+        if (since != null) {
+            groupeRepository.findAllSince(since);
+        } else {
+            groupeRepository.findAll();
+        }
     }*/
 
-    // Данный функционал выполняет фукнция studentChangeGroup in StudentService
-    /*@PostMapping("/groups/addStudent")
-    @Transactional
-    public void assignStudentToGroup(@RequestParam("GroupId") int groupId,
-                           @RequestParam("studentList") List<Integer> studentsIds) throws Exception {
-        Group group = groupeRepository.findById(groupId).orElseThrow(() -> new Exception("dada"));
-        List<Student> students = studentRepository.findAllById(studentsIds);
-        students.forEach(student -> student.setGroup(group));
-       // group.setStudentList(students);
-        groupeRepository.save(group);
-    }*/
-    @DeleteMapping("/groups")
-    public void delGroupsV2(@RequestBody GroupDto groupDto) {
-        /*Удалит так же и всех студентов
-        groupService.delGroups(groupDto.getGroupsIds());*/
-        groupService.removeGroups(groupDto.getGroupsIds());
-        //groupeRepository.deleteAllByIdIn(groupDto.getGroupsIds());
-    }
-
-    /*@PostMapping("/delGroups")
-    @Transactional
-    public void delGroups(@RequestParam("groupListIds") List<Integer> groupsIds){
-        groupService.removeGroups(groupsIds);
-    }
-*/
-    //To delete one group
-
-//    @PostMapping("/delGroup")
-//    @Transactional
-//    public void delGroup(@RequestParam("groupId") int groupId){
-//        groupService.removeGroup(groupId);
-//    }
-
-    @PatchMapping("/changeInGroupsOfTheDepartments")
-    public void changeGroupV2(@RequestBody GroupDto groupDto) {
-        groupService.changeToGroup(groupDto.getGroupsIds(), groupDto.getDepartmentId());
-    }
-
-    /*@PostMapping
-    @Transactional
-    public void changeGroup(@RequestParam("groupListIds") List<Integer> groupsIds,
-                            @RequestParam("depId") int depId){
-        groupService.changeToGroup(groupsIds, depId);
-    }*/
-
-    @GetMapping("/groups")
-    public List<Groups> getListGroup() {
-        return groupeRepository.findAll();
-    }
-
-    @GetMapping("/groups/{groupId}")
+    @GetMapping("/{groupId}")
     public Groups getGroup(@PathVariable(name = "groupId") int groupId) {
         return inMemoryStorage.getGroupById(groupId);
     }

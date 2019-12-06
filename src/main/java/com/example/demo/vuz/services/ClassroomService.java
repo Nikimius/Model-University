@@ -22,54 +22,28 @@ public class ClassroomService {
     }
 
     // TODO RoomClass or classRoom ? stick with one
-    public void createRoomClass(int numberClassroom, int maxSize) {
+    public Classroom createRoomClass(int numberClassroom, int maxSize) {
         Classroom newClassroom = new Classroom();
         newClassroom.setNumberClassroom(numberClassroom);
         newClassroom.setMaxSize(maxSize);
 
-        classroomRepository.save(newClassroom);
+        return classroomRepository.save(newClassroom);
     }
 
-    /*public void removeRoomClass(List<Integer> classroomsIds){
-        List<Classroom> classrooms = classroomRepository.findAllById(classroomsIds);
-        classrooms.forEach(classroom -> classroomRepository.delete(classroom));
-    }*/
-
     // TODO give a better name to the method like: deleteClassRoomsByIdIn...
-    public void removeRoomClass(List<Integer> classroomsIds) {
+    public void deleteClassroomsByIdIn(List<Integer> classroomsIds) {
         classroomRepository.deleteAllByIdIn(classroomsIds);
     }
 
     // TODO update classroom is a better name
-    public void changeClassroom(Map<String, Integer> dto) {
-        if (dto.containsKey("classroomId")) {
-            int classroomId = dto.get("classroomId");
-            Classroom classroom = classroomRepository.findById(classroomId).orElseThrow(() -> new IllegalArgumentException("Not found classroom"));
-
-            if (dto.containsKey("numberClassroom")) {
-                classroom.setNumberClassroom(dto.get("numberClassroom"));
-            }
-
-            if (dto.containsKey("maxSize")) {
-                classroom.setMaxSize(dto.get("maxSize"));
-            }
-
-            classroomRepository.save(classroom);
-        } else System.out.println("Not found classroom");
+    public Classroom updateClassroom(int id, Map<String, Integer> dto) {
+        Classroom classroom = classroomRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Not found classroom"));
+        if (dto.containsKey("numberClassroom")) {
+            classroom.setNumberClassroom(dto.get("numberClassroom"));
+        }
+        if (dto.containsKey("maxSize")) {
+            classroom.setMaxSize(dto.get("maxSize"));
+        }
+        return classroomRepository.save(classroom);
     }
-
-    // TODO remove unused and commented code.. in other places as well
-    /*public void changeMaxSize(int classroomId, int newMaxSize){
-        Classroom classroom = classroomRepository.findById(classroomId).orElseThrow(()-> new IllegalArgumentException("Not found classroom"));
-        classroom.setMaxSize(newMaxSize);
-
-        classroomRepository.save(classroom);
-    }
-
-    public void changeNumberClassroom(int classroomId, int numberClassroom){
-        Classroom classroom = classroomRepository.findById(classroomId).orElseThrow(()-> new IllegalArgumentException("Not found classroom"));
-        classroom.setNumberClassroom(numberClassroom);
-
-        classroomRepository.save(classroom);
-    }*/
 }

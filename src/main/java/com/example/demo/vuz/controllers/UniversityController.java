@@ -3,62 +3,64 @@ package com.example.demo.vuz.controllers;
 import com.example.demo.vuz.DemoApplication;
 import com.example.demo.vuz.dto.UniversityDto;
 import com.example.demo.vuz.model.*;
-import com.example.demo.vuz.repositories.FacultyRepository;
 import com.example.demo.vuz.repositories.UniversityRepository;
 import com.example.demo.vuz.services.UniversityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
-public class UniverController {
+@RequestMapping("/universities")
+public class UniversityController {
 
     private final DemoApplication.InMemoryStorage inMemoryStorage;
     private final UniversityRepository universityRepository;
-    private final FacultyRepository facultyRepository;
     private final UniversityService universityService;
 
     @Autowired
-    public UniverController(DemoApplication.InMemoryStorage inMemoryStorage, UniversityRepository universityRepository, FacultyRepository facultyRepository, UniversityService universityService) {
+    public UniversityController(DemoApplication.InMemoryStorage inMemoryStorage, UniversityRepository universityRepository,
+                                UniversityService universityService) {
         this.inMemoryStorage = inMemoryStorage;
         this.universityRepository = universityRepository;
-        this.facultyRepository = facultyRepository;
         this.universityService = universityService;
     }
 
-    @PostMapping("/universities")
-    public void createUniversities(@RequestBody UniversityDto universityDto) {
-        universityService.createUniversity(
-                universityDto.getName(),
-                universityDto.getWebSite(),
-                universityDto.getCity(),
-                universityDto.getFacultiesIds());
-        universityService.createUniversity(universityDto);
-
+    @PostMapping()
+    public University createUniversities(@RequestBody UniversityDto universityDto) {
+        return universityService.createUniversityDto(universityDto.getName(), universityDto.getWebSite(),
+                universityDto.getCity(), universityDto.getFacultiesIds());
+        //universityService.createUniversityDto(universityDto);
     }
 
-    @DeleteMapping("/universities")
+    @PatchMapping("/{id}")
+    public University updateUniversityById(@PathVariable int id, @RequestBody Map<String, Object> objUniversity){
+        return universityService.updateUniversityById(id, objUniversity);
+    }
+
+    @DeleteMapping()
     public void delUniversities(@RequestBody UniversityDto universityDto) {
-        universityService.removeUniver(universityDto.getUniversitiesIds());
+        universityService.deleteUniversitiesByIdIn(universityDto.getUniversitiesIds());
     }
 
-    @GetMapping("/universities")
+
+    @GetMapping()
     public List<University> getUniversity() {
         return universityRepository.findAll();
     }
 
-    @GetMapping("/universities/{universityId}")
+    @GetMapping("/{universityId}")
     public University getUniversity1(@PathVariable(name = "universityId") int universityId) {
         return inMemoryStorage.getUniversityById(universityId);
     }
 
-    @GetMapping("/universities/{universityId}/faculties")
+    @GetMapping("/{universityId}/faculties")
     public List<Faculty> getListFaculty(@PathVariable(name = "universityId") int universityId) {
         return inMemoryStorage.getUniversityById(universityId).getFacultyList();
     }
 
-    @GetMapping("/universities/{universityId}/faculties/{facultyId}")
+    @GetMapping("/{universityId}/faculties/{facultyId}")
     public Faculty getFaculty(@PathVariable(name = "universityId") int universityId, @PathVariable(name = "facultyId") int facultyId) {
         return inMemoryStorage.getUniversityById(universityId).getFacultyList()
                 .stream()
@@ -67,7 +69,7 @@ public class UniverController {
                 .orElseThrow(() -> new IllegalArgumentException("Faculty not found"));
     }
 
-    @GetMapping("/universities/{universityId}/faculties/{facultyId}/departments")
+    @GetMapping("/{universityId}/faculties/{facultyId}/departments")
     public List<Department> getListDepartment(@PathVariable(name = "universityId") int universityId, @PathVariable(name = "facultyId") int facultyId) {
         return inMemoryStorage.getUniversityById(universityId).getFacultyList()
                 .stream()
@@ -77,7 +79,7 @@ public class UniverController {
                 .getDepartmentList();
     }
 
-    @GetMapping("/universities/{universityId}/faculties/{facultyId}/departments/{departmentId}")
+    @GetMapping("/{universityId}/faculties/{facultyId}/departments/{departmentId}")
     public Department getDepartment(@PathVariable(name = "universityId") int universityId, @PathVariable(name = "facultyId") int facultyId, @PathVariable(name = "departmentId") int departmentId) {
         return inMemoryStorage.getUniversityById(universityId).getFacultyList()
                 .stream()
@@ -91,7 +93,7 @@ public class UniverController {
                 .orElseThrow(() -> new IllegalArgumentException("Department not found"));
     }
 
-    @GetMapping("/universities/{universityId}/faculties/{facultyId}/departments/{departmentId}/teachers")
+    @GetMapping("/{universityId}/faculties/{facultyId}/departments/{departmentId}/teachers")
     public List<Teacher> getListTeacher(@PathVariable(name = "universityId") int universityId, @PathVariable(name = "facultyId") int facultyId, @PathVariable(name = "departmentId") int departmentId) {
         return inMemoryStorage.getUniversityById(universityId).getFacultyList()
                 .stream()
@@ -106,7 +108,7 @@ public class UniverController {
                 .getTeacherList();
     }
 
-    @GetMapping("/universities/{universityId}/faculties/{facultyId}/departments/{departmentId}/teachers/{teacherId}")
+    @GetMapping("/{universityId}/faculties/{facultyId}/departments/{departmentId}/teachers/{teacherId}")
     public Teacher getTeacher(@PathVariable(name = "universityId") int universityId, @PathVariable(name = "facultyId") int facultyId, @PathVariable(name = "departmentId") int departmentId
             , @PathVariable(name = "teacherId") int teacherId) {
         return inMemoryStorage.getUniversityById(universityId).getFacultyList()
@@ -126,7 +128,7 @@ public class UniverController {
                 .orElseThrow(() -> new IllegalArgumentException("Teacher not found"));
     }
 
-    @GetMapping("/universities/{universityId}/faculties/{facultyId}/departments/{departmentId}/groups")
+    @GetMapping("/{universityId}/faculties/{facultyId}/departments/{departmentId}/groups")
     public List<Groups> getListGroup(@PathVariable(name = "universityId") int universityId,
                                      @PathVariable(name = "facultyId") int facultyId,
                                      @PathVariable(name = "departmentId") int departmentId) {
@@ -143,7 +145,7 @@ public class UniverController {
                 .getGroupList();
     }
 
-    @GetMapping("/universities/{universityId}/faculties/{facultyId}/departments/{departmentId}/groups/{groupId}")
+    @GetMapping("/{universityId}/faculties/{facultyId}/departments/{departmentId}/groups/{groupId}")
     public Groups getGroup(@PathVariable(name = "universityId") int universityId,
                            @PathVariable(name = "facultyId") int facultyId,
                            @PathVariable(name = "departmentId") int departmentId,
@@ -165,7 +167,7 @@ public class UniverController {
                 .orElseThrow(() -> new IllegalArgumentException("Group not found"));
     }
 
-//    @GetMapping("/universities/{universityId}/faculties/{facultyId}/departments/{departmentId}/groups/{groupId}/students")
+//    @GetMapping("/{universityId}/faculties/{facultyId}/departments/{departmentId}/groups/{groupId}/students")
 //    public List<Student> getListStudent(@PathVariable(name = "universityId") int universityId, @PathVariable(name = "facultyId") int facultyId, @PathVariable(name = "departmentId") int departmentId
 //            , @PathVariable(name = "groupId") int groupId) {
 //        return inMemoryStorage.getUniversityById(universityId).getFacultyList()
@@ -186,7 +188,7 @@ public class UniverController {
 //                .getStudentList();
 //    }
 
-//    @GetMapping("/universities/{universityId}/faculties/{facultyId}/departments/{departmentId}/groups/{groupId}/students/{studentId}")
+//    @GetMapping("/{universityId}/faculties/{facultyId}/departments/{departmentId}/groups/{groupId}/students/{studentId}")
 //    public Student getStudent(@PathVariable(name = "universityId") int universityId, @PathVariable(name = "facultyId") int facultyId, @PathVariable(name = "departmentId") int departmentId
 //            , @PathVariable(name = "groupId") int groupId, @PathVariable(name = "studentId") int studentId) {
 //        return inMemoryStorage.getUniversityById(universityId).getFacultyList()

@@ -1,6 +1,7 @@
 package com.example.demo.vuz.dto;
 
 import java.util.List;
+import java.util.Objects;
 
 // TODO - a value class like this one, should ALWAYS have hashCode() and equals(), and a toString()
 public class TeacherDto {
@@ -43,5 +44,39 @@ public class TeacherDto {
 
     public void setDepartment(int departmentTeacher) {
         this.departmentTeacher = departmentTeacher;
+    }
+
+    public int getDepartmentTeacher() {
+        return departmentTeacher;
+    }
+
+    public void setDepartmentTeacher(int departmentTeacher) {
+        this.departmentTeacher = departmentTeacher;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TeacherDto)) return false;
+        TeacherDto that = (TeacherDto) o;
+        return departmentTeacher == that.departmentTeacher &&
+                Objects.equals(firstName, that.firstName) &&
+                Objects.equals(lastName, that.lastName) &&
+                Objects.equals(teachersIds, that.teachersIds);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(firstName, lastName, teachersIds, departmentTeacher);
+    }
+
+    @Override
+    public String toString() {
+        return "TeacherDto{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", teachersIds=" + teachersIds +
+                ", departmentTeacher=" + departmentTeacher +
+                '}';
     }
 }

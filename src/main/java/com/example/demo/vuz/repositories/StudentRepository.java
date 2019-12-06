@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface StudentRepository extends JpaRepository<Student, Integer> {
+
     void deleteAllByIdIn(List<Integer> studentsIds);
 
     Optional<Student> findByLastName(String lastName);

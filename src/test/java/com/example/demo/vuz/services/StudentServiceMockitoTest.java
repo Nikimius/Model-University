@@ -2,7 +2,6 @@ package com.example.demo.vuz.services;
 
 import com.example.demo.vuz.model.Groups;
 import com.example.demo.vuz.model.Student;
-import com.example.demo.vuz.repositories.GroupeRepository;
 import com.example.demo.vuz.repositories.StudentRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,9 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.verify;
@@ -22,9 +19,9 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class StudentServiceMockitoTest {
 
-    private final List<Integer> list1 = Collections.unmodifiableList(Collections.singletonList(1));
+    private final List<Integer> studentsIds = Collections.unmodifiableList(Collections.singletonList(1));
+    private final int studentId = 1;
     private final Student student = new Student();
-    private final int idGroup = 24;
     private final Groups group = new Groups();
 
     @InjectMocks
@@ -33,9 +30,6 @@ public class StudentServiceMockitoTest {
     @Mock
     private StudentRepository studentRepository;
 
-    @Mock
-    private GroupeRepository groupeRepository;
-
     @Before
     public void setUp() {
         student.setGroup(new Groups());
@@ -43,18 +37,19 @@ public class StudentServiceMockitoTest {
 
     @Test
     public void testRemoveStudentsFromGroup() {
-        when(studentRepository.findAllById(list1)).thenReturn(Collections.singletonList(student));
-        assertNotNull(student.getGroup());
+        when(studentRepository.findAllById(studentsIds)).thenReturn(Collections.singletonList(student));
+        List<Student>  students = studentRepository.findAllById(studentsIds);
+        students.forEach(studentTest -> assertNotNull(studentTest.getGroup()));
 
-        studentService.removeStudentsFromGroup(list1);
-        assertNull(student.getGroup());
+        studentService.deleteStudentsFromGroup(studentsIds);
+        students.forEach(studentTest -> assertNull(studentTest.getGroup()));
 
         verify(studentRepository).save(student);
     }
 
     @Test
     public void testCreateStudents() {
-        Student student1 = studentService.createStudents("Sergey", "Savinov");
+        Student student1 = studentService.createStudent("Sergey", "Savinov");
         assertEquals("Sergey", student1.getFirstName());
         assertEquals("Savinov", student1.getLastName());
 
@@ -63,21 +58,26 @@ public class StudentServiceMockitoTest {
 
     @Test
     public void testStudentChangeGroup() {
-        when(studentRepository.findAllById(list1)).thenReturn(Collections.singletonList(student));
-        assertNotNull(student.getGroup());
+        when(studentRepository.findById(studentId)).thenReturn(Optional.of(student));
+        student.setFirstName("Sergey");
 
-        when(groupeRepository.findById(idGroup)).thenReturn(Optional.of(group));
-        studentService.studentChangeGroup(list1, idGroup);
-        assertEquals(group, student.getGroup());
+        Student studentTest = studentRepository.findById(studentId).orElseThrow(()-> new IllegalArgumentException("Student not found"));
+        Map<String, String> dto = new HashMap<>();
+        dto.put("firstName", "Alexandr");
+        studentService.updateStudentById(studentId, dto);
+        assertNotEquals("Sergey", studentTest.getFirstName());
 
-        verify(studentRepository).save(student);
+        verify(studentRepository).save(studentTest);
     }
 
     @Test
     public void testRemoveStudent() {
-        studentService.removeStudent(list1);
-        verify(studentRepository).deleteAllByIdIn(list1);
+        when(studentRepository.findAllById(studentsIds)).thenReturn(Collections.singletonList(student));
+        List<Student>  students = studentRepository.findAllById(studentsIds);
+        assertNotNull(students);
+
+        studentService.deleteStudentsById(studentsIds);
+        //assertEquals(Collections.emptyList(), students);
+        verify(studentRepository).deleteAllByIdIn(studentsIds);
     }
-
-
 }

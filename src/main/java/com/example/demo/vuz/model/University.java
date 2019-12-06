@@ -2,8 +2,9 @@ package com.example.demo.vuz.model;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
-// TODO Entities SHOULD ALSO have hashCode() and equals()...
+// TODO Entities SHOULD ALSO have hashCode() and equals()...Abra Kidabra!
 @Entity
 public class University {
     @Id
@@ -11,7 +12,7 @@ public class University {
     private int id;
 
     // TODO it should be unique
-    @Column(name = "name")
+    @Column(name = "name", unique = true)
     private String name;
 
     @Column(name = "web_site")
@@ -73,6 +74,23 @@ public class University {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof University)) return false;
+        University that = (University) o;
+        return id == that.id &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(webSite, that.webSite) &&
+                Objects.equals(City, that.City) &&
+                Objects.equals(facultyList, that.facultyList);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, webSite, City, facultyList);
     }
 
     @Override

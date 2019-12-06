@@ -30,6 +30,7 @@ public class StudentServiceTest {
     @Autowired
     private GroupeRepository groupeRepository;
 
+
     //по сути проверка save()
     @Test
     public void createGivenStudent_whenSave_thenGetOk() {
@@ -45,7 +46,7 @@ public class StudentServiceTest {
         Student student = new Student("Sergei", "Savinov", 23, 123465);
         Student savedStudent = studentRepository.save(student);
 
-        studentService.removeStudent(Arrays.asList(savedStudent.getId()));
+        studentService.deleteStudentsById(Arrays.asList(savedStudent.getId()));
 
         assertEquals(Arrays.asList(), studentRepository.findAllById(Arrays.asList(savedStudent.getId())));
     }
@@ -58,7 +59,7 @@ public class StudentServiceTest {
         groupeRepository.save(group);
         Student savedStudent = studentRepository.save(student);
 
-        studentService.removeStudentsFromGroup(Arrays.asList(savedStudent.getId()));
+        studentService.deleteStudentsFromGroup(Arrays.asList(savedStudent.getId()));
         assertNull(savedStudent.getGroup());
         //assertEquals(savedStudent, studentRepository.findByLastName("Savinov").get());
     }

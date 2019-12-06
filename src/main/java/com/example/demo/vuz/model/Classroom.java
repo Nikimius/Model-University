@@ -1,16 +1,15 @@
 package com.example.demo.vuz.model;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 // TODO Entities SHOULD ALSO have hashCode() and equals()...
 @Entity
-public class Classroom {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
+public class Classroom extends Domain {
 
     @Column(name = "number_classroom")
     private int numberClassroom;
@@ -23,14 +22,6 @@ public class Classroom {
     private List<Schedule> scheduleList = new ArrayList<>();
 
     public Classroom() {
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public int getNumberClassroom() {
@@ -47,5 +38,37 @@ public class Classroom {
 
     public void setMaxSize(int maxSize) {
         this.maxSize = maxSize;
+    }
+
+    public List<Schedule> getScheduleList() {
+        return scheduleList;
+    }
+
+    public void setScheduleList(List<Schedule> scheduleList) {
+        this.scheduleList = scheduleList;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Classroom)) return false;
+        Classroom classroom = (Classroom) o;
+        return numberClassroom == classroom.numberClassroom &&
+                maxSize == classroom.maxSize &&
+                Objects.equals(scheduleList, classroom.scheduleList);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(numberClassroom, maxSize, scheduleList);
+    }
+
+    @Override
+    public String toString() {
+        return "Classroom{" +
+                ", numberClassroom=" + numberClassroom +
+                ", maxSize=" + maxSize +
+                ", scheduleList=" + scheduleList +
+                '}';
     }
 }

@@ -19,14 +19,14 @@ public class DemoApplication {
 
     // mocking
     @Component
-    public class InMemoryStorage implements CommandLineRunner {
+    public static class InMemoryStorage implements CommandLineRunner {
 
-        public List<University> universityList = new ArrayList<>();
-        public List<Faculty> facultyList = new ArrayList<>();
-        public List<Department> departmentList = new ArrayList<>();
-        public List<Groups> groupList = new ArrayList<>();
-        public List<Teacher> teacherList = new ArrayList<>();
-        public List<Student> studentList = new ArrayList<>();
+        private List<University> universityList = new ArrayList<>();
+        private List<Faculty> facultyList = new ArrayList<>();
+        private List<Department> departmentList = new ArrayList<>();
+        private List<Groups> groupList = new ArrayList<>();
+        private List<Teacher> teacherList = new ArrayList<>();
+        private List<Student> studentList = new ArrayList<>();
 
         public University getUniversityById(int id) {
             return universityList
@@ -72,46 +72,29 @@ public class DemoApplication {
         }
 
         void initFacultyStorage() {
-            facultyList.add(new Faculty(1, 1 * 24 + "name" + 1, 1 * 24 + "facul/" + 24 + ".com", departmentList.subList(0, 2)));
-            facultyList.add(new Faculty(2, 2 * 24 + "name" + 1, 2 * 24 + "facul/" + 24 + ".com", departmentList.subList(2, 4)));
-            facultyList.add(new Faculty(3, 3 * 24 + "name" + 1, 3 * 24 + "facul/" + 24 + ".com", departmentList.subList(4, 6)));
-            facultyList.add(new Faculty(4, 4 * 24 + "name" + 1, 4 * 24 + "facul/" + 24 + ".com", departmentList.subList(6, 8)));
-            facultyList.add(new Faculty(5, 5 * 24 + "name" + 1, 5 * 24 + "facul/" + 24 + ".com", departmentList.subList(8, 10)));
-            facultyList.add(new Faculty(6, 6 * 24 + "name" + 1, 6 * 24 + "facul/" + 24 + ".com", departmentList.subList(10, 12)));
-
-            /*for (int i = 1; i <= 12; i=i+2) {
-				facultyList.add(new Faculty(i, i * 24 + "name" + 1, i * 24 + "facul/" + 24 + ".com", departmentList.subList(i-1,i+1)));
-			}*/
-
+            facultyList.add(new Faculty(1 * 24 + "name" + 1, 1 * 24 + "facul/" + 24 + ".com", departmentList.subList(0, 2)));
+            facultyList.add(new Faculty( 2 * 24 + "name" + 1, 2 * 24 + "facul/" + 24 + ".com", departmentList.subList(2, 4)));
+            facultyList.add(new Faculty( 3 * 24 + "name" + 1, 3 * 24 + "facul/" + 24 + ".com", departmentList.subList(4, 6)));
+            facultyList.add(new Faculty( 4 * 24 + "name" + 1, 4 * 24 + "facul/" + 24 + ".com", departmentList.subList(6, 8)));
+            facultyList.add(new Faculty( 5 * 24 + "name" + 1, 5 * 24 + "facul/" + 24 + ".com", departmentList.subList(8, 10)));
+            facultyList.add(new Faculty(6 * 24 + "name" + 1, 6 * 24 + "facul/" + 24 + ".com", departmentList.subList(10, 12)));
         }
 
         void initDepartmentStorage() {
-                /*departmentList.add(new Department(1, 1 + "name" + 24, 1 + "245" + 1 * 24, groupList));
-                departmentList.add(new Department(2, 2 + "name" + 24, i + "245" + i * 24, groupList));
-                departmentList.add(new Department(3, 3 + "name" + 24, i + "245" + i * 24, groupList));
-                departmentList.add(new Department(4, 4 + "name" + 24, i + "245" + i * 24, groupList));
-                departmentList.add(new Department(5, 5 + "name" + 24, i + "245" + i * 24, groupList));
-                departmentList.add(new Department(6, 6 + "name" + 24, i + "245" + i * 24, groupList));
-                departmentList.add(new Department(7, 7 + "name" + 24, i + "245" + i * 24, groupList));
-                departmentList.add(new Department(8, 8 + "name" + 24, i + "245" + i * 24, groupList));
-                departmentList.add(new Department(9, 9 + "name" + 24, i + "245" + i * 24, groupList));
-                departmentList.add(new Department(10, 10 + "name" + 24, i + "245" + i * 24, groupList));
-                departmentList.add(new Department(11, 11 + "name" + 24, i + "245" + i * 24, groupList));
-                departmentList.add(new Department(12, 12 + "name" + 24, i + "245" + i * 24, groupList));*/
             for (int i = 1; i <= 24; i = i + 2) {
-                departmentList.add(new Department(i, i + "name" + 24, Math.abs(new Random().nextInt() % 10000000), groupList.subList(i - 1, i + 1), teacherList.subList(i - 1, i + 2)));
+                departmentList.add(new Department("name" + 24, Math.abs(new Random().nextInt() % 10000000), groupList.subList(i - 1, i + 1), teacherList.subList(i - 1, i + 2)));
             }
         }
 
         void initGroupStorage() {
             for (int i = 1; i <= 240; i = i + 10) {
-                groupList.add(new Groups(i, 13 + "-IST-" + i, studentList.subList(i - 1, i + 9)));
+                groupList.add(new Groups(13 + "-IST-" + i, studentList.subList(i - 1, i + 9)));
             }
         }
 
         void initTeacherStorage() {
             for (int i = 1; i <= 36; i++) {
-                teacherList.add(new Teacher(i, "Sergey" + i + "-st/nd/rd/th", "Savinov", 23 + i, i * 24 ^ 9));
+                teacherList.add(new Teacher("Sergey" + i + "-st/nd/rd/th", "Savinov", 23 + i, i * 24 ^ 9));
             }
         }
 

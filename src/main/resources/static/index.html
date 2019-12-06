@@ -58,7 +58,7 @@
             xhr.onreadystatechange = function () {
                 if (this.status != 200) {
                     // обработать ошибку
-                    alert('Ошибка: ' + (this.status ? this.statusText : 'запрос не удался, проверьте корректность ввода Classroom'));
+                    alert('Ошибка: ' + this.status + ' запрос не удался, проверьте корректность ввода Classroom' );
                     return;
                 }
             };

@@ -1,13 +1,8 @@
 package com.example.demo.vuz.services;
 
-import com.example.demo.vuz.model.Classroom;
-import com.example.demo.vuz.model.Groups;
-import com.example.demo.vuz.model.Schedule;
-import com.example.demo.vuz.model.Teacher;
-import com.example.demo.vuz.repositories.ClassroomRepository;
-import com.example.demo.vuz.repositories.GroupeRepository;
-import com.example.demo.vuz.repositories.ScheduleRepository;
-import com.example.demo.vuz.repositories.TeacherRepository;
+import com.example.demo.vuz.dto.ScheduleDto;
+import com.example.demo.vuz.model.*;
+import com.example.demo.vuz.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,25 +20,31 @@ public class ScheduleService {
     private final GroupeRepository groupeRepository;
     private final TeacherRepository teacherRepository;
     private final ClassroomRepository classroomRepository;
+    private final SubjectRepository subjectRepository;
+    private Random randomGenerator = new Random();
 
     @Autowired
-    public ScheduleService(ScheduleRepository scheduleRepository, GroupeRepository groupeRepository, TeacherRepository teacherRepository, ClassroomRepository classroomRepository) {
+    public ScheduleService(ScheduleRepository scheduleRepository, GroupeRepository groupeRepository,
+                           TeacherRepository teacherRepository, ClassroomRepository classroomRepository,
+                           SubjectRepository subjectRepository) {
         this.scheduleRepository = scheduleRepository;
         this.groupeRepository = groupeRepository;
         this.teacherRepository = teacherRepository;
         this.classroomRepository = classroomRepository;
+        this.subjectRepository = subjectRepository;
     }
-
     // TODO - relatively many arguments, think of a design pattern to use in this case.
-    public void createSchedule(int dayOfWeek, String from, String to, int groupId, int subject, int teacherId, int classroomId) {
+    /*public Schedule createSchedule(int dayOfWeek, String from, String to, int groupId, int subjectId, int teacherId, int classroomId) {
         Schedule newSchedule = new Schedule();
         newSchedule.setDay(Schedule.transformDayOfWeek(dayOfWeek));
         newSchedule.setFrom(from);
         newSchedule.setTo(to);
-        newSchedule.setSubject(Schedule.transformSubject(subject));
 
         Groups group = groupeRepository.findById(groupId).orElseThrow(() -> new IllegalArgumentException("Not found group"));
         newSchedule.setGroup(group);
+
+        Subject subject = subjectRepository.findById(subjectId).orElseThrow(()-> new IllegalArgumentException("Not found subject"));
+        newSchedule.setSubject(subject);
 
         Teacher teacher = teacherRepository.findById(teacherId).orElseThrow(() -> new IllegalArgumentException("Not found teacher"));
         newSchedule.setTeacher(teacher);
@@ -51,12 +52,31 @@ public class ScheduleService {
         Classroom classroom = classroomRepository.findById(classroomId).orElseThrow(() -> new IllegalArgumentException("Not found classroom"));
         newSchedule.setClassroom(classroom);
 
-        scheduleRepository.save(newSchedule);
+        return scheduleRepository.save(newSchedule);
+    }*/
+
+    public Schedule createSchedule(ScheduleDto dto) {
+        Schedule newSchedule = new Schedule();
+        newSchedule.setDay(Schedule.transformDayOfWeek(dto.getDayOfWeek()));
+        newSchedule.setFrom(dto.getFrom());
+        newSchedule.setTo(dto.getTo());
+
+        Groups group = groupeRepository.findById(dto.getGroupId()).orElseThrow(() -> new IllegalArgumentException("Not found group"));
+        newSchedule.setGroup(group);
+
+        Subject subject = subjectRepository.findById(dto.getSubjectId()).orElseThrow(()-> new IllegalArgumentException("Not found subject"));
+        newSchedule.setSubject(subject);
+
+        Teacher teacher = teacherRepository.findById(dto.getTeacherId()).orElseThrow(() -> new IllegalArgumentException("Not found teacher"));
+        newSchedule.setTeacher(teacher);
+
+        Classroom classroom = classroomRepository.findById(dto.getClassroomId()).orElseThrow(() -> new IllegalArgumentException("Not found classroom"));
+        newSchedule.setClassroom(classroom);
+
+        return scheduleRepository.save(newSchedule);
     }
 
-    public void changeSchedule(Map<String, String> dto) {
-        if (dto.containsKey("scheduleId")) {
-            Integer scheduleId = Integer.parseInt(dto.get("scheduleId"));
+    public Schedule updateSchedule(int scheduleId, Map<String, String> dto) {
             Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(() -> new IllegalArgumentException("Not found schedule"));
 
             if (dto.containsKey("dayOfWeek")) {
@@ -69,8 +89,10 @@ public class ScheduleService {
                 schedule.setGroup(group);
             }
 
-            if (dto.containsKey("subject")) {
-                schedule.setSubject(Schedule.transformSubject(Integer.parseInt(dto.get("subject"))));
+            if (dto.containsKey("subjectId")) {
+                int subjectId = Integer.parseInt(dto.get("subjectId"));
+                Subject subject = subjectRepository.findById(subjectId).orElseThrow(()-> new IllegalArgumentException("Not found subject"));
+                schedule.setSubject(subject);
             }
 
             if (dto.containsKey("teacherId")) {
@@ -93,8 +115,7 @@ public class ScheduleService {
                 schedule.setTo(dto.get("to"));
             }
 
-            scheduleRepository.save(schedule);
-        } else System.out.println("Not found schedule");
+            return scheduleRepository.save(schedule);
     }
 
     public void deleteScheduleById(List<Integer> scheduleIds) {
@@ -102,29 +123,22 @@ public class ScheduleService {
     }
 
     //only correct IDs of parameters schedule!!!
-    public void generateSchedule(boolean param) {
-        if (param) {
-            for (int i = 1; i <= 5; i++) {
-                if (i == 1) {
-                    generateOneLesson("8:00", "09:45");
-                } else if (i == 2) {
-                    generateOneLesson("10:00", "11:45");
-                } else if (i == 3) {
-                    generateOneLesson("12:00", "13:45");
-                } else if (i == 4) {
-                    generateOneLesson("14:00", "15:45");
-                } else if (i == 5) {
-                    generateOneLesson("16:00", "17:45");
-                }
-            }
-        }
+    public List<Schedule> generateSchedule() {
+         List<Schedule> scheduleList = new ArrayList<>();
+         generateOneLesson("8:00", "09:45", scheduleList);
+         generateOneLesson("10:00", "11:45", scheduleList);
+         generateOneLesson("12:00", "13:45", scheduleList);
+         generateOneLesson("14:00", "15:45", scheduleList);
+         generateOneLesson("16:00", "17:45", scheduleList);
+         return scheduleList;
     }
 
-    public void generateOneLesson(String from, String to) {
-        List<Integer> listSubjects = new ArrayList<>();
+    public void generateOneLesson(String from, String to, List<Schedule> scheduleList) {
+        List<Integer> subjectsIds = new ArrayList<>();
         List<Integer> listGroup = new ArrayList<>();
-        List<Integer> listTeacher = new ArrayList<>();
+        List<Integer> teachersIds = new ArrayList<>();
         List<Integer> listClassroom = new ArrayList<>();
+
         for (int j = 1; j <= 5; j++) {
 
             Schedule schedule = new Schedule();
@@ -132,22 +146,33 @@ public class ScheduleService {
             schedule.setFrom(from);
             schedule.setTo(to);
 
-            int randomSubject = new Random().nextInt(5) + 1;
-            int newRandomSubject = validRandomNum(randomSubject, listSubjects, 5);
-            schedule.setSubject(Schedule.transformSubject(newRandomSubject));
-            listSubjects.add(newRandomSubject);
-
-            int randomGroup = new Random().nextInt(6) + 1;
+            int randomGroup = randomGenerator.nextInt(6) + 1;
             int newRandomGroup = validRandomNum(randomGroup, listGroup, 6);
             Groups group = groupeRepository.findById(newRandomGroup).orElseThrow(() -> new IllegalArgumentException("Not found group"));
             schedule.setGroup(group);
             listGroup.add(newRandomGroup);
 
-            int randomTeacher = new Random().nextInt(11) + 1;
-            int newRandomTeacher = validRandomNum(randomTeacher, listTeacher, 11);
-            Teacher teacher = teacherRepository.findById(newRandomTeacher).orElseThrow(() -> new IllegalArgumentException("Not found teacher"));
-            schedule.setTeacher(teacher);
-            listTeacher.add(newRandomTeacher);
+            List<Subject> subjectList = group.getListSubjects();
+            /*non-id random, it's index*/
+            int randomIndexSubject = new Random().nextInt(subjectList.size());
+            /*get random subject by group*/
+            Subject subject = subjectList.get(randomIndexSubject);
+            /*get random id's subject*/
+            int randomSubjectId = subject.getId();
+            int newRandomSubject = validRandomNumForSubject(randomSubjectId, subjectsIds, subjectList);
+            schedule.setSubject(subject);
+            subjectsIds.add(newRandomSubject);
+
+            Subject subjectForTeacher = subjectRepository.findById(newRandomSubject).orElseThrow(()-> new IllegalArgumentException("Subject not found"));
+            List<Teacher> teacherList = subjectForTeacher.getTeacherList();
+            int randomIndexTeacher = new Random().nextInt(teacherList.size());
+            Teacher teacher = teacherList.get(randomIndexTeacher);
+            int randomTeacherId = teacher.getId();
+
+            int newRandomTeacher = validRandomIdForTeacherOrSubject(randomTeacherId, teachersIds, teacherList);
+            Teacher teacher123 = teacherRepository.findById(newRandomTeacher).orElseThrow(() -> new IllegalArgumentException("Not found teacher"));
+            schedule.setTeacher(teacher123);
+            teachersIds.add(newRandomTeacher);
 
             int randomClassroom = new Random().nextInt(7) + 1;
             int newRandomClassroom = validRandomNum(randomClassroom, listClassroom, 7);
@@ -155,7 +180,29 @@ public class ScheduleService {
             schedule.setClassroom(classroom);
             listClassroom.add(newRandomClassroom);
 
-            scheduleRepository.save(schedule);
+            Schedule scheduleDB = scheduleRepository.save(schedule);
+            scheduleList.add(scheduleDB);
+        }
+    }
+
+    public int validRandomNumForSubject(int randomId, List<Integer> subjectsIds, List<Subject> subjectList) {
+        if (!subjectsIds.contains(randomId)) {
+            return randomId;
+        } else {
+            int randomIndex = new Random().nextInt(subjectList.size());
+            randomId = subjectList.get(randomIndex).getId();
+            return validRandomNumForSubject(randomId, subjectsIds, subjectList);
+        }
+    }
+
+    // TODO - come up with a better name please :)
+    public int validRandomIdForTeacherOrSubject(int randomId, List<Integer> subjectsIds, List<? extends Domain> teacherList) {
+        if (!subjectsIds.contains(randomId)) {
+            return randomId;
+        } else {
+            int randomIndex = new Random().nextInt(teacherList.size());
+            randomId = teacherList.get(randomIndex).getId();
+            return validRandomIdForTeacherOrSubject(randomId, subjectsIds, teacherList);
         }
     }
 
@@ -167,5 +214,4 @@ public class ScheduleService {
             return validRandomNum(randomNum, listSubjects, max);
         }
     }
-
 }

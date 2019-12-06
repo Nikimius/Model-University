@@ -3,13 +3,11 @@ package com.example.demo.vuz.model;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 // TODO Entities SHOULD ALSO have hashCode() and equals()...
 @Entity
-public class Teacher {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+public class Teacher extends Domain {
 
     @Column(name = "first_name")
     private String firstName;
@@ -30,14 +28,15 @@ public class Teacher {
     @OneToMany(mappedBy = "teacher")
     private List<Schedule> scheduleList = new ArrayList<>();
 
-    /*@ManyToMany(cascade = CascadeType.REFRESH)
-    @JoinTable(name = "Subject"
-            , joinColumns = @JoinColumn(name = "teacher_id")
-            , inverseJoinColumns = @JoinColumn(name = "group_id"))
-    private List<Group> groupList = new ArrayList<>();*/
+    @ManyToMany(cascade = CascadeType.REFRESH)
+    @JoinTable(
+            name = "teachers_subjects",
+            joinColumns = @JoinColumn(name = "teacher_id"),
+            inverseJoinColumns = @JoinColumn(name = "subject_id")
+    )
+    private List<Subject> subjects = new ArrayList<>();
 
-    public Teacher(int id, String firstName, String lastName, int age, int teacherNumber) {
-        this.id = id;
+    public Teacher(String firstName, String lastName, int age, int teacherNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
@@ -53,14 +52,6 @@ public class Teacher {
 
     public void setDepartment(Department departmentTeacher) {
         this.departmentTeacher = departmentTeacher;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getFirstName() {
@@ -101,6 +92,42 @@ public class Teacher {
 
     public void setScheduleList(List<Schedule> scheduleList) {
         this.scheduleList = scheduleList;
+    }
+
+    public List<Subject> getSubjects() {
+        return subjects;
+    }
+
+    public void setSubjects(List<Subject> subjects) {
+        this.subjects = subjects;
+    }
+
+    public Department getDepartmentTeacher() {
+        return departmentTeacher;
+    }
+
+    public void setDepartmentTeacher(Department departmentTeacher) {
+        this.departmentTeacher = departmentTeacher;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Teacher)) return false;
+        if (!super.equals(o)) return false;
+        Teacher teacher = (Teacher) o;
+        return age == teacher.age &&
+                teacherNumber == teacher.teacherNumber &&
+                Objects.equals(firstName, teacher.firstName) &&
+                Objects.equals(lastName, teacher.lastName) &&
+                Objects.equals(departmentTeacher, teacher.departmentTeacher) &&
+                Objects.equals(scheduleList, teacher.scheduleList) &&
+                Objects.equals(subjects, teacher.subjects);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), firstName, lastName, age, teacherNumber, departmentTeacher, scheduleList, subjects);
     }
 
     @Override

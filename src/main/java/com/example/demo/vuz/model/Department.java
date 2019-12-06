@@ -3,13 +3,13 @@ package com.example.demo.vuz.model;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 // TODO Entities SHOULD ALSO have hashCode() and equals()...@Entity
 /*@NamedEntityGraph(name = "AnyName.name", attributeNodes = @NamedAttributeNode("name"))*/
-public class Department {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+@Entity
+@Table(name = "department")
+public class Department extends Domain{
 
     @Column(name = "name")
     private String name;
@@ -30,8 +30,7 @@ public class Department {
     private Faculty faculty;
 
 
-    public Department(int id, String name, int numberTelephone, List<Groups> groupList, List<Teacher> teacherList) {
-        this.id = id;
+    public Department(String name, int numberTelephone, List<Groups> groupList, List<Teacher> teacherList) {
         this.name = name;
         this.numberTelephone = numberTelephone;
         this.groupList = groupList;
@@ -61,14 +60,6 @@ public class Department {
         this.groupList = groupList;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
     }
@@ -85,10 +76,36 @@ public class Department {
         this.numberTelephone = numberTelephone;
     }
 
+    public Faculty getFaculty() {
+        return faculty;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Department)) return false;
+        Department that = (Department) o;
+        return  numberTelephone == that.numberTelephone &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(groupList, that.groupList) &&
+                Objects.equals(teacherList, that.teacherList) &&
+                Objects.equals(faculty, that.faculty);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, numberTelephone, groupList, teacherList, faculty);
+    }
+
     @Override
     public String toString() {
-        return
-                "name - '" + name + '\'' +
-                        ", numberTelephone - '" + numberTelephone;
+        return "Department{" +
+                ", name='" + name + '\'' +
+                ", numberTelephone=" + numberTelephone +
+                ", groupList=" + groupList +
+                ", teacherList=" + teacherList +
+                ", faculty=" + faculty +
+                '}';
     }
 }
+

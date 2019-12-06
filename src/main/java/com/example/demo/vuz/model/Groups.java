@@ -8,17 +8,17 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 // TODO Entities SHOULD ALSO have hashCode() and equals()...
 @Entity
 @Table(name = "groups")
-public class Groups {
+public class Groups extends Domain{
     @Transient
     private final static Logger LOGGER = LoggerFactory.getLogger(GroupService.class.getName());
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @Transient
+    private final static java.util.logging.Logger log = java.util.logging.Logger.getLogger(Groups.class.getName());
 
     @Column(name = "name_Group")
     private String name;
@@ -35,11 +35,19 @@ public class Groups {
     @OneToMany(mappedBy = "group")
     private List<Schedule> schedules = new ArrayList<>();
 
+    @ManyToMany(cascade = CascadeType.REFRESH)
+    @JoinTable(
+            name = "groups_subjects",
+            joinColumns = @JoinColumn(name = "group_id"),
+            inverseJoinColumns = @JoinColumn(name = "subject_id")
+    )
+    private List<Subject> listSubjects = new ArrayList<>();
+
+
     public Groups() {
     }
 
-    public Groups(int id, String name, List<Student> studentList) {
-        this.id = id;
+    public Groups(String name, List<Student> studentList) {
         this.name = name;
         this.studentList = studentList;
     }
@@ -47,13 +55,15 @@ public class Groups {
     // TODO maybe returning a boolean would be more useful ?
     public void addStudentInGroup(Student student) {
         int count = getStudentList().size();
-        //getStudentList().add(new Student());
+
         if (maxSize > count) {
             student.setGroup(this);
-            // TODO is this needed ? count++ ?
-            count++;
+            this.studentList.add(student);
+            //return true;
         } else {
             LOGGER.info("Limit group students");
+            log.info("Limit group students(log)");
+            //return false;
         }
     }
 
@@ -61,21 +71,15 @@ public class Groups {
         int count = 0;
         if (maxSize > count) {
             student.setGroup(this);
-            count++;
         } else {
-            count = 0;
             LOGGER.info("Limit group students");
+            log.info("Limit group students(log)");
         }
     }
 
-    /*public List<Student> getStudentList() {
-         return List.copyOf(studentList);
-    }*/
-
     public List<Student> getStudentList() {
         List<Student> students = List.copyOf(studentList);
-        List<Student> unm = Collections.unmodifiableList(students);
-        return unm;
+        return Collections.unmodifiableList(students);
     }
 
     public void setStudentList(List<Student> studentList) {
@@ -98,14 +102,6 @@ public class Groups {
         this.schedules = schedules;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
     }
@@ -122,9 +118,31 @@ public class Groups {
         this.maxSize = maxSize;
     }
 
-/*public void addStudent(Student student){
-        students.add(student);
-    }*/
+    public List<Subject> getListSubjects() {
+        return listSubjects;
+    }
+
+    public void setListSubjects(List<Subject> listSubjects) {
+        this.listSubjects = listSubjects;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Groups)) return false;
+        Groups groups = (Groups) o;
+        return maxSize == groups.maxSize &&
+                Objects.equals(name, groups.name) &&
+                Objects.equals(studentList, groups.studentList) &&
+                Objects.equals(department, groups.department) &&
+                Objects.equals(schedules, groups.schedules) &&
+                Objects.equals(listSubjects, groups.listSubjects);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, studentList, department, maxSize, schedules, listSubjects);
+    }
 
     @Override
     public String toString() {

@@ -1,6 +1,7 @@
 package com.example.demo.vuz.dto;
 
 import java.util.List;
+import java.util.Objects;
 
 // TODO - a value class like this one, should ALWAYS have hashCode() and equals(), and a toString()
 public class GroupDto {
@@ -11,6 +12,7 @@ public class GroupDto {
     private int groupId;
     private int departmentId;
     private int maxSize;
+    private List<Integer> subjectsIds;
 
     public GroupDto() {
     }
@@ -62,5 +64,45 @@ public class GroupDto {
 
     public void setMaxSize(int maxSize) {
         this.maxSize = maxSize;
+    }
+
+    public List<Integer> getSubjectsIds() {
+        return subjectsIds;
+    }
+
+    public void setSubjectsIds(List<Integer> subjectsIds) {
+        this.subjectsIds = subjectsIds;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof GroupDto)) return false;
+        GroupDto groupDto = (GroupDto) o;
+        return groupId == groupDto.groupId &&
+                departmentId == groupDto.departmentId &&
+                maxSize == groupDto.maxSize &&
+                Objects.equals(name, groupDto.name) &&
+                Objects.equals(studentsIds, groupDto.studentsIds) &&
+                Objects.equals(groupsIds, groupDto.groupsIds) &&
+                Objects.equals(subjectsIds, groupDto.subjectsIds);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, studentsIds, groupsIds, groupId, departmentId, maxSize, subjectsIds);
+    }
+
+    @Override
+    public String toString() {
+        return "GroupDto{" +
+                "name='" + name + '\'' +
+                ", studentsIds=" + studentsIds +
+                ", groupsIds=" + groupsIds +
+                ", groupId=" + groupId +
+                ", departmentId=" + departmentId +
+                ", maxSize=" + maxSize +
+                ", subjectsIds=" + subjectsIds +
+                '}';
     }
 }

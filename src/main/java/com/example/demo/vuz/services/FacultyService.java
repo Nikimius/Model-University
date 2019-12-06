@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -21,7 +22,7 @@ public class FacultyService {
         this.departmentRepository = departmentRepository;
     }
 
-    public void createFaculty(String name, String webSite, List<Integer> departmentsIds) {
+    public Faculty createFaculty(String name, String webSite, List<Integer> departmentsIds) {
         Faculty newFaculty = new Faculty();
         newFaculty.setName(name);
         newFaculty.setWebSite(webSite);
@@ -30,17 +31,35 @@ public class FacultyService {
         departments.forEach(department -> department.setFaculty(newFaculty));
         newFaculty.setDepartmentList(departments);
 
-        facultyRepository.save(newFaculty);
+        return facultyRepository.save(newFaculty);
     }
 
-    public void removeFaculty(List<Integer> facultiesIds) {
+    public Faculty updateFaculty(int facultyId, Map<String, Object> dto) {
+        Faculty faculty = facultyRepository.findById(facultyId).orElseThrow(() -> new IllegalArgumentException("Faculty not found"));
+
+        if (dto.containsKey("name")) {
+            faculty.setName((String) dto.get("name"));
+        }
+
+        if (dto.containsKey("webSite")) {
+            faculty.setWebSite((String) dto.get("webSite"));
+        }
+
+        if (dto.containsKey("departmentsIds")) {
+            @SuppressWarnings("unchecked")
+            List<Integer> departmentsIds = (List<Integer>) dto.get("departmentsIds");
+            List<Department> departments = departmentRepository.findAllById(departmentsIds);
+            departments.forEach(department -> {
+                department.setFaculty(faculty);
+                departmentRepository.save(department);
+            });
+        }
+
+            return facultyRepository.save(faculty);
+    }
+
+    public void deleteFacultiesByIdIn(List<Integer> facultiesIds) {
         List<Faculty> faculties = facultyRepository.findAllById(facultiesIds);
-        faculties.forEach(faculty -> removeFc(faculty));
-    }
-
-    public void removeFc(Faculty faculty) {
-        List<Department> departments = faculty.getDepartmentList();
-        departments.forEach(department -> department.setFaculty(null));
-        facultyRepository.delete(faculty);
+        faculties.forEach(facultyRepository::delete);
     }
 }

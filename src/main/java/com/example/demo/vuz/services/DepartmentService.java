@@ -9,7 +9,6 @@ import com.example.demo.vuz.repositories.TeacherRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -27,7 +26,7 @@ public class DepartmentService {
         this.teacherRepository = teacherRepository;
     }
 
-    public void createDep(String name, List<Integer> groupsIds, List<Integer> teachersIds) {
+    public Department createDepartment(String name, List<Integer> groupsIds, List<Integer> teachersIds) {
         Department newDepartment = new Department();
         newDepartment.setName(name);
         newDepartment.setNumberTelephone(Math.abs(new Random().nextInt() % 10_00_00_00));
@@ -42,28 +41,30 @@ public class DepartmentService {
         teachers.forEach(teacher -> teacher.setDepartment(newDepartment));
         newDepartment.setTeacherList(teachers);
 
-        departmentRepository.save(newDepartment);
+        return departmentRepository.save(newDepartment);
     }
 
-    public void removeDepartment(List<Integer> departmentsIds) {
-        List<Department> departments = Arrays.asList(departmentRepository.findAllByIdIn(departmentsIds));
-        departments.forEach(department -> removeDp(department));
+    public void deleteDepartmentsByIdIn(List<Integer> departmentsIds) {
+        List<Department> departments = departmentRepository.findAllById(departmentsIds);
+        departments.forEach(departmentRepository::delete);
+        //departments.forEach(department -> deleteDepartment(department));
     }
 
-    public void removeDp(Department department) {
+    /*public void deleteDepartment(Department department) {
         List<Groups> groups = department.getGroupList();
         groups.forEach(group -> group.setDepartment(null));
         List<Teacher> teacherList = department.getTeacherList();
         teacherList.forEach(teacher -> teacher.setDepartment(null));
         departmentRepository.delete(department);
-    }
+    }*/
 
-    public void addGroupInDepartment(List<Integer> groupsIds, int departmentId) {
+    public Department addGroupInDepartment(List<Integer> groupsIds, int id) {
+        Department department = departmentRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Not found department"));
         List<Groups> groups = groupeRepository.findAllById(groupsIds);
-        Department department = departmentRepository.findById(departmentId).orElseThrow(() -> new IllegalArgumentException("Not found department"));
         groups.forEach(group -> {
             group.setDepartment(department);
             groupeRepository.save(group);
         });
+        return departmentRepository.save(department);
     }
 }

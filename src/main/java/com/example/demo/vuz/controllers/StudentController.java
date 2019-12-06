@@ -11,8 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
+@RequestMapping("/students")
 public class StudentController {
 
     private final DemoApplication.InMemoryStorage inMemoryStorage;
@@ -27,20 +29,9 @@ public class StudentController {
         this.studentService = studentService;
     }
 
-    @PatchMapping("/studentChangeGroup")
-    public void studentChangeGroup(@RequestBody StudentDto studentDto) {
-        studentService.studentChangeGroup(studentDto.getStudentsIds(), studentDto.getGroupId());
-    }
-
-    /*@PostMapping("/delStudentsFromGroup")
-        @Transactional
-        public void delStudents(@RequestParam("studentListIds") List<Integer> studentsIds) {
-            studentService.removeStudentsFromGroup(studentsIds);
-     }*/
-
     @DeleteMapping("/StudentsFromGroup")
-    public void delStudentsV2(@RequestBody StudentDto studentDto) {
-        studentService.removeStudentsFromGroup(studentDto.getStudentsIds());
+    public void deleteStudentsFromGroup(@RequestBody StudentDto studentDto) {
+        studentService.deleteStudentsFromGroup(studentDto.getStudentsIds());
     }
 
     /*@PostMapping("/removeStudent")
@@ -49,15 +40,21 @@ public class StudentController {
         studentService.removeStudent(studentsIds);
     }*/
 
-    @DeleteMapping("/students")
-    public void removeStudentV2(@RequestBody StudentDto studentDto) {
-        studentService.removeStudent(studentDto.getStudentsIds());
+    @PatchMapping("/{id}")
+    public Student updateStudentById(@PathVariable int id, @RequestBody Map<String, String> objStudent){
+        return studentService.updateStudentById(id, objStudent);
     }
 
-    @PostMapping("/students")
-    public void createStudentV2(@RequestBody StudentDto studentDto) {
-        studentService.createStudents(studentDto.getFn(), studentDto.getLn());
+    @DeleteMapping()
+    public void deleteStudentsById(@RequestBody StudentDto studentDto) {
+        studentService.deleteStudentsById(studentDto.getStudentsIds());
     }
+
+    @PostMapping()
+    public Student createStudentV2(@RequestBody StudentDto studentDto) {
+        return studentService.createStudent(studentDto.getFn(), studentDto.getLn());
+    }
+
 
     /*@PostMapping("/students")
     @Transactional
@@ -65,13 +62,13 @@ public class StudentController {
         studentService.createStudents(fn, ln);
     }*/
 
-    @GetMapping("/students")
+    @GetMapping()
     public List<Student> getListGroup() {
         return studentRepository.findAll();
         //return inMemoryStorage.studentList;
     }
 
-    @GetMapping("/students/{studentId}")
+    @GetMapping("/{studentId}")
     public Student getGroup(@PathVariable(name = "studentId") int studentId) {
         return inMemoryStorage.getStudentById(studentId);
     }
