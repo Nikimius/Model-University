@@ -29,15 +29,11 @@ public class Teacher {
     @OneToMany(mappedBy = "teacher")
     private List<Schedule> scheduleList = new ArrayList<>();
 
-
-
-
     /*@ManyToMany(cascade = CascadeType.REFRESH)
     @JoinTable(name = "Subject"
             , joinColumns = @JoinColumn(name = "teacher_id")
             , inverseJoinColumns = @JoinColumn(name = "group_id"))
     private List<Group> groupList = new ArrayList<>();*/
-
 
     public Teacher(int id, String firstName, String lastName, int age, int teacherNumber) {
         this.id = id;

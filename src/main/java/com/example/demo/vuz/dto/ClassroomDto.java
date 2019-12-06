@@ -9,7 +9,7 @@ public class ClassroomDto {
     private List<Integer> classroomsIds;
     private int classroomId;
 
-    public ClassroomDto(){
+    public ClassroomDto() {
     }
 
     public int getNumberClassroom() {

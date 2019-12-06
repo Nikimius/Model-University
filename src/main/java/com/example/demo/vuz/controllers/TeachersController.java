@@ -8,13 +8,11 @@ import com.example.demo.vuz.services.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 @RestController
 public class TeachersController {
-
 
     private final TeacherRepository teacherRepository;
     private final DemoApplication.InMemoryStorage inMemoryStorage;
@@ -27,20 +25,19 @@ public class TeachersController {
         this.teacherService = teacherService;
     }
 
-
     @GetMapping("/teachers")
-    public List<Teacher> getListTeacher(){
+    public List<Teacher> getListTeacher() {
         return teacherRepository.findAll();
     }
 
     @GetMapping("/teachers/{teacherId}")
-    public Teacher getTeacher(@PathVariable(name = "teacherId") int teacherId){
+    public Teacher getTeacher(@PathVariable(name = "teacherId") int teacherId) {
         return inMemoryStorage.getTeacherById(teacherId);
 
     }
 
     @PostMapping("/teachers")
-    public void createTeacherV2(@RequestBody TeacherDto teacherDto){
+    public void createTeacherV2(@RequestBody TeacherDto teacherDto) {
         teacherService.createTeachers(teacherDto.getFirstName(), teacherDto.getLastName());
     }
 
@@ -50,9 +47,8 @@ public class TeachersController {
         teacherService.createTeachers(firstName, lastName);
     }*/
 
-
     @DeleteMapping("/teachers/all")
-    public void delTeachers(@RequestBody TeacherDto teacherDto){
+    public void delTeachers(@RequestBody TeacherDto teacherDto) {
         teacherService.removeTeachers(teacherDto.getTeachersIds());
     }
 
@@ -65,7 +61,6 @@ public class TeachersController {
     public void delTeachers(@RequestParam("studentListIds") List<Integer> teachersIds){
         teacherService.removeTeachers(teachersIds);
     }*/
-
 
     @PatchMapping("/departmentToTeacher")
     public void changeTeachersDepartments(@RequestBody TeacherDto teacherDto) {
@@ -82,5 +77,4 @@ public class TeachersController {
     public void deleteTeachersFromDepartment(@RequestBody TeacherDto teacherDto) {
         teacherService.removeTeacherFromGroup(teacherDto.getTeachersIds());
     }
-
 }

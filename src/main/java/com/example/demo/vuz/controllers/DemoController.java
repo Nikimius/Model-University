@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class DemoController {
 
     @PostMapping("/demo")
-    public void demoFin(@RequestBody DemoDto demoDto){
+    public void demoFin(@RequestBody DemoDto demoDto) {
         System.out.println("Print day of week " + demoDto.getDayOfWeek());
         System.out.println("Print from " + demoDto.getFrom());
         System.out.println("Print to " + demoDto.getTo());

@@ -5,7 +5,6 @@ import java.util.List;
 
 public class GroupDto {
 
-
     private String name;
     private List<Integer> studentsIds;
     private List<Integer> groupsIds;
@@ -13,10 +12,8 @@ public class GroupDto {
     private int departmentId;
     private int maxSize;
 
-
-
-    public GroupDto() { }
-
+    public GroupDto() {
+    }
 
     public String getName() {
         return name;

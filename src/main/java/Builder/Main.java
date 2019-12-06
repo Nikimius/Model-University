@@ -1,5 +1,15 @@
 package Builder;
 
+interface PersonBuilder {
+    PersonBuilder setName(String name);
+
+    PersonBuilder setAge(int age);
+
+    PersonBuilder setSalary(double salary);
+
+    Person build();
+}
+
 public class Main {
     public static void main(String[] args) {
         Person person = new PersonBuilderImpl().setName("Sergei").setAge(23).build();
@@ -11,19 +21,10 @@ class Person {
     String name;
     int age;
     double salary;
-    public void print(){
+
+    public void print() {
         System.out.println(name + " " + age + " " + salary);
     }
-}
-
-interface PersonBuilder {
-    PersonBuilder setName(String name);
-
-    PersonBuilder setAge(int age);
-
-    PersonBuilder setSalary(double salary);
-
-    Person build();
 }
 
 class PersonBuilderImpl implements PersonBuilder {

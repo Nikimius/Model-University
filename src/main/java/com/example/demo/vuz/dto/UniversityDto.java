@@ -13,7 +13,6 @@ public class UniversityDto {
     public UniversityDto() {
     }
 
-
     public String getName() {
         return name;
     }

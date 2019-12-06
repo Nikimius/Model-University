@@ -2,19 +2,23 @@ package com.example.demo.vuz.model;
 
 import javax.persistence.*;
 import java.util.List;
+
 @Entity
 public class University {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     @Column(name = "name")
     private String name;
+
     @Column(name = "web_site")
     private String webSite;
+
     @Column(name = "city")
     private String City;
 
-    @OneToMany (mappedBy = "university")
+    @OneToMany(mappedBy = "university")
     private List<Faculty> facultyList;
 
     public University(int id, String name, String webSite, String city, List<Faculty> faculties) {
@@ -25,16 +29,16 @@ public class University {
         this.facultyList = faculties;
 
     }
-    public University(){
 
-    }
-
-    public void setFacultyList(List<Faculty> facultyList) {
-        this.facultyList = facultyList;
+    public University() {
     }
 
     public List<Faculty> getFacultyList() {
         return facultyList;
+    }
+
+    public void setFacultyList(List<Faculty> facultyList) {
+        this.facultyList = facultyList;
     }
 
     public String getName() {

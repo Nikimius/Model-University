@@ -21,7 +21,7 @@ public class FacultyService {
         this.departmentRepository = departmentRepository;
     }
 
-    public void createFaculty(String name, String webSite, List<Integer> departmentsIds){
+    public void createFaculty(String name, String webSite, List<Integer> departmentsIds) {
         Faculty newFaculty = new Faculty();
         newFaculty.setName(name);
         newFaculty.setWebSite(webSite);
@@ -33,12 +33,12 @@ public class FacultyService {
         facultyRepository.save(newFaculty);
     }
 
-    public void removeFaculty(List<Integer> facultiesIds){
+    public void removeFaculty(List<Integer> facultiesIds) {
         List<Faculty> faculties = facultyRepository.findAllById(facultiesIds);
         faculties.forEach(faculty -> removeFc(faculty));
     }
 
-    public void removeFc(Faculty faculty){
+    public void removeFc(Faculty faculty) {
         List<Department> departments = faculty.getDepartmentList();
         departments.forEach(department -> department.setFaculty(null));
         facultyRepository.delete(faculty);

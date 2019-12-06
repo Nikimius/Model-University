@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 @RestController
 public class DepartmentController {
 
@@ -31,7 +32,6 @@ public class DepartmentController {
         this.teacherRepository = teacherRepository;
         this.departmentService = departmentService;
     }
-
 
     @GetMapping("departments")
     public List<Department> getListDepartment() {
@@ -54,9 +54,6 @@ public class DepartmentController {
         return inMemoryStorage.getDepartmentById(departmentId).getTeacherList();
     }
 
-
-
-
     @PostMapping("/departments")
     public void createDepartments(@RequestBody DepartmentDto departmentDto) {
         departmentService.createDep(departmentDto.getName(), departmentDto.getGroupsIds(),
@@ -69,7 +66,7 @@ public class DepartmentController {
     }
 
     @PatchMapping("/departments")
-    public void addGroupInDepartment(@RequestBody DepartmentDto departmentDto){
+    public void addGroupInDepartment(@RequestBody DepartmentDto departmentDto) {
         departmentService.addGroupInDepartment(departmentDto.getGroupsIds(), departmentDto.getDepartmentId());
     }
 }

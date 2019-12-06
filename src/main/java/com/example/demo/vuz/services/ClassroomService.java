@@ -14,7 +14,6 @@ import java.util.Map;
 @Transactional
 public class ClassroomService {
 
-
     private final ClassroomRepository classroomRepository;
 
     @Autowired
@@ -40,7 +39,7 @@ public class ClassroomService {
     }
 
     public void changeClassroom(Map<String, Integer> dto) {
-        if (dto.containsKey("classroomId")){
+        if (dto.containsKey("classroomId")) {
             int classroomId = dto.get("classroomId");
             Classroom classroom = classroomRepository.findById(classroomId).orElseThrow(() -> new IllegalArgumentException("Not found classroom"));
 

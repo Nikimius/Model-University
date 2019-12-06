@@ -3,6 +3,7 @@ package com.example.demo.vuz.model;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+
 @Entity
 /*@NamedEntityGraph(name = "AnyName.name", attributeNodes = @NamedAttributeNode("name"))*/
 public class Department {
@@ -37,28 +38,27 @@ public class Department {
         this.teacherList = teacherList;
     }
 
-    public Department(){
-
+    public Department() {
     }
 
     public void setFaculty(Faculty faculty) {
         this.faculty = faculty;
     }
 
-    public void setGroupList(List<Groups> groupList) {
-        this.groupList = groupList;
+    public List<Teacher> getTeacherList() {
+        return teacherList;
     }
 
     public void setTeacherList(List<Teacher> teacherList) {
         this.teacherList = teacherList;
     }
 
-    public List<Teacher> getTeacherList() {
-        return teacherList;
-    }
-
     public List<Groups> getGroupList() {
         return groupList;
+    }
+
+    public void setGroupList(List<Groups> groupList) {
+        this.groupList = groupList;
     }
 
     public int getId() {

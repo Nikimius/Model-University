@@ -24,8 +24,16 @@ public class GroupService {
         this.departmentRepository = departmentRepository;
     }
 
-    class CountWrapper {
-        int count;
+    public void createNewGroup(String name, List<Integer> studentsIds) {
+        Groups newGroup = new Groups();
+        newGroup.setName(name);
+        List<Student> students = studentRepository.findAllById(studentsIds);
+        students.forEach(student -> {
+            newGroup.addNewStudent(student);
+        });
+        newGroup.setStudentList(students);
+
+        groupeRepository.save(newGroup);
     }
 
     //Ухожу от того, чтобы проверка на ограничения были только в одном месте - в модели Group
@@ -50,16 +58,13 @@ public class GroupService {
         groupeRepository.save(newGroup);
     }*/
 
-    public void createNewGroup(String name, List<Integer> studentsIds) {
-        Groups newGroup = new Groups();
-        newGroup.setName(name);
+    public void addStudentsInGroups(int groupId, List<Integer> studentsIds) {
         List<Student> students = studentRepository.findAllById(studentsIds);
+        Groups group = groupeRepository.findById(groupId).orElseThrow(() -> new IllegalArgumentException("Group not found"));
         students.forEach(student -> {
-            newGroup.addNewStudent(student);
+            group.addStudentInGroup(student);
+            studentRepository.save(student);
         });
-        newGroup.setStudentList(students);
-
-        groupeRepository.save(newGroup);
     }
 
     ////Ухожу от того, чтобы проверка на ограничения были только в одном месте - в модели Group
@@ -82,16 +87,6 @@ public class GroupService {
         });
     }*/
 
-    public void addStudentsInGroups(int groupId, List<Integer> studentsIds) {
-        List<Student> students = studentRepository.findAllById(studentsIds);
-        Groups group = groupeRepository.findById(groupId).orElseThrow(() -> new IllegalArgumentException("Group not found"));
-        students.forEach(student -> {
-            group.addStudentInGroup(student);
-            studentRepository.save(student);
-        });
-    }
-
-
     public void removeGroups(List<Integer> groupsIds) {
         List<Groups> groups = groupeRepository.findAllByIdIn(groupsIds);
         groups.forEach(this::removeGr);
@@ -104,7 +99,12 @@ public class GroupService {
         groupeRepository.delete(group);
     }
 
-
+    public void changeToGroup(List<Integer> groupsIds, int depId) {
+        List<Groups> groups = groupeRepository.findAllById(groupsIds);
+        groups.forEach(group -> group.setDepartment(departmentRepository.findById(depId)
+                .orElseThrow(() -> new IllegalArgumentException("Department not found"))));
+        groups.forEach(group -> groupeRepository.save(group));
+    }
 
     /* //удалит всех связанных с группой студентов
     public void delGroups(List<Integer> groupsIds){
@@ -121,18 +121,9 @@ public class GroupService {
 //
 //    }
 
-    public void changeToGroup(List<Integer> groupsIds, int depId) {
-        List<Groups> groups = groupeRepository.findAllById(groupsIds);
-        groups.forEach(group -> group.setDepartment(departmentRepository.findById(depId)
-                .orElseThrow(() -> new IllegalArgumentException("Department not found"))));
-        groups.forEach(group -> groupeRepository.save(group));
-    }
-
     public void changeMaxSizeByGroup(int groupId, int maxSize) {
         Groups group = groupeRepository.findById(groupId).orElseThrow(() -> new IllegalArgumentException("Not found group"));
         group.setMaxSize(maxSize);
         groupeRepository.save(group);
     }
-
-
 }

@@ -22,7 +22,7 @@ public class UniversityService {
         this.facultyRepository = facultyRepository;
     }
 
-    public void createUniversity(String name, String webSite, String city, List<Integer> facultiesIds){
+    public void createUniversity(String name, String webSite, String city, List<Integer> facultiesIds) {
         University newUniversity = new University();
         newUniversity.setName(name);
         newUniversity.setWebSite(webSite);
@@ -35,17 +35,16 @@ public class UniversityService {
         universityRepository.save(newUniversity);
     }
 
-    public void removeUniver(List<Integer> universitiesIds){
+    public void removeUniver(List<Integer> universitiesIds) {
         List<University> universities = universityRepository.findAllById(universitiesIds);
         universities.forEach(university -> delUn(university));
     }
 
-    public void delUn(University university){
+    public void delUn(University university) {
         List<Faculty> faculties = university.getFacultyList();
         faculties.forEach(faculty -> faculty.setUniversity(null));
         universityRepository.delete(university);
     }
-
 
     public void createUniversity(UniversityDto universityDto) {
         University newUniversity = new University();

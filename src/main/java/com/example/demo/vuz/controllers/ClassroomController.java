@@ -27,7 +27,7 @@ public class ClassroomController {
     }
 
     @PatchMapping("/classrooms")
-    public void changeClassroom(@RequestBody Map<String, Integer> objDto){
+    public void changeClassroom(@RequestBody Map<String, Integer> objDto) {
         classroomService.changeClassroom(objDto);
     }
 

@@ -4,6 +4,7 @@ import java.util.List;
 
 public class ScheduleDto {
 
+    boolean start;
     private int dayOfWeek;
     private String from;
     private String to;
@@ -13,7 +14,6 @@ public class ScheduleDto {
     private int teacherId;
     private int scheduleId;
     private List<Integer> scheduleIds;
-    boolean start;
 
     public ScheduleDto() {
     }

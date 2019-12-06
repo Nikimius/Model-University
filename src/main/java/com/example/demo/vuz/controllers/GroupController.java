@@ -1,6 +1,5 @@
 package com.example.demo.vuz.controllers;
 
-
 import com.example.demo.vuz.DemoApplication;
 import com.example.demo.vuz.dto.GroupDto;
 import com.example.demo.vuz.model.Groups;
@@ -40,15 +39,14 @@ public class GroupController {
     }
 
     @PatchMapping("/group")
-    public void addStudent(@RequestBody GroupDto groupDto){
+    public void addStudent(@RequestBody GroupDto groupDto) {
         groupService.addStudentsInGroups(groupDto.getGroupId(), groupDto.getStudentsIds());
     }
 
     @PatchMapping("/groups/maxSize")
-    public void changeMaxSizeByGroup(@RequestBody GroupDto groupDto){
+    public void changeMaxSizeByGroup(@RequestBody GroupDto groupDto) {
         groupService.changeMaxSizeByGroup(groupDto.getGroupId(), groupDto.getMaxSize());
     }
-
 
     /*@PostMapping("/group")
     @Transactional
@@ -56,7 +54,6 @@ public class GroupController {
                             @RequestParam(value = "studentList", required = false) List<Integer> studentsIds) {
         groupService.createNewGroup(name, studentsIds);
     }*/
-
 
     // Данный функционал выполняет фукнция studentChangeGroup in StudentService
     /*@PostMapping("/groups/addStudent")
@@ -70,7 +67,7 @@ public class GroupController {
         groupeRepository.save(group);
     }*/
     @DeleteMapping("/groups")
-    public void delGroupsV2(@RequestBody GroupDto groupDto){
+    public void delGroupsV2(@RequestBody GroupDto groupDto) {
         /*Удалит так же и всех студентов
         groupService.delGroups(groupDto.getGroupsIds());*/
         groupService.removeGroups(groupDto.getGroupsIds());
@@ -92,10 +89,9 @@ public class GroupController {
 //    }
 
     @PatchMapping("/changeInGroupsOfTheDepartments")
-    public void changeGroupV2(@RequestBody GroupDto groupDto){
+    public void changeGroupV2(@RequestBody GroupDto groupDto) {
         groupService.changeToGroup(groupDto.getGroupsIds(), groupDto.getDepartmentId());
     }
-
 
     /*@PostMapping
     @Transactional
@@ -103,8 +99,6 @@ public class GroupController {
                             @RequestParam("depId") int depId){
         groupService.changeToGroup(groupsIds, depId);
     }*/
-
-
 
     @GetMapping("/groups")
     public List<Groups> getListGroup() {

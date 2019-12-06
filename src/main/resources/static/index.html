@@ -10,39 +10,39 @@
 <form action="">
     <div>
         <label for="dayOfWeek">Day of weak</label>
-        <input class="block" id="dayOfWeek" type="number" name="dayOfWeek" value="1" step="1" min="1" max="6" required>
+        <input class="block" id="dayOfWeek" max="6" min="1" name="dayOfWeek" required step="1" type="number" value="1">
     </div>
     <div>
         <label for="from">From</label>
-        <input id="from" type="time" name="from" value="08:00" min="08:00" max="18:00" required>
+        <input id="from" max="18:00" min="08:00" name="from" required type="time" value="08:00">
     </div>
 
     <div>
         <label for="to">To</label>
-        <input id="to" type="time" name="to" value="09:45" min="09:45" max="19:45" required>
+        <input id="to" max="19:45" min="09:45" name="to" required type="time" value="09:45">
     </div>
 
     <div>
         <label class="subj" for="subject">Subject</label>
-        <input class="block" id="subject" type="number" name="subject" value="1" step="1" min="1" max="5" required>
+        <input class="block" id="subject" max="5" min="1" name="subject" required step="1" type="number" value="1">
     </div>
 
     <div>
         <label for="classroomId">Classroom</label>
-        <input class="block" id="classroomId" type="number" name="classroomId" value="1" min="1" required>
+        <input class="block" id="classroomId" min="1" name="classroomId" required type="number" value="1">
     </div>
 
     <div>
         <label for="groupId">Group_id</label>
-        <input class="block" id="groupId" type="number" name="groupId" value="1" min="1" required>
+        <input class="block" id="groupId" min="1" name="groupId" required type="number" value="1">
     </div>
 
     <div>
         <label for="teacherId">Teacher_id</label>
-        <input class="block" id="teacherId" type="number" name="teacherId" value="1" min="1" required>
+        <input class="block" id="teacherId" min="1" name="teacherId" required type="number" value="1">
     </div>
 
-    <button type="button" onclick="loadDoc()">Request data</button>
+    <button onclick="loadDoc()" type="button">Request data</button>
     <script>
         function loadDoc() {
             let body = {
@@ -58,7 +58,7 @@
             xhr.onreadystatechange = function () {
                 if (this.status != 200) {
                     // обработать ошибку
-                    alert( 'Ошибка: ' + (this.status ? this.statusText : 'запрос не удался, проверьте корректность ввода Classroom') );
+                    alert('Ошибка: ' + (this.status ? this.statusText : 'запрос не удался, проверьте корректность ввода Classroom'));
                     return;
                 }
             };
