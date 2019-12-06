@@ -41,23 +41,22 @@ public class StudentService {
     public void studentChangeGroup(List<Integer> studentsIds, int idGroup) {
         List<Student> students = studentRepository.findAllById(studentsIds);
         //count = groupeRepository.findById(idGroup).orElseThrow(()-> new IllegalArgumentException("Group not found")).getStudentList().size();
-        Groups group = groupeRepository.findById(idGroup).orElseThrow(()-> new IllegalArgumentException("Group not found"));
+        Groups group = groupeRepository.findById(idGroup).orElseThrow(() -> new IllegalArgumentException("Group not found"));
         count = group.getStudentList().size();
         students.forEach(student ->
         {
-            if(MAX_SIZE > count) {
+            if (MAX_SIZE > count) {
                 student.setGroup(group);
                 studentRepository.save(student);
                 count++;
-            }
-            else {
+            } else {
                 LOGGER.debug("Limit group is 10 students");
                 throw new IllegalArgumentException("Limit group is 10 students");
             }
         });
     }
 
-    public Student createStudents(String fistName, String lastName){
+    public Student createStudents(String fistName, String lastName) {
         Student newStudent = new Student();
         newStudent.setFirstName(fistName);
         newStudent.setLastName(lastName);
@@ -68,10 +67,9 @@ public class StudentService {
 
     }
 
-    public void removeStudentsFromGroup(List<Integer> stIds){
+    public void removeStudentsFromGroup(List<Integer> stIds) {
         List<Student> students = studentRepository.findAllById(stIds);
         students.forEach(student -> student.setGroup(null));
         students.forEach(student -> studentRepository.save(student));
     }
-
 }

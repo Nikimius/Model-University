@@ -6,7 +6,7 @@
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-        xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org">
 
 <head>
 
@@ -18,42 +18,45 @@
 <body>
 
 
-
-<form action="#" th:action="@{/schedule}" th:object="${scheduleDto}" method="post">
+<form action="#" method="post" th:action="@{/schedule}" th:object="${scheduleDto}">
     <div>
         <label for="dayOfWeek">Day of weak</label>
 
-        <input id="dayOfWeek" type="number" th:field="*{dayOfWeek}" name="dayOfWeek" value="1" step="1" min="0" max="5" required>
+        <input id="dayOfWeek" max="5" min="0" name="dayOfWeek" required step="1" th:field="*{dayOfWeek}" type="number"
+               value="1">
     </div>
 
     <div>
         <label for="from">From</label>
-        <input id="from" type="time" name="from" th:field="*{from}" value="08:00" min="08:00" max="18:00" required>
+        <input id="from" max="18:00" min="08:00" name="from" required th:field="*{from}" type="time" value="08:00">
     </div>
 
     <div>
         <label for="to">To</label>
-        <input id="to" type="time" name="to" th:field="*{to}" value="09:45" min="09:45" max="19:45" required>
+        <input id="to" max="19:45" min="09:45" name="to" required th:field="*{to}" type="time" value="09:45">
     </div>
 
     <div>
         <label class="subj" for="subject">Subject</label>
-        <input id="subject" type="number" name="subject" th:field="*{subject}" value="1" step="1" min="0" max="4" required>
+        <input id="subject" max="4" min="0" name="subject" required step="1" th:field="*{subject}" type="number"
+               value="1">
     </div>
 
     <div>
         <label for="classroomId">Classroom</label>
-        <input class="block" id="classroomId" type="number" name="classroomId" th:field="*{classroomId}" value="1" required>
+        <input class="block" id="classroomId" name="classroomId" required th:field="*{classroomId}" type="number"
+               value="1">
     </div>
 
     <div>
         <label for="groupId">Group_id</label>
-        <input class="block" id="groupId" type="number" name="groupId" th:field="*{groupId}" value="1" required>
+        <input class="block" id="groupId" name="groupId" required th:field="*{groupId}" type="number" value="1">
     </div>
 
     <div>
         <label for="teacherId">Teacher_id</label>
-        <input class="block" id="teacherId" type="number" name="teacherId" th:field="${scheduleDto.teacherId}" value="1" required>
+        <input class="block" id="teacherId" name="teacherId" required th:field="${scheduleDto.teacherId}" type="number"
+               value="1">
     </div>
 
     <div>

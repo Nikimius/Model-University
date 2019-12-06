@@ -4,8 +4,8 @@ package com.example.demo.vuz.controllers;
 import com.example.demo.vuz.DemoApplication;
 import com.example.demo.vuz.dto.StudentDto;
 import com.example.demo.vuz.model.Student;
-import com.example.demo.vuz.services.StudentService;
 import com.example.demo.vuz.repositories.StudentRepository;
+import com.example.demo.vuz.services.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,7 +42,6 @@ public class StudentController {
         studentService.removeStudentsFromGroup(studentDto.getStudentsIds());
     }
 
-
     /*@PostMapping("/removeStudent")
     @Transactional
     public void removeStudent(@RequestParam("studentListId") List<Integer> studentsIds) {
@@ -54,19 +53,16 @@ public class StudentController {
         studentService.removeStudent(studentDto.getStudentsIds());
     }
 
-
     @PostMapping("/students")
     public void createStudentV2(@RequestBody StudentDto studentDto) {
         studentService.createStudents(studentDto.getFn(), studentDto.getLn());
     }
-
 
     /*@PostMapping("/students")
     @Transactional
     public void createStudent(@RequestParam("fn") String fn, @RequestParam("ln") String ln) {
         studentService.createStudents(fn, ln);
     }*/
-
 
     @GetMapping("/students")
     public List<Student> getListGroup() {

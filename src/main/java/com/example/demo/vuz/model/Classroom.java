@@ -21,7 +21,6 @@ public class Classroom {
     @OneToMany(mappedBy = "classroom")
     private List<Schedule> scheduleList = new ArrayList<>();
 
-
     public Classroom() {
     }
 

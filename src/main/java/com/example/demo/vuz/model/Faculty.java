@@ -1,10 +1,9 @@
 package com.example.demo.vuz.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+
 @Entity
 public class Faculty {
     @Id
@@ -29,20 +28,19 @@ public class Faculty {
         this.departmentList = departmentList;
     }
 
-    public Faculty(){
-
+    public Faculty() {
     }
 
     public void setUniversity(University university) {
         this.university = university;
     }
 
-    public void setDepartmentList(List<Department> departmentList) {
-        this.departmentList = departmentList;
-    }
-
     public List<Department> getDepartmentList() {
         return departmentList;
+    }
+
+    public void setDepartmentList(List<Department> departmentList) {
+        this.departmentList = departmentList;
     }
 
     public int getId() {
@@ -69,10 +67,9 @@ public class Faculty {
         this.webSite = webSite;
     }
 
-
     @Override
     public String toString() {
-        return  "name - '" + name + '\'' +
+        return "name - '" + name + '\'' +
                 ", webSite - '" + webSite + '\'' +
                 System.lineSeparator() + name + System.lineSeparator();
     }

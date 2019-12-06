@@ -13,6 +13,9 @@ import java.util.List;
 @Entity
 @Table(name = "groups")
 public class Groups {
+    @Transient
+    private final static Logger LOGGER = LoggerFactory.getLogger(GroupService.class.getName());
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -32,10 +35,13 @@ public class Groups {
     @OneToMany(mappedBy = "group")
     private List<Schedule> schedules = new ArrayList<>();
 
-    @Transient
-    private final static Logger LOGGER = LoggerFactory.getLogger(GroupService.class.getName());
-
     public Groups() {
+    }
+
+    public Groups(int id, String name, List<Student> studentList) {
+        this.id = id;
+        this.name = name;
+        this.studentList = studentList;
     }
 
     public void addStudentInGroup(Student student) {
@@ -49,7 +55,7 @@ public class Groups {
         }
     }
 
-    public void addNewStudent(Student student){
+    public void addNewStudent(Student student) {
         int count = 0;
         if (maxSize > count) {
             student.setGroup(this);
@@ -60,20 +66,17 @@ public class Groups {
         }
     }
 
+    /*public List<Student> getStudentList() {
+         return List.copyOf(studentList);
+    }*/
+
     public List<Student> getStudentList() {
         List<Student> students = List.copyOf(studentList);
         List<Student> unm = Collections.unmodifiableList(students);
         return unm;
     }
 
-    /*public List<Student> getStudentList() {
-         return List.copyOf(studentList);
-    }*/
-
-
-    public Groups(int id, String name, List<Student> studentList) {
-        this.id = id;
-        this.name = name;
+    public void setStudentList(List<Student> studentList) {
         this.studentList = studentList;
     }
 
@@ -83,10 +86,6 @@ public class Groups {
 
     public void setDepartment(Department department) {
         this.department = department;
-    }
-
-    public void setStudentList(List<Student> studentList) {
-        this.studentList = studentList;
     }
 
     public List<Schedule> getSchedules() {

@@ -24,8 +24,7 @@ public class TeacherService {
         this.departmentRepository = departmentRepository;
     }
 
-
-    public void createTeachers(String firstName, String lastName){
+    public void createTeachers(String firstName, String lastName) {
         Teacher newTeacher = new Teacher();
         newTeacher.setFirstName(firstName);
         newTeacher.setLastName(lastName);
@@ -35,21 +34,20 @@ public class TeacherService {
         teacherRepository.save(newTeacher);
     }
 
-    public void removeTeachers(List<Integer> teachersIds){
+    public void removeTeachers(List<Integer> teachersIds) {
         List<Teacher> teachers = teacherRepository.findAllById(teachersIds);
         teachers.forEach(teacher -> teacherRepository.delete(teacher));
     }
 
-    public void changeDepartmentToTeacher(List<Integer> teachersIds, int departmentId){
+    public void changeDepartmentToTeacher(List<Integer> teachersIds, int departmentId) {
         List<Teacher> teachers = teacherRepository.findAllById(teachersIds);
-        teachers.forEach(teacher -> teacher.setDepartment(departmentRepository.findById(departmentId).orElseThrow(()-> new IllegalArgumentException("Department not found"))));
+        teachers.forEach(teacher -> teacher.setDepartment(departmentRepository.findById(departmentId).orElseThrow(() -> new IllegalArgumentException("Department not found"))));
         teachers.forEach(teacher -> teacherRepository.save(teacher));
     }
 
-    public void removeTeacherFromGroup(List<Integer> thIds){
+    public void removeTeacherFromGroup(List<Integer> thIds) {
         List<Teacher> teachers = teacherRepository.findAllById(thIds);
         teachers.forEach(teacher -> teacher.setDepartment(null));
         teachers.forEach(teacher -> teacherRepository.save(teacher));
     }
-
 }

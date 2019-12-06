@@ -17,7 +17,6 @@ import java.util.List;
 @RequestMapping("/faculties")
 public class FacultyController {
 
-
     private final DemoApplication.InMemoryStorage inMemoryStorage;
     private final DepartmentRepository departmentRepository;
     private final FacultyRepository facultyRepository;
@@ -30,11 +29,11 @@ public class FacultyController {
         this.facultyRepository = facultyRepository;
         this.facultyService = facultyService;
     }
+
     @GetMapping("/")
     public List<Faculty> getListFaculty() {
         return facultyRepository.findAll();
     }
-
 
     @GetMapping("/{facultyId}")
     public Faculty getFaculty(@PathVariable(name = "facultyId") int facultyId) {
@@ -48,15 +47,13 @@ public class FacultyController {
 
     }
 
-
-
     @PostMapping("/faculties")
-    public void createFaculty(@RequestBody FacultyDto facultyDto){
+    public void createFaculty(@RequestBody FacultyDto facultyDto) {
         facultyService.createFaculty(facultyDto.getName(), facultyDto.getWebSite(), facultyDto.getDepartmentsIds());
     }
 
     @DeleteMapping("/faculty")
-    public void delFaculty(@RequestBody FacultyDto facultyDto){
+    public void delFaculty(@RequestBody FacultyDto facultyDto) {
         facultyService.removeFaculty(facultyDto.getFacultyListIds());
     }
 }

@@ -19,7 +19,6 @@ public class UniverController {
     private final FacultyRepository facultyRepository;
     private final UniversityService universityService;
 
-
     @Autowired
     public UniverController(DemoApplication.InMemoryStorage inMemoryStorage, UniversityRepository universityRepository, FacultyRepository facultyRepository, UniversityService universityService) {
         this.inMemoryStorage = inMemoryStorage;
@@ -43,7 +42,6 @@ public class UniverController {
     public void delUniversities(@RequestBody UniversityDto universityDto) {
         universityService.removeUniver(universityDto.getUniversitiesIds());
     }
-
 
     @GetMapping("/universities")
     public List<University> getUniversity() {
@@ -212,5 +210,4 @@ public class UniverController {
 //                .findFirst()
 //                .orElseThrow(() -> new IllegalArgumentException("Student not found"));
 //    }
-
 }

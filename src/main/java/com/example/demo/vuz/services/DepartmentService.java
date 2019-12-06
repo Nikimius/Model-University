@@ -21,15 +21,13 @@ public class DepartmentService {
     private final GroupeRepository groupeRepository;
     private final TeacherRepository teacherRepository;
 
-
     public DepartmentService(DepartmentRepository departmentRepository, GroupeRepository groupeRepository, TeacherRepository teacherRepository) {
         this.departmentRepository = departmentRepository;
         this.groupeRepository = groupeRepository;
         this.teacherRepository = teacherRepository;
     }
 
-
-    public void createDep(String name, List<Integer> groupsIds, List<Integer> teachersIds){
+    public void createDep(String name, List<Integer> groupsIds, List<Integer> teachersIds) {
         Department newDepartment = new Department();
         newDepartment.setName(name);
         newDepartment.setNumberTelephone(Math.abs(new Random().nextInt() % 10_00_00_00));
@@ -47,12 +45,12 @@ public class DepartmentService {
         departmentRepository.save(newDepartment);
     }
 
-    public void removeDepartment(List<Integer> departmentsIds){
+    public void removeDepartment(List<Integer> departmentsIds) {
         List<Department> departments = Arrays.asList(departmentRepository.findAllByIdIn(departmentsIds));
         departments.forEach(department -> removeDp(department));
     }
 
-    public void removeDp(Department department){
+    public void removeDp(Department department) {
         List<Groups> groups = department.getGroupList();
         groups.forEach(group -> group.setDepartment(null));
         List<Teacher> teacherList = department.getTeacherList();
@@ -62,11 +60,10 @@ public class DepartmentService {
 
     public void addGroupInDepartment(List<Integer> groupsIds, int departmentId) {
         List<Groups> groups = groupeRepository.findAllById(groupsIds);
-        Department department = departmentRepository.findById(departmentId).orElseThrow(()-> new IllegalArgumentException("Not found department"));
-        groups.forEach(group-> {
+        Department department = departmentRepository.findById(departmentId).orElseThrow(() -> new IllegalArgumentException("Not found department"));
+        groups.forEach(group -> {
             group.setDepartment(department);
             groupeRepository.save(group);
         });
     }
-
 }

@@ -11,7 +11,6 @@ import java.util.Map;
 @RestController
 public class ScheduleController {
 
-
     private final ScheduleService scheduleService;
 
     @Autowired
@@ -26,22 +25,20 @@ public class ScheduleController {
     }
 
     @DeleteMapping("/schedule")
-    public void deleteSchedule(@RequestBody ScheduleDto scheduleDto){
+    public void deleteSchedule(@RequestBody ScheduleDto scheduleDto) {
         scheduleService.deleteScheduleById(scheduleDto.getScheduleIds());
     }
 
 
     @PatchMapping("/schedule")
-    public void changeSchedule(@RequestBody Map<String, String> objDto){
+    public void changeSchedule(@RequestBody Map<String, String> objDto) {
         scheduleService.changeSchedule(objDto);
     }
 
     @PostMapping("/schedule/generate")
-    public void generateSchedule(@RequestBody ScheduleDto scheduleDto){
+    public void generateSchedule(@RequestBody ScheduleDto scheduleDto) {
         scheduleService.generateSchedule(scheduleDto.isStart());
     }
-
-
 
     /*@PatchMapping("/schedule/dayOfWeek")
     public void changeDayOfWeekSchedule(@RequestBody ScheduleDto scheduleDto){
