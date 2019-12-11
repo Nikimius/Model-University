@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-
+// TODO Entities SHOULD ALSO have hashCode() and equals()...
 @Entity
 @Table(name = "groups")
 public class Groups {
@@ -44,11 +44,13 @@ public class Groups {
         this.studentList = studentList;
     }
 
+    // TODO maybe returning a boolean would be more useful ?
     public void addStudentInGroup(Student student) {
         int count = getStudentList().size();
         //getStudentList().add(new Student());
         if (maxSize > count) {
             student.setGroup(this);
+            // TODO is this needed ? count++ ?
             count++;
         } else {
             LOGGER.info("Limit group students");

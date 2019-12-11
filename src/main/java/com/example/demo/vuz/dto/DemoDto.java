@@ -1,5 +1,6 @@
 package com.example.demo.vuz.dto;
 
+// TODO - a value class like this one, should ALWAYS have hashCode() and equals(), and a toString()
 public class DemoDto {
 
     private int dayOfWeek;

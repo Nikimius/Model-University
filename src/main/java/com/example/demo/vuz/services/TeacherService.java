@@ -34,6 +34,7 @@ public class TeacherService {
         teacherRepository.save(newTeacher);
     }
 
+    // TODO bad naming, removeTeachersByIdIn is better
     public void removeTeachers(List<Integer> teachersIds) {
         List<Teacher> teachers = teacherRepository.findAllById(teachersIds);
         teachers.forEach(teacher -> teacherRepository.delete(teacher));

@@ -34,6 +34,7 @@ public class ScheduleService {
         this.classroomRepository = classroomRepository;
     }
 
+    // TODO - relatively many arguments, think of a design pattern to use in this case.
     public void createSchedule(int dayOfWeek, String from, String to, int groupId, int subject, int teacherId, int classroomId) {
         Schedule newSchedule = new Schedule();
         newSchedule.setDay(Schedule.transformDayOfWeek(dayOfWeek));

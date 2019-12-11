@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+// TODO Entities SHOULD ALSO have hashCode() and equals()...
 @Entity
 public class Teacher {
     @Id

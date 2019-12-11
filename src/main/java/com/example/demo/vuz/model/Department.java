@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
+// TODO Entities SHOULD ALSO have hashCode() and equals()...@Entity
 /*@NamedEntityGraph(name = "AnyName.name", attributeNodes = @NamedAttributeNode("name"))*/
 public class Department {
     @Id
