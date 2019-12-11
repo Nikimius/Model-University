@@ -21,6 +21,7 @@ public class ClassroomService {
         this.classroomRepository = classroomRepository;
     }
 
+    // TODO RoomClass or classRoom ? stick with one
     public void createRoomClass(int numberClassroom, int maxSize) {
         Classroom newClassroom = new Classroom();
         newClassroom.setNumberClassroom(numberClassroom);
@@ -34,10 +35,12 @@ public class ClassroomService {
         classrooms.forEach(classroom -> classroomRepository.delete(classroom));
     }*/
 
+    // TODO give a better name to the method like: deleteClassRoomsByIdIn...
     public void removeRoomClass(List<Integer> classroomsIds) {
         classroomRepository.deleteAllByIdIn(classroomsIds);
     }
 
+    // TODO update classroom is a better name
     public void changeClassroom(Map<String, Integer> dto) {
         if (dto.containsKey("classroomId")) {
             int classroomId = dto.get("classroomId");
@@ -55,6 +58,7 @@ public class ClassroomService {
         } else System.out.println("Not found classroom");
     }
 
+    // TODO remove unused and commented code.. in other places as well
     /*public void changeMaxSize(int classroomId, int newMaxSize){
         Classroom classroom = classroomRepository.findById(classroomId).orElseThrow(()-> new IllegalArgumentException("Not found classroom"));
         classroom.setMaxSize(newMaxSize);

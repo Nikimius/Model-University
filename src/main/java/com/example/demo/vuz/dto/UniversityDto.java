@@ -2,6 +2,7 @@ package com.example.demo.vuz.dto;
 
 import java.util.List;
 
+// TODO - a value class like this one, should ALWAYS have hashCode() and equals(), and a toString()
 public class UniversityDto {
 
     private String name;

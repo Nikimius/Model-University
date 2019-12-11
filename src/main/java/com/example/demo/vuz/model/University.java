@@ -3,12 +3,14 @@ package com.example.demo.vuz.model;
 import javax.persistence.*;
 import java.util.List;
 
+// TODO Entities SHOULD ALSO have hashCode() and equals()...
 @Entity
 public class University {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    // TODO it should be unique
     @Column(name = "name")
     private String name;
 

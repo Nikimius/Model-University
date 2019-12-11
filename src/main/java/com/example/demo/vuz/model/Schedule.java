@@ -69,6 +69,7 @@ public class Schedule {
             case 6:
                 return DayOfWeek.SATURDAY;
         }
+        // TODO returning null is a bad practice!
         return null;
     }
 

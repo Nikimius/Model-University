@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
+// TODO Entities SHOULD ALSO have hashCode() and equals()...
 @Entity
 public class Classroom {
 
@@ -18,6 +18,7 @@ public class Classroom {
     @Column(name = "max_size")
     private int maxSize = 10;
 
+    // TODO getter and setter ?
     @OneToMany(mappedBy = "classroom")
     private List<Schedule> scheduleList = new ArrayList<>();
 

@@ -2,6 +2,7 @@ package com.example.demo.vuz.model;
 
 import javax.persistence.*;
 
+// TODO Entities SHOULD ALSO have hashCode() and equals()...
 @Entity
 public class Student {
     @Id
